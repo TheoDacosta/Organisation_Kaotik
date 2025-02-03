@@ -9,9 +9,9 @@ extern UART_HandleTypeDef huart2;
 void srand(unsigned int seed);
 int rand(void);
 int putchar(int c);
-int puts(char *text);
-char *gets(char *str);
-char *itoa(int value, char *str, int base); /* only base=10 and value>=0 is supported */
+int puts(char* text);
+char* gets(char* str);
+char* itoa(int value, char* str, int base); /* only base=10 and value>=0 is supported */
 
 #define CS_I2C_SPI_Pin GPIO_PIN_3
 #define CS_I2C_SPI_GPIO_Port GPIOE

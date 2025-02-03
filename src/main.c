@@ -2,12 +2,12 @@
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
 #endif
-#include "main.h"
 #include "cmsis_os.h"
+#include "main.h"
 
 osThreadId_t defaultTaskHandle;
 
-void StartDefaultTask(void *argument);
+void StartDefaultTask(void* argument);
 
 int main(void)
 {
@@ -24,15 +24,13 @@ int main(void)
 
     osKernelStart();
 
-    while (1)
-    {
+    while (1) {
     }
 }
 
-void StartDefaultTask(void *argument)
+void StartDefaultTask(void* argument)
 {
-    while (1)
-    {
+    while (1) {
         puts("Hello world\n");
         osDelay(1);
     }

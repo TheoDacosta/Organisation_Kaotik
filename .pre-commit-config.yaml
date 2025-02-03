@@ -11,4 +11,4 @@ repos:
       - id: clang-format
         args: [--style=WebKit, -i]
       - id: clang-tidy
-        args: [--checks='*']
+        args: [--checks='*', -IOrganisation_Kaotik/.pio, -IOrganisation_Kaotik/include, -IOrganisation_Kaotik/src]
