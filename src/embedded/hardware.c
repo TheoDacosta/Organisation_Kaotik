@@ -23,10 +23,7 @@ void hardware_init(void)
 
 static unsigned int prng;
 
-void srand(unsigned int seed)
-{
-    prng = seed;
-}
+void srand(unsigned int seed) { prng = seed; }
 
 int rand(void)
 {
@@ -37,13 +34,13 @@ int rand(void)
 int putchar(int c)
 {
     unsigned char character = c;
-    HAL_UART_Transmit(&huart2, (uint8_t *)&character, 1, HAL_MAX_DELAY);
+    HAL_UART_Transmit(&huart2, (uint8_t*)&character, 1, HAL_MAX_DELAY);
     return character;
 }
 
-int puts(char *text)
+int puts(char* text)
 {
-    while (*text)
+    while (*text != '\0')
         putchar(*text++);
     return 0;
 }
@@ -53,20 +50,18 @@ static char uart_read_char()
     unsigned char result;
     HAL_StatusTypeDef status = HAL_TIMEOUT;
 
-    do
-    {
+    do {
         status = HAL_UART_Receive(&huart2, &result, 1, UART_RECEIVE_TIMEOUT);
     } while (status != HAL_OK);
 
     return result;
 }
 
-char *gets(char *str)
+char* gets(char* str)
 {
-    char *original_str = str;
+    char* original_str = str;
     char c = -1;
-    while (c != '\n')
-    {
+    while (c != '\n') {
         c = uart_read_char();
         *str++ = c;
     }
@@ -74,25 +69,20 @@ char *gets(char *str)
     return original_str;
 }
 
-char *itoa(int value, char *str, int base)
+char* itoa(int value, char* str, int base)
 {
-    if (base != 10 || value < 0)
-    {
+    if (base != 10 || value < 0) {
         while (1)
             ;
     }
-    if (value == 0)
-    {
+    if (value == 0) {
         str[0] = '0';
         str[1] = 0;
-    }
-    else
-    {
+    } else {
         uint8_t digits[32];
         uint8_t max_power = 0;
         uint8_t i;
-        while (value)
-        {
+        while (value) {
             digits[max_power++] = value % 10;
             value /= 10;
         }
@@ -103,10 +93,25 @@ char *itoa(int value, char *str, int base)
     return str;
 }
 
+void push_button_init(void)
+{
+    /*Configure GPIO pin : PA0 */
+    GPIO_InitTypeDef GPIO_InitStruct;
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
+uint8_t push_button_is_pressed(void)
+{
+    return HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+}
+
 static void SystemClock_Config(void)
 {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
     /** Configure the main internal regulator output voltage
      */
@@ -123,8 +128,7 @@ static void SystemClock_Config(void)
     RCC_OscInitStruct.PLL.PLLN = 50;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
     RCC_OscInitStruct.PLL.PLLQ = 7;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
     }
     /** Initializes the CPU, AHB and APB busses clocks
@@ -135,8 +139,7 @@ static void SystemClock_Config(void)
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV8;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-    {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -159,8 +162,7 @@ static void MX_USART2_UART_Init(void)
     huart2.Init.Mode = UART_MODE_TX_RX;
     huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-    if (HAL_UART_Init(&huart2) != HAL_OK)
-    {
+    if (HAL_UART_Init(&huart2) != HAL_OK) {
         Error_Handler();
     }
     /* USER CODE BEGIN USART2_Init 2 */
@@ -170,7 +172,7 @@ static void MX_USART2_UART_Init(void)
 
 static void MX_GPIO_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
     /* GPIO Ports Clock Enable */
     __HAL_RCC_GPIOE_CLK_ENABLE();
@@ -184,10 +186,13 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_WritePin(CS_I2C_SPI_GPIO_Port, CS_I2C_SPI_Pin, GPIO_PIN_RESET);
 
     /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin,
+        GPIO_PIN_SET);
 
     /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(GPIOD, LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin | Audio_RST_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOD,
+        LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin | Audio_RST_Pin,
+        GPIO_PIN_RESET);
 
     /*Configure GPIO pin : CS_I2C_SPI_Pin */
     GPIO_InitStruct.Pin = CS_I2C_SPI_Pin;
@@ -298,7 +303,7 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(MEMS_INT2_GPIO_Port, &GPIO_InitStruct);
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
     if (htim->Instance == TIM1)
         HAL_IncTick();
