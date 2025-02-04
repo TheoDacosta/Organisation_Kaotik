@@ -7,4 +7,8 @@ osMutexId_t create_mutex(const osMutexAttr_t* mutex_attr);
 void get_mutex(osMutexId_t mutex_id);
 void release_mutex(osMutexId_t mutex_id);
 
+// Code a mettre pas le droit de toucher
+
+
+
 #endif // OS_UTILS_H_
