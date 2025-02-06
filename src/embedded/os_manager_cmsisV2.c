@@ -1,5 +1,5 @@
 #include "cmsis_os2.h"
-#include "os_manager.h"
+// #include "os_manager.h"
 
 const ThreadAttr_t thread_attr = {
     .stack_size = 2048,
@@ -12,6 +12,15 @@ const MutexAttr_t serial_mutex_attr = {
     NULL,
     0U
 };
+
+void os_initialisation()
+{
+    osKernelInitialize();
+}
+void os_start()
+{
+    osKernelStart();
+}
 
 Thread_t create_thread(ThreadFunc_t func)
 {

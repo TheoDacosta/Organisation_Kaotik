@@ -7,6 +7,9 @@ typedef void* Thread_t;
 typedef void (*ThreadFunc_t)(void* argument);
 typedef void* Mutex_t;
 
+void os_initialisation();
+void os_start();
+
 Mutex_t create_mutex();
 void get_mutex(Mutex_t mutex);
 void release_mutex(Mutex_t mutex);
