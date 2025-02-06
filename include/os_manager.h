@@ -23,7 +23,7 @@ typedef struct {
 typedef struct {
   const char                   *name;   ///< name of the thread
   uint32_t                stack_size;   ///< size of stack
-  Priority_t              priority;   ///< initial thread priority (default: osPriorityNormal)
+ 
 } ThreadAttr_t;
 
 
