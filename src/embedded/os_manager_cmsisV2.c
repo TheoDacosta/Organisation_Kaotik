@@ -2,8 +2,9 @@
 #include "os_manager.h"
 
 const osThreadAttr_t thread_attr = {
+    .name = "Thread",
     .stack_size = 2048,
-    //.priority = osPriorityNormal
+    .priority = (osPriority_t)osPriorityNormal,
 };
 
 const osMutexAttr_t serial_mutex_attr = {
