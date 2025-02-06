@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
-#include "main.h"
+#include "hardware.h"
 #include "task.h"
 
 /* Private includes ----------------------------------------------------------*/
