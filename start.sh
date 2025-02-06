@@ -15,4 +15,5 @@ sleep 3
 # start the viewer / on small screens : --small-window
 python -m space_collector.viewer -p $PORT --small-window &
 
+# Communication en serie
 python -m space_collector.serial2tcp -p $PORT --serial $SERIAL --team-name "USS-Discovery"
