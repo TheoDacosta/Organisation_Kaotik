@@ -13,4 +13,7 @@ typedef struct Planet_t {
     int8_t focus;
 } Planet;
 
+// Stockage des donnees vers une structure
+void parse_planet(char** dataplanet, Planet planets, uint16_t nb_planets);
+
 #endif // PLANET_H
