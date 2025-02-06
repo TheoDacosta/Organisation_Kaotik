@@ -10,3 +10,19 @@ repos:
     hooks:
       - id: clang-format
         args: [--style=WebKit, -i]
+  - repo: local
+    hooks:
+      - id: link-platformio
+        name: link platformio
+        entry: sh scripts/link_platformio.sh
+        language: system
+      - id: check-platformio
+        name: check-platformio
+        entry: platformio check --environment native  --environment disco_f407vg --src-filters="-<src/FreeRTOS/**> -<src/System/**>"
+        pass_filenames: false
+        language: system
+      - id: build-platformio
+        name: build-platformios
+        entry: platformio run --environment native  --environment disco_f407vg
+        pass_filenames: false
+        language: system
