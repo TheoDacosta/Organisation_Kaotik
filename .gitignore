@@ -4,5 +4,8 @@
 # Ignore macOS system files
 .DS_Store
 
-#Ignore les fichier de venv
+#Ignore virtual environment
 venv/
+
+# Ignore log files
+*.log
