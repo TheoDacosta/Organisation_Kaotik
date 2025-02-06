@@ -1,14 +1,15 @@
 #include "cmsis_os2.h"
-// #include "os_manager.h"
+#include "os_manager.h"
 
-const ThreadAttr_t thread_attr = {
+const osThreadAttr_t thread_attr = {
+    .name = "Thread",
     .stack_size = 2048,
-    //.priority = osPriorityNormal
+    .priority = (osPriority_t)osPriorityNormal,
 };
 
-const MutexAttr_t serial_mutex_attr = {
+const osMutexAttr_t serial_mutex_attr = {
     "SerialMutex",
-    MutextRecursive | MutexPrioInherit,
+    osMutexRecursive | osMutexPrioInherit,
     NULL,
     0U
 };
@@ -24,7 +25,7 @@ void os_start()
 
 Thread_t create_thread(ThreadFunc_t func)
 {
-    ThreadId_t thread_id = osThreadNew(func, NULL, &thread_attr);
+    osThreadId_t thread_id = osThreadNew(func, NULL, &thread_attr);
     if (thread_id == NULL) {
         while (1) {
         }
