@@ -12,7 +12,8 @@ struct MutexWrapper {
     pthread_mutex_t mutex;
 };
 
-Mutex_t create_mutex() {
+Mutex_t create_mutex()
+{
     struct MutexWrapper* mutex = (struct MutexWrapper*)malloc(sizeof(struct MutexWrapper));
     if (mutex == NULL) {
         perror("malloc failed");
@@ -26,35 +27,40 @@ Mutex_t create_mutex() {
     return (Mutex_t)mutex;
 }
 
-void get_mutex(Mutex_t mutex_id) {
-    if (mutex_id == NULL) return;
+void get_mutex(Mutex_t mutex_id)
+{
+    if (mutex_id == NULL)
+        return;
     struct MutexWrapper* mutex = (struct MutexWrapper*)mutex_id;
     pthread_mutex_lock(&mutex->mutex);
 }
 
-void release_mutex(Mutex_t mutex_id) {
-    if (mutex_id == NULL) return;
+void release_mutex(Mutex_t mutex_id)
+{
+    if (mutex_id == NULL)
+        return;
     struct MutexWrapper* mutex = (struct MutexWrapper*)mutex_id;
     pthread_mutex_unlock(&mutex->mutex);
 }
 
-Thread_t create_thread(ThreadFunc_t func) {
-    pthread_t *monthread = malloc(sizeof(pthread_t));
-    if(monthread==NULL)
-    {
+Thread_t create_thread(ThreadFunc_t func)
+{
+    pthread_t* monthread = malloc(sizeof(pthread_t));
+    if (monthread == NULL) {
         perror("allocation mémoire non fonctionnelle");
-        while(1);
+        while (1)
+            ;
     }
     if (pthread_create(monthread, NULL, func, NULL) != 0) {
         perror("pthread_create failed");
-        while(1);
+        while (1)
+            ;
     }
     return (Thread_t)monthread;
 }
 
 void os_initialisation()
 {
-
 }
 void os_start()
 {
