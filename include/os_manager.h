@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 typedef void* Thread_t;
-typedef void (*ThreadFunc_t)(void* argument);
+typedef void* (*ThreadFunc_t)(void* argument);
 typedef void* Mutex_t;
 
 void os_initialisation();
