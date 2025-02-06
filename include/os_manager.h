@@ -8,8 +8,8 @@ typedef void (*ThreadFunc_t)(void* argument);
 typedef void* Mutex_t;
 
 Mutex_t create_mutex();
-void get_mutex(Mutex_t mutex_id);
-void release_mutex(Mutex_t mutex_id);
+void get_mutex(Mutex_t mutex);
+void release_mutex(Mutex_t mutex);
 
 Thread_t create_thread(ThreadFunc_t func);
 
