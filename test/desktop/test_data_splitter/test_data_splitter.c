@@ -26,3 +26,10 @@ void test_data_splitter()
         free(stock_data[i]);
     }
 }
+
+int main(void)
+{
+    UNITY_BEGIN();
+    RUN_TEST(test_data_splitter);
+    return UNITY_END();
+}
