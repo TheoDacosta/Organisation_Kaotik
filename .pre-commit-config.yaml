@@ -18,7 +18,7 @@ repos:
         language: system
       - id: check-platformio
         name: check-platformio
-        entry: platformio check --environment native  --environment disco_f407vg --src-filters="-<src/FreeRTOS/**> -<src/System/**>"
+        entry: platformio check --environment native  --environment disco_f407vg --src-filters="-<src/FreeRTOS/**> -<src/System/**>" --fail-on-defect=low --fail-on-defect=medium --fail-on-defect=high
         pass_filenames: false
         language: system
       - id: build-platformio
