@@ -2,14 +2,9 @@
 #define HARDWARE_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 
-void srand(unsigned int seed);
-int rand(void);
-int putchar(int c);
-int puts(const char* text);
-char* my_gets(char* str, int size);
-char* itoa(int value, char* str, int base);
+char* itoa(int value, char* str, int base); /* only base=10 and value>=0 is supported */
 void hardware_init(void);
-
 
 #endif // HARDWARE_H_
