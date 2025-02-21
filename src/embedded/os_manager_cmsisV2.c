@@ -25,38 +25,36 @@ void os_start()
 
 Thread_t create_thread(ThreadFunc_t func)
 {
-    osThreadId_t thread_id = osThreadNew(func, NULL, &thread_attr);
-    if (thread_id == NULL) {
-        while (1) {
-        }
+    osThreadId_t new_thread_id = osThreadNew(func, NULL, &thread_attr);
+    if (new_thread_id == NULL) {
+        while (1)
+            ;
     }
-    Thread_t thread_t = (Thread_t)thread_id;
-    return thread_t;
+    return (Thread_t)new_thread_id;
 }
 
 Mutex_t create_mutex()
 {
-    osMutexId_t mutex_id = osMutexNew(&serial_mutex_attr);
-    if (mutex_id == NULL) {
-        while (1) {
-        }
+    osMutexId_t new_mutex_id = osMutexNew(&serial_mutex_attr);
+    if (new_mutex_id == NULL) {
+        while (1)
+            ;
     }
-    Mutex_t mutex_t = (Mutex_t)mutex_id;
-    return mutex_t;
+    return (Mutex_t)new_mutex_id;
 }
 
 void get_mutex(Mutex_t mutex)
 {
-    if (osMutexAcquire(mutex, osWaitForever) != osOK) {
-        while (1) {
-        }
+    if (osMutexAcquire((osMutexId_t)mutex, osWaitForever) != osOK) {
+        while (1)
+            ;
     }
 }
 
 void release_mutex(Mutex_t mutex)
 {
-    if (osMutexRelease(mutex) != osOK) {
-        while (1) {
-        }
+    if (osMutexRelease((osMutexId_t)mutex) != osOK) {
+        while (1)
+            ;
     }
 }
