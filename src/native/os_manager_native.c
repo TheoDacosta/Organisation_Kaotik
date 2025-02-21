@@ -3,23 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Définition des types
-struct ThreadWrapper {
-    pthread_t thread;
-};
-
-struct MutexWrapper {
-    pthread_mutex_t mutex;
-};
-
 Mutex_t create_mutex()
 {
-    struct MutexWrapper* mutex = (struct MutexWrapper*)malloc(sizeof(struct MutexWrapper));
+    pthread_mutex_t* mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
     if (mutex == NULL) {
-        perror("malloc failed");
+        perror("mutex malloc failed");
         return NULL;
     }
-    if (pthread_mutex_init(&mutex->mutex, NULL) != 0) {
+    if (pthread_mutex_init(mutex, NULL) != 0) {
         perror("pthread_mutex_init failed");
         free(mutex);
         return NULL;
@@ -27,36 +18,35 @@ Mutex_t create_mutex()
     return (Mutex_t)mutex;
 }
 
-void get_mutex(Mutex_t mutex_id)
+void get_mutex(Mutex_t mutex)
 {
-    if (mutex_id == NULL)
+    if (mutex == NULL)
         return;
-    struct MutexWrapper* mutex = (struct MutexWrapper*)mutex_id;
-    pthread_mutex_lock(&mutex->mutex);
+    pthread_mutex_lock((pthread_mutex_t*)mutex);
 }
 
-void release_mutex(Mutex_t mutex_id)
+void release_mutex(Mutex_t mutex)
 {
-    if (mutex_id == NULL)
+    if (mutex == NULL)
         return;
-    struct MutexWrapper* mutex = (struct MutexWrapper*)mutex_id;
-    pthread_mutex_unlock(&mutex->mutex);
+    pthread_mutex_unlock((pthread_mutex_t*)mutex);
 }
 
 Thread_t create_thread(ThreadFunc_t func)
 {
-    pthread_t* monthread = malloc(sizeof(pthread_t));
-    if (monthread == NULL) {
-        perror("allocation mémoire non fonctionnelle");
+    pthread_t* new_thread = malloc(sizeof(pthread_t));
+    if (new_thread == NULL) {
+        perror("thread malloc failed");
         while (1)
             ;
     }
-    if (pthread_create(monthread, NULL, func, NULL) != 0) {
-        perror("pthread_create failed");
+    if (pthread_create(new_thread, NULL, func, NULL) != 0) {
+        perror("thread creation failed");
+        free(new_thread);
         while (1)
             ;
     }
-    return (Thread_t)monthread;
+    return (Thread_t)new_thread;
 }
 
 void os_initialisation()
