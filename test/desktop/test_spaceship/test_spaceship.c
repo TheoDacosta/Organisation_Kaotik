@@ -74,11 +74,40 @@ void test_find_spaceship_found(void)
     TEST_ASSERT_EQUAL(1, found_spaceship->broken);
 }
 
+void test_set_invalid_spaceship(void)
+{
+    // Modification un vaisseau inexistant (team_id = 2, ship_id = 5)
+    set_spaceship(2, 5, 8000, 10000, 1, spaceships);
+
+    // Vérifie que le vaisseau existant (team_id = 5, ship_id = 1)
+    Spaceship* spaceship = find_spaceship_by_id(2, 3, spaceships);
+    TEST_ASSERT_NOT_NULL(spaceship);
+
+    TEST_ASSERT_EQUAL(10000, spaceship->x);
+    TEST_ASSERT_EQUAL(11200, spaceship->y);
+    TEST_ASSERT_EQUAL(1, spaceship->broken);
+}
+
+void test_update_spaceship(void)
+{
+    // Modifier un vaisseau existant
+    set_spaceship(2, 3, 8000, 10000, 1, spaceships);
+
+    // Vérifier la mise à jour
+    Spaceship* updated_spaceship = find_spaceship_by_id(2, 3, spaceships);
+    TEST_ASSERT_NOT_NULL(updated_spaceship);
+
+    TEST_ASSERT_EQUAL(8000, updated_spaceship->x);
+    TEST_ASSERT_EQUAL(10000, updated_spaceship->y);
+    TEST_ASSERT_EQUAL(1, updated_spaceship->broken);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_create_spaceship);
     RUN_TEST(test_find_spaceship_not_found);
     RUN_TEST(test_find_spaceship_found);
+    RUN_TEST(test_set_invalid_spaceship);
     return UNITY_END();
 }

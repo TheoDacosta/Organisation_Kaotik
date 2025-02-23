@@ -66,6 +66,37 @@ Spaceship* find_spaceship_by_id(uint8_t team_id, int8_t ship_id, Spaceship* spac
 }
 
 /**
+ * @brief Met à jour les informations d'un vaisseau existant.
+ *
+ * Cette fonction recherche un vaisseau spécifique à l'aide de son team_id et ship_id.
+ * Si le vaisseau est trouvé, elle met à jour ses coordonnées (x, y) et son état (broken).
+ * Si le vaisseau n'existe pas, la fonction ne fait rien.
+ *
+ * @param team_id    Identifiant de l'équipe du vaisseau.
+ * @param ship_id    Identifiant unique du vaisseau au sein de l'équipe.
+ * @param pos_x          Nouvelle coordonnée X du vaisseau.
+ * @param pos_y          Nouvelle coordonnée Y du vaisseau.
+ * @param broken     Indicateur de l'état du vaisseau (cassé ou non).
+ * @param spaceships Liste des vaisseaux disponibles.
+ */
+void set_spaceship(uint8_t team_id, int8_t ship_id, uint16_t pos_x, uint16_t pos_y,
+    uint8_t broken, Spaceship* spaceships)
+{
+    // Recherche du vaisseau à mettre à jour
+    Spaceship* spaceship = find_spaceship_by_id(team_id, ship_id, spaceships);
+
+    // Si le vaisseau n'existe pas, on ne fait rien
+    if (spaceship == NULL) {
+        return;
+    }
+
+    // Mise à jour des informations du vaisseau
+    spaceship->x = pos_x;
+    spaceship->y = pos_y;
+    spaceship->broken = broken;
+}
+
+/**
  * @brief Réinitialise la liste des vaisseaux spatiaux.
  *
  * Cette fonction remet à zéro tous les vaisseaux du tableau et
