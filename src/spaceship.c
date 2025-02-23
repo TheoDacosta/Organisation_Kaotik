@@ -115,6 +115,7 @@ void delete_spaceship(uint8_t team_id, int8_t ship_id, Spaceship* spaceships,
             // Réinitialiser les valeurs du vaisseau supprimé
             spaceships[i].team_id = 0;
             spaceships[i].ship_id = 0;
+
             spaceships[i].x = 0;
             spaceships[i].y = 0;
             spaceships[i].broken = 0;
