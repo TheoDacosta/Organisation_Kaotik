@@ -23,18 +23,18 @@ void parse_planet(char** data, Planet* planets, uint16_t* nb_planets)
     }
 
     // Extraction et conversion des données de la planète
-    uint16_t planet_id = (uint16_t)atoi(data[1]);
-    uint16_t pos_x = (uint16_t)atoi(data[2]);
-    uint16_t pos_y = (uint16_t)atoi(data[3]);
-    int8_t ship_id = (int8_t)atoi(data[4]);
-    uint8_t is_saved = (uint8_t)atoi(data[5]);
+    uint16_t planet_id = atoi(data[1]);
+    uint16_t pos_x = atoi(data[2]);
+    uint16_t pos_y = atoi(data[3]);
+    int8_t ship_id = atoi(data[4]);
+    uint8_t is_saved = atoi(data[5]);
 
     // Recherche de la planète
     Planet* planet = find_planet(planet_id, planets);
 
     if (planet == NULL) {
         // Si la planète n'existe pas, la créer et l'ajoute
-        create_planet(planet_id, pos_x, pos_y, ship_id, is_saved, planet, nb_planets);
+        create_planet(planet_id, pos_x, pos_y, ship_id, is_saved, planets, nb_planets);
         return;
     }
 

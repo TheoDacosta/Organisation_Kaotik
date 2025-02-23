@@ -8,7 +8,7 @@ uint16_t nb_planets = 0;
 
 void setUp(void)
 {
-    // Préparation des données de test : création de 5 planètes avec des valeurs spécifiques.
+    // Préparation des données de test : création de 5 planètes avec des valeurs differente.
     create_planet(1000, 15000, 20000, 5, 0, planets, &nb_planets);
     create_planet(1001, 12000, 14000, -1, 1, planets, &nb_planets);
     create_planet(1002, 8000, 9500, 10, 0, planets, &nb_planets);
@@ -20,6 +20,25 @@ void tearDown(void)
 {
     // Nettoyage des planètes
     delete_all_planets(planets, &nb_planets);
+}
+
+void test_parse_planet(void)
+{
+    // Exemple de donnee de test
+    char* data[] = { "", "1500", "1200", "3000", "2", "1" };
+
+    // Fonction pour parser et ajouter la planète
+    parse_planet(data, planets, &nb_planets);
+
+    // Vérification que la planète a été ajoutée
+    TEST_ASSERT_EQUAL(6, nb_planets);
+    TEST_ASSERT_EQUAL(1500, planets[5].planet_id);
+
+    TEST_ASSERT_EQUAL(1200, planets[5].x);
+    TEST_ASSERT_EQUAL(3000, planets[5].y);
+
+    TEST_ASSERT_EQUAL(2, planets[5].ship_id);
+    TEST_ASSERT_EQUAL(1, planets[5].saved);
 }
 
 void test_create_planet(void)
@@ -36,7 +55,7 @@ void test_create_planet(void)
 
     // Vérification des résultats attendus
     TEST_ASSERT_EQUAL(6, nb_planets);
-    TEST_ASSERT_LESS_THAN_UINT16(NB_MAX_PLANETS, nb_planets); // Vérifie qu'on ne dépasse pas la capacité max
+    TEST_ASSERT_LESS_THAN_UINT16(NB_MAX_PLANETS, nb_planets);
 
     // position de planète ajoutée est correcte
     TEST_ASSERT_EQUAL(planet_id, planets[nb_planets - 1].planet_id);
@@ -83,5 +102,6 @@ int main(void)
     RUN_TEST(test_create_planet);
     RUN_TEST(test_find_planet_null);
     RUN_TEST(test_find_planet);
+    RUN_TEST(test_parse_planet);
     return UNITY_END();
 }
