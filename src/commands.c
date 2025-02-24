@@ -46,3 +46,7 @@ void send_radar_command(int8_t ship_id) {
 uint8_t is_valid_angle(uint16_t angle) {
     return angle <= MAX_ANGLE;
 }
+
+uint8_t is_valid_id_spaceship(int8_t ship_id) {
+    return ship_id > 0 && ship_id <= MAX_SHIP_ID;
+}

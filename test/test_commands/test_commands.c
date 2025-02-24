@@ -41,6 +41,19 @@ void test_verif_angle(void)
     TEST_ASSERT_FALSE(is_valid_angle(1000));
 }
 
+void test_verif_id_spaceship(void)
+{
+    TEST_ASSERT_TRUE(is_valid_id_spaceship(1));
+    TEST_ASSERT_TRUE(is_valid_id_spaceship(2));
+    TEST_ASSERT_TRUE(is_valid_id_spaceship(3));
+    TEST_ASSERT_TRUE(is_valid_id_spaceship(4));
+    TEST_ASSERT_TRUE(is_valid_id_spaceship(9));
+    TEST_ASSERT_FALSE(is_valid_id_spaceship(0));
+    TEST_ASSERT_FALSE(is_valid_id_spaceship(10));
+    TEST_ASSERT_FALSE(is_valid_id_spaceship(20));
+   
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -48,5 +61,6 @@ int main(void)
     RUN_TEST(test_create_fire_command);
     RUN_TEST(test_create_radar_command);
     RUN_TEST(test_verif_angle);
+    RUN_TEST(test_verif_id_spaceship);
     return UNITY_END();
 }

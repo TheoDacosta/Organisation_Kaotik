@@ -26,6 +26,7 @@ void send_fire_command(int8_t ship_id, uint16_t angle);
 void send_radar_command(int8_t ship_id);
 
 uint8_t is_valid_angle(uint16_t angle);
+uint8_t is_valid_id_spaceship(int8_t ship_id);
 
 
 #endif // COMMANDS_H
