@@ -54,6 +54,15 @@ void test_verif_id_spaceship(void)
    
 }
 
+void test_verif_speed(void)
+{
+    TEST_ASSERT_TRUE(is_valid_speed(2500, 1));
+    TEST_ASSERT_FALSE(is_valid_speed(2500, 6));
+    TEST_ASSERT_FALSE(is_valid_speed(2000, 9));
+    TEST_ASSERT_TRUE(is_valid_speed(2000, 7));
+   
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -62,5 +71,6 @@ int main(void)
     RUN_TEST(test_create_radar_command);
     RUN_TEST(test_verif_angle);
     RUN_TEST(test_verif_id_spaceship);
+    RUN_TEST(test_verif_speed);
     return UNITY_END();
 }

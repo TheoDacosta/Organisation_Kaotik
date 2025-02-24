@@ -50,3 +50,13 @@ uint8_t is_valid_angle(uint16_t angle) {
 uint8_t is_valid_id_spaceship(int8_t ship_id) {
     return ship_id > 0 && ship_id <= MAX_SHIP_ID;
 }
+
+uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id) {
+    if (ship_id <=5) {
+        return speed <= MAX_ATTACKERS_SPEED;
+    } else if (ship_id <=7) {
+        return speed <= MAX_EXPLORERS_SPEED;
+    } else {
+        return speed <= MAX_COLLECTORS_SPEED;
+    }
+}

@@ -15,6 +15,9 @@
 #define MAX_EXPLORERS_SPEED 2000
 #define MAX_ATTACKERS_SPEED 3000
 #define GAME_MAP_SIZE 19 999
+#define ATTACKERS_SIZE 5
+#define EXPLORERS_SIZE 2
+#define COLLECTORS_SIZE 2
 
 
 void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed , char* buffer);
@@ -27,6 +30,7 @@ void send_radar_command(int8_t ship_id);
 
 uint8_t is_valid_angle(uint16_t angle);
 uint8_t is_valid_id_spaceship(int8_t ship_id);
+uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id);
 
 
 #endif // COMMANDS_H
