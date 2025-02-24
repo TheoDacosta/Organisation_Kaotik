@@ -2,12 +2,23 @@
 #define PARSING_H
 
 #include <stdint.h>
-#include <stdio.h>
+
+#include "planet.h"
+#include "spaceship.h"
 
 #define MAX_DATA_SIZE 100
 
-typedef void (*ParseFunc_t)(char* data, void* argument);
+enum DataType_t {
+    DATA_TYPE_PLANET = 'P',
+    DATA_TYPE_SPACESHIP = 'S',
+    DATA_TYPE_BASE = 'B'
+};
 
-void parse_response(const char* response, ParseFunc_t parse_data_func, void* parse_data_func_arg);
+typedef struct {
+    uint16_t x;
+    uint16_t y;
+} Base_t;
+
+void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);
 
 #endif // PARSING_H

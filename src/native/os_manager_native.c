@@ -1,5 +1,6 @@
 #include "os_manager.h"
 #include <pthread.h>
+#include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,6 +31,7 @@ void release_mutex(Mutex_t mutex)
     if (mutex == NULL)
         return;
     pthread_mutex_unlock((pthread_mutex_t*)mutex);
+    sched_yield();
 }
 
 Thread_t create_thread(ThreadFunc_t func)
