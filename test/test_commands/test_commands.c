@@ -30,15 +30,15 @@ void test_create_radar_command(void)
 
 void test_verif_angle(void)
 {
-    TEST_ASSERT_TRUE(angle_is_valid(0));
-    TEST_ASSERT_TRUE(angle_is_valid(90));
-    TEST_ASSERT_TRUE(angle_is_valid(180));
-    TEST_ASSERT_TRUE(angle_is_valid(270));
-    TEST_ASSERT_TRUE(angle_is_valid(359));
-    TEST_ASSERT_FALSE(angle_is_valid(360));
-    TEST_ASSERT_FALSE(angle_is_valid(361));
-    TEST_ASSERT_FALSE(angle_is_valid(400));
-    TEST_ASSERT_FALSE(angle_is_valid(1000));
+    TEST_ASSERT_TRUE(is_valid_angle(0));
+    TEST_ASSERT_TRUE(is_valid_angle(90));
+    TEST_ASSERT_TRUE(is_valid_angle(180));
+    TEST_ASSERT_TRUE(is_valid_angle(270));
+    TEST_ASSERT_TRUE(is_valid_angle(359));
+    TEST_ASSERT_FALSE(is_valid_angle(360));
+    TEST_ASSERT_FALSE(is_valid_angle(361));
+    TEST_ASSERT_FALSE(is_valid_angle(400));
+    TEST_ASSERT_FALSE(is_valid_angle(1000));
 }
 
 int main(void)

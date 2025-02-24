@@ -25,7 +25,7 @@ void send_move_command(int8_t ship_id, uint16_t angle, uint16_t speed);
 void send_fire_command(int8_t ship_id, uint16_t angle);
 void send_radar_command(int8_t ship_id);
 
-uint8_t angle_is_valid(uint16_t angle);
+uint8_t is_valid_angle(uint16_t angle);
 
 
 #endif // COMMANDS_H
