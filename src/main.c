@@ -5,6 +5,7 @@
 #endif
 #include "hardware.h"
 #include "os_manager.h"
+#include "parsing.h"
 #include "trajectory.h"
 
 void* vaisseau_1(void* argument);
@@ -21,6 +22,12 @@ Mutex_t mutex_task1;
 Mutex_t mutex_task2;
 Mutex_t mutex_vaisseau_radar;
 Mutex_t serial_mutex;
+
+Planet_t planets[NB_MAX_PLANETS];
+uint16_t nb_planets;
+Spaceship_t spaceships[NB_MAX_SPACESHIPS];
+uint16_t nb_spaceships;
+Base_t base;
 
 int main(void)
 {
@@ -46,9 +53,11 @@ int main(void)
 
 void* vaisseau_1(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 1\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -58,8 +67,10 @@ void* vaisseau_2(void* argument)
 {
 
     while (1) {
+        char buffer[256];
         get_mutex(serial_mutex);
         puts("vaisseau 2\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -67,9 +78,11 @@ void* vaisseau_2(void* argument)
 
 void* vaisseau_3(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 3\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -77,9 +90,11 @@ void* vaisseau_3(void* argument)
 
 void* vaisseau_4(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 4\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -87,9 +102,11 @@ void* vaisseau_4(void* argument)
 
 void* vaisseau_5(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 5\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -97,9 +114,11 @@ void* vaisseau_5(void* argument)
 
 void* vaisseau_6(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 6\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -107,9 +126,11 @@ void* vaisseau_6(void* argument)
 
 void* vaisseau_7(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 7\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -117,9 +138,11 @@ void* vaisseau_7(void* argument)
 
 void* vaisseau_8(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 8\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;
@@ -127,9 +150,11 @@ void* vaisseau_8(void* argument)
 
 void* vaisseau_9(void* argument)
 {
+    char buffer[256];
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 9\n");
+        gets(buffer);
         release_mutex(serial_mutex);
     }
     return NULL;

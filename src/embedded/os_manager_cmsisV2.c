@@ -1,6 +1,8 @@
 #include "cmsis_os2.h"
 #include "os_manager.h"
 
+typedef void (*OsThreadFunc_t)(void* argument);
+
 const osThreadAttr_t thread_attr = {
     .name = "Thread",
     .stack_size = 1024,
@@ -25,7 +27,7 @@ void os_start()
 
 Thread_t create_thread(ThreadFunc_t func)
 {
-    osThreadId_t new_thread_id = osThreadNew((osThreadFunc_t)func, NULL, &thread_attr);
+    osThreadId_t new_thread_id = osThreadNew((OsThreadFunc_t)func, NULL, &thread_attr);
     if (new_thread_id == NULL) {
         while (1)
             ;

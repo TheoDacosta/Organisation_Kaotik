@@ -1,11 +1,13 @@
+python -m space_collector.killall
+
 # Active l'environement virtuel
 
 # choix du port
-PORT=12349
+PORT=$(python -c "import random; print(random.randint(2000, 3000))")
 
 # Port du serial
 #SERIAL=COM8          # on Windows
-SERIAL=/dev/ttyUSB0  # on Linux
+SERIAL=/dev/cu.usbserial-AH063RBR # on Linux
 
 # start the server
 python -m space_collector.game.server -p $PORT --timeout 10 &
