@@ -13,11 +13,17 @@ void test_create_move_command(void)
 
 }
 
-
+void test_create_fire_command(void)
+{
+    char buffer[MAX_COMMAND_SIZE];
+    create_fire_command(1, 90, buffer);
+    TEST_ASSERT_EQUAL_STRING("FIRE 1 90\n", buffer);
+}
 
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_create_move_command);
+    RUN_TEST(test_create_fire_command);
     return UNITY_END();
 }
