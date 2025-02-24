@@ -3,7 +3,7 @@
 
 const osThreadAttr_t thread_attr = {
     .name = "Thread",
-    .stack_size = 2048,
+    .stack_size = 1024,
     .priority = (osPriority_t)osPriorityNormal,
 };
 
@@ -57,4 +57,5 @@ void release_mutex(Mutex_t mutex)
         while (1)
             ;
     }
+    osThreadYield(); //  Permet de bien repasser la main au thread de meme priorité
 }
