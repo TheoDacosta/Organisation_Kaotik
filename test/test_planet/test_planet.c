@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 // Définition d'un tableau statique de planètes pour les tests
-Planet planets[NB_MAX_PLANETS];
+Planet_t planets[NB_MAX_PLANETS];
 uint16_t nb_planets = 0;
 
 void setUp(void)
@@ -71,7 +71,7 @@ void test_find_planet_null(void)
 {
 
     // Recherche d'une planète qui n'existe pas dans la liste
-    Planet* planet = find_planet(490, planets);
+    Planet_t* planet = find_planet(490, planets);
 
     // Vérification que la fonction retourne NULL si la planète n'est pas trouvée
     TEST_ASSERT_NULL(planet);
@@ -80,7 +80,7 @@ void test_find_planet_null(void)
 void test_find_planet(void)
 {
     // Recherche d'une planète existante dans la liste avec un planet_id
-    Planet* planet = find_planet(1003, planets);
+    Planet_t* planet = find_planet(1003, planets);
 
     // Vérification du nombre de planètes dans la liste après la recherche
     TEST_ASSERT_EQUAL(5, nb_planets);

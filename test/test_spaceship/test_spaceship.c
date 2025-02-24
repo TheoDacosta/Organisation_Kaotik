@@ -2,7 +2,7 @@
 #include "unity.h"
 
 // Définition d'un tableau statique de vaiseau pour les tests
-Spaceship spaceships[NB_MAX_SPACESHIPS];
+Spaceship_t spaceships[NB_MAX_SPACESHIPS];
 uint16_t nb_spaceships = 0;
 
 void setUp(void)
@@ -31,7 +31,7 @@ void test_parse_spaceship(void)
 
     // Vérification que le vaisseau a été ajoutée
     TEST_ASSERT_EQUAL(6, nb_spaceships);
-    Spaceship* new_ship = &spaceships[nb_spaceships - 1];
+    Spaceship_t* new_ship = &spaceships[nb_spaceships - 1];
 
     TEST_ASSERT_EQUAL(12, new_ship->team_id);
 
@@ -58,7 +58,7 @@ void test_create_spaceship(void)
 
     // Vérifications
     TEST_ASSERT_EQUAL(6, nb_spaceships);
-    Spaceship* last_ship = &spaceships[nb_spaceships - 1];
+    Spaceship_t* last_ship = &spaceships[nb_spaceships - 1];
 
     TEST_ASSERT_EQUAL(team_id, last_ship->team_id);
     TEST_ASSERT_EQUAL(ship_id, last_ship->ship_id);
@@ -71,7 +71,7 @@ void test_create_spaceship(void)
 void test_find_spaceship_not_found(void)
 {
     // Cherche un vaisseau qui n'existe pas
-    Spaceship* found_spaceship = find_spaceship_by_id(5, 1, spaceships);
+    Spaceship_t* found_spaceship = find_spaceship_by_id(5, 1, spaceships);
 
     // Vérifie que le vaisseau n'a pas été trouvé (doit être NULL)
     TEST_ASSERT_NULL(found_spaceship);
@@ -80,7 +80,7 @@ void test_find_spaceship_not_found(void)
 void test_find_spaceship_found(void)
 {
     // Cherche un vaisseau existant avec team_id=4 et ship_id=5
-    Spaceship* found_spaceship = find_spaceship_by_id(4, 5, spaceships);
+    Spaceship_t* found_spaceship = find_spaceship_by_id(4, 5, spaceships);
 
     // Vérifie que le vaisseau est trouvé et les données sont correctes
     TEST_ASSERT_EQUAL(5, nb_spaceships);
@@ -100,7 +100,7 @@ void test_set_invalid_spaceship(void)
     set_spaceship(2, 5, 8000, 10000, 1, spaceships);
 
     // Vérifie que le vaisseau existant (team_id = 5, ship_id = 1)
-    Spaceship* spaceship = find_spaceship_by_id(2, 3, spaceships);
+    Spaceship_t* spaceship = find_spaceship_by_id(2, 3, spaceships);
     TEST_ASSERT_NOT_NULL(spaceship);
 
     TEST_ASSERT_EQUAL(10000, spaceship->x);
@@ -114,7 +114,7 @@ void test_update_spaceship(void)
     set_spaceship(2, 3, 8000, 10000, 1, spaceships);
 
     // Vérifier la mise à jour
-    Spaceship* updated_spaceship = find_spaceship_by_id(2, 3, spaceships);
+    Spaceship_t* updated_spaceship = find_spaceship_by_id(2, 3, spaceships);
     TEST_ASSERT_NOT_NULL(updated_spaceship);
 
     TEST_ASSERT_EQUAL(8000, updated_spaceship->x);
