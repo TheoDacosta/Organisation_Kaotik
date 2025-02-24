@@ -20,10 +20,18 @@ void test_create_fire_command(void)
     TEST_ASSERT_EQUAL_STRING("FIRE 1 90\n", buffer);
 }
 
+void test_create_radar_command(void)
+{
+    char buffer[MAX_COMMAND_SIZE];
+    create_radar_command(1, buffer);
+    TEST_ASSERT_EQUAL_STRING("RADAR 1\n", buffer);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_create_move_command);
     RUN_TEST(test_create_fire_command);
+    RUN_TEST(test_create_radar_command);
     return UNITY_END();
 }
