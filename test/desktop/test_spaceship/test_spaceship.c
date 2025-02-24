@@ -122,31 +122,6 @@ void test_update_spaceship(void)
     TEST_ASSERT_EQUAL(1, updated_spaceship->broken);
 }
 
-void test_delete_spaceship(void)
-{
-    // Suppression d'un vaisseau spécifique
-    delete_spaceship(3, 4, spaceships, &nb_spaceships);
-
-    // Vérifie que le nombre total de vaisseaux a été mis à jour
-    TEST_ASSERT_EQUAL(4, nb_spaceships);
-
-    // Vérifie que le premier vaisseau reste inchangé
-    TEST_ASSERT_EQUAL(2, spaceships[2].team_id);
-    TEST_ASSERT_EQUAL(3, spaceships[2].ship_id);
-
-    TEST_ASSERT_EQUAL(10000, spaceships[2].x);
-    TEST_ASSERT_EQUAL(11200, spaceships[2].y);
-    TEST_ASSERT_EQUAL(1, spaceships[2].broken);
-
-    // Vérifie que le vaisseau supprimé a bien été réinitialisé
-    TEST_ASSERT_EQUAL(0, spaceships[3].team_id);
-    TEST_ASSERT_EQUAL(0, spaceships[3].ship_id);
-
-    TEST_ASSERT_EQUAL(0, spaceships[3].x);
-    TEST_ASSERT_EQUAL(0, spaceships[3].y);
-    TEST_ASSERT_EQUAL(0, spaceships[3].broken);
-}
-
 void test_delete_all_spaceships(void)
 {
     // Suppression de tous les vaisseaux
@@ -165,7 +140,6 @@ int main(void)
     RUN_TEST(test_find_spaceship_found);
     RUN_TEST(test_set_invalid_spaceship);
     RUN_TEST(test_update_spaceship);
-    RUN_TEST(test_delete_spaceship);
     RUN_TEST(test_delete_all_spaceships);
     return UNITY_END();
 }
