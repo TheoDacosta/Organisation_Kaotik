@@ -87,3 +87,25 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
     results[0][1] = closest_planet1;
     results[1][1] = closest_planet2;
 }
+
+/**
+ * @brief Retourne l'angle vers le premier vaisseau ennemi à portée.
+ *
+ * Parcourt la liste des vaisseaux et retourne l'angle vers la première cible
+ * ennemie détectée dans la portée de tir.
+ *
+ * @param attacker Vaisseau attaquant.
+ * @param spaceships Liste des vaisseaux.
+ * @return Angle vers la cible si trouvée, sinon NOT_FOUND.
+ **/
+uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
+{
+    for (uint8_t i = 0; i < NB_MAX_SPACESHIPS; i++) {
+        uint16_t distance = calculate_distance(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
+
+        if (distance < FIRE_RANGE && spaceships[i].team_id != 0) {
+            return get_travel_angle(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
+        }
+    }
+    return NOT_FOUND;
+}

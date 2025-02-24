@@ -8,6 +8,8 @@
 #include <stdint.h>
 
 #define AREA_LENGTH 20000
+#define NOT_FOUND 404
+#define FIRE_RANGE 5000
 
 #ifndef M_PI
 
@@ -24,5 +26,8 @@ float calculate_distance(float x1, float y1, float x2, float y2);
 // Assigne aux collecteurs les planètes les plus proches non encore ciblées.
 void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
     Planet_t* planets, uint8_t nb_planets, uint16_t results[2][2]);
+
+// Récupère l'angle de tir du vaisseau attaquant vers la cible la plus proche
+uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
 
 #endif // FONCTION
