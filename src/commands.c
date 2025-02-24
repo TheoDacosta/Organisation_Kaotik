@@ -36,6 +36,13 @@ void create_radar_command(int8_t ship_id, char* buffer)
     sprintf(buffer, "RADAR %d\n", ship_id);
 }
 
+/**
+ * @brief Envoie une commande de déplacement.
+ *
+ * @param ship_id Identifiant du vaisseau.
+ * @param angle Angle de déplacement.
+ * @param speed Vitesse de déplacement.
+ */
 void send_move_command(int8_t ship_id, uint16_t angle, uint16_t speed)
 {
     char buffer[100];
@@ -45,6 +52,14 @@ void send_move_command(int8_t ship_id, uint16_t angle, uint16_t speed)
     }
 }
 
+
+/**
+ * @brief Envoie une commande de tir.
+ *
+ * @param ship_id Identifiant du vaisseau.
+ * @param angle Angle de tir.
+ * @param buffer Chaine de caractère representant la commande.
+ */
 void send_fire_command(int8_t ship_id, uint16_t angle)
 {
     char buffer[100];
@@ -54,6 +69,11 @@ void send_fire_command(int8_t ship_id, uint16_t angle)
     }
 }
 
+/**
+ * @brief Creer une commande de radar.
+ *
+ * @param ship_id Identifiant du vaisseau.
+ */
 void send_radar_command(int8_t ship_id)
 {
     char buffer[100];
@@ -63,16 +83,35 @@ void send_radar_command(int8_t ship_id)
     }
 }
 
+/**
+ * @brief Verifie si l'angle est valide.
+ *
+ * @param angle Angle à vérifier.
+ * @return 1 si l'angle est valide, 0 sinon.
+ */
 uint8_t is_valid_angle(uint16_t angle)
 {
     return angle <= MAX_ANGLE;
 }
 
+/**
+ * @brief Verifie si l'identifiant du vaisseau est valide.
+ *
+ * @param ship_id Identifiant du vaisseau à vérifier.
+ * @return 1 si l'identifiant est valide, 0 sinon.
+ */
 uint8_t is_valid_id_spaceship(int8_t ship_id)
 {
     return ship_id > 0 && ship_id <= MAX_SHIP_ID;
 }
 
+/**
+ * @brief Verifie si la vitesse est valide.
+ *
+ * @param speed Vitesse à vérifier.
+ * @param ship_id Identifiant du vaisseau.
+ * @return 1 si la vitesse est valide, 0 sinon.
+ */
 uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id) {
     if (ship_id <=5) {
         return speed <= MAX_ATTACKERS_SPEED;
