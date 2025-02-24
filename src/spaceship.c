@@ -5,6 +5,44 @@
 #include <string.h>
 
 /**
+ * @brief Ajoute ou met à jour un vaisseau à partir des données reçues.
+ *
+ * Extrait les informations d'un vaisseau à partir d'un tableau de chaînes de caractères.
+ * Si le vaisseau existe déjà, il est mis à jour. Sinon, il est créé et ajouté à la liste.
+ *
+ * @param params       Tableau contenant les informations du vaisseau sous forme de chaînes de caractères.
+ *                     Format attendu : ["", team_id, ship_id, x, y, broken]
+ * @param spaceships   Liste des vaisseaux existants.
+ * @param nb_spaceships Pointeur sur le nombre total de vaisseaux (mis à jour si un nouveau vaisseau est ajouté).
+ **/
+void parse_spaceship(char** params, Spaceship* spaceships, uint16_t* nb_spaceships)
+{
+    if (params == NULL || spaceships == NULL || nb_spaceships == NULL) {
+        return; // Vérification pour éviter les erreurs
+    }
+
+    // Extraction et conversion des données du vaisseau
+    uint8_t team_id = (uint8_t)atoi(params[1]);
+    int8_t ship_id = (int8_t)atoi(params[2]);
+    uint16_t pos_x = (uint16_t)atoi(params[3]);
+    uint16_t pos_y = (uint16_t)atoi(params[4]);
+    uint8_t broken = (uint8_t)atoi(params[5]);
+
+    // Recherche du vaisseau existant
+    Spaceship* spaceship = find_spaceship_by_id(team_id, ship_id, spaceships);
+
+    if (spaceship == NULL) {
+        // Création du vaisseau s'il n'existe pas
+        create_spaceship(team_id, ship_id, pos_x, pos_y, broken, spaceships, nb_spaceships);
+    } else {
+        // Mise à jour des attributs du vaisseau existant
+        spaceship->x = pos_x;
+        spaceship->y = pos_y;
+        spaceship->broken = broken;
+    }
+}
+
+/**
  * @brief Crée et ajoute un vaisseau spatial à la liste des vaisseaux existants.
  *
  * Cette fonction initialise un vaisseau spatial avec les paramètres fournis
@@ -94,37 +132,6 @@ void set_spaceship(uint8_t team_id, int8_t ship_id, uint16_t pos_x, uint16_t pos
     spaceship->x = pos_x;
     spaceship->y = pos_y;
     spaceship->broken = broken;
-}
-
-/**
- * @brief Supprime un vaisseau en réinitialisant ses attributs.
- *
- * Parcourt la liste des vaisseaux pour trouver celui correspondant à l'ID d'équipe
- * et à l'ID du vaisseau, puis remet ses valeurs à zéro et décrémente le compteur.
- *
- * @param team_id      ID de l'équipe du vaisseau à supprimer.
- * @param ship_id      ID du vaisseau à supprimer.
- * @param spaceships   Liste des vaisseaux.
- * @param nb_spaceships Pointeur sur le nombre total de vaisseaux.
- */
-void delete_spaceship(uint8_t team_id, int8_t ship_id, Spaceship* spaceships,
-    uint16_t* nb_spaceships)
-{
-    for (uint16_t i = 0; i < *nb_spaceships; i++) {
-        if (spaceships[i].team_id == team_id && spaceships[i].ship_id == ship_id) {
-            // Réinitialiser les valeurs du vaisseau supprimé
-            spaceships[i].team_id = 0;
-            spaceships[i].ship_id = 0;
-
-            spaceships[i].x = 0;
-            spaceships[i].y = 0;
-            spaceships[i].broken = 0;
-
-            // Réduire le nombre de vaisseaux
-            (*nb_spaceships)--;
-            return;
-        }
-    }
 }
 
 /**
