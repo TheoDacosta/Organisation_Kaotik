@@ -1,6 +1,5 @@
 #include "trajectory.h"
-#include "planet.h"
-#include "spaceship.h"
+#include <stdlib.h>
 
 /**
  * @brief Calcule l'angle de déplacement entre deux points.
@@ -59,13 +58,12 @@ float calculate_distance(float pos_x1, float pos_y1, float pos_x2, float pos_y2)
  * @param results        Tableau des résultats [vaisseau][planète assignée].
  */
 void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
-    Planet_t* planets, uint8_t nb_planets, uint16_t results[2][2])
+    Planet_t* planets, uint8_t nb_planets, Planet_t* target_planet1, Planet_t* target_planet2)
 {
-    results[0][0] = collector1.ship_id;
-    results[1][0] = collector2.ship_id;
 
     uint16_t min_dist1 = AREA_LENGTH, min_dist2 = AREA_LENGTH;
-    uint8_t closest_planet1 = 0, closest_planet2 = 0;
+    Planet_t* closest_planet1 = NULL;
+    Planet_t* closest_planet2 = NULL;
 
     for (uint8_t i = 0; i < nb_planets; i++) {
         if (!planets[i].saved) {
@@ -74,18 +72,18 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
 
             if (dist_to_col1 < min_dist1) {
                 min_dist1 = dist_to_col1;
-                closest_planet1 = i;
+                closest_planet1 = &planets[i];
             }
 
-            if (dist_to_col2 < min_dist2 && i != closest_planet1) {
+            if (dist_to_col2 < min_dist2 && (closest_planet1 != NULL && planets[i].ship_id != closest_planet1->ship_id)) {
                 min_dist2 = dist_to_col2;
-                closest_planet2 = i;
+                closest_planet2 = &planets[i];
             }
         }
     }
 
-    results[0][1] = closest_planet1;
-    results[1][1] = closest_planet2;
+    target_planet1 = closest_planet1;
+    target_planet2 = closest_planet2;
 }
 
 /**
