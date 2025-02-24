@@ -6,8 +6,10 @@ python -m space_collector.killall
 PORT=$(python -c "import random; print(random.randint(2000, 3000))")
 
 # Port du serial
-#SERIAL=COM8          # on Windows
-SERIAL=/dev/cu.usbserial-AH063RBR # on Linux
+# SERIAL=COM8          # on Windows
+# SERIAL=/dev/cu.usbserial-AH063RBR # on mac
+SERIAL=/dev/ttyUSB0 # on Linux
+
 
 # start the server
 python -m space_collector.game.server -p $PORT --timeout 10 &
