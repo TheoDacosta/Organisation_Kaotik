@@ -28,29 +28,6 @@ void test_calculate_distance(void)
     TEST_ASSERT_FLOAT_WITHIN(0.1, 0.0, result2);
 }
 
-void test_determine_target_planets(void)
-{
-    // Arrange
-    Spaceship_t collector1 = { .ship_id = 10, .x = 1000, .y = 2000 };
-    Spaceship_t collector2 = { .ship_id = 20, .x = 3000, .y = 4000 };
-
-    Planet_t planets[3] = {
-        { .planet_id = 0, .x = 800, .y = 1800, .saved = 0 }, // Planète 0 (proche de collector1)
-        { .planet_id = 1, .x = 3200, .y = 3900, .saved = 0 }, // Planète 1 (proche de collector2)
-        { .planet_id = 2, .x = 2500, .y = 2500, .saved = 0 } // Planète 2 (potentiellement assignée)
-    };
-
-    Planet_t target_planet1;
-    Planet_t target_planet2;
-
-    // Act
-    determine_target_planets(collector1, collector2, planets, 3, &target_planet1, &target_planet2);
-
-    // Assert
-    TEST_ASSERT_EQUAL(0, target_planet1.planet_id); // Collector 1 devrait cibler la planète 0
-    TEST_ASSERT_EQUAL(1, target_planet2.planet_id); // Collector 2 devrait cibler la planète 1
-}
-
 void test_get_target_angle(void)
 {
 
@@ -74,7 +51,6 @@ int main(void)
     UNITY_BEGIN();
     RUN_TEST(test_get_travel_angle);
     RUN_TEST(test_calculate_distance);
-    RUN_TEST(test_determine_target_planets);
     RUN_TEST(test_get_target_angle);
     return UNITY_END();
 }

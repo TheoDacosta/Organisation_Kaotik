@@ -47,45 +47,6 @@ float calculate_distance(float pos_x1, float pos_y1, float pos_x2, float pos_y2)
 
     return round(distance);
 }
-
-/**
- * @brief Assigne à chaque collecteur la planète la plus proche.
- *
- * @param collector1     Premier collecteur.
- * @param collector2     Deuxième collecteur.
- * @param planets        Liste des planètes.
- * @param nb_planets     Nombre total de planètes.
- * @param results        Tableau des résultats [vaisseau][planète assignée].
- */
-void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
-    Planet_t* planets, uint8_t nb_planets, Planet_t* target_planet1, Planet_t* target_planet2)
-{
-
-    uint16_t min_dist1 = AREA_LENGTH, min_dist2 = AREA_LENGTH;
-    Planet_t* closest_planet1 = NULL;
-    Planet_t* closest_planet2 = NULL;
-
-    for (uint8_t i = 0; i < nb_planets; i++) {
-        if (!planets[i].saved) {
-            uint16_t dist_to_col1 = calculate_distance(collector1.x, collector1.y, planets[i].x, planets[i].y);
-            uint16_t dist_to_col2 = calculate_distance(collector2.x, collector2.y, planets[i].x, planets[i].y);
-
-            if (dist_to_col1 < min_dist1) {
-                min_dist1 = dist_to_col1;
-                closest_planet1 = &planets[i];
-            }
-
-            if (dist_to_col2 < min_dist2 && (closest_planet1 != NULL && planets[i].ship_id != closest_planet1->ship_id)) {
-                min_dist2 = dist_to_col2;
-                closest_planet2 = &planets[i];
-            }
-        }
-    }
-
-    target_planet1 = closest_planet1;
-    target_planet2 = closest_planet2;
-}
-
 /**
  * @brief Retourne l'angle vers le premier vaisseau ennemi à portée.
  *
