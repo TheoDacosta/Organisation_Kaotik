@@ -1,9 +1,11 @@
+// #include <stdio.h>
 #include <math.h>
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
 #endif
 #include "hardware.h"
 #include "os_manager.h"
+#include "trajectory.h"
 
 void* vaisseau_1(void* argument);
 void* vaisseau_2(void* argument);
@@ -54,6 +56,7 @@ void* vaisseau_1(void* argument)
 
 void* vaisseau_2(void* argument)
 {
+
     while (1) {
         get_mutex(serial_mutex);
         puts("vaisseau 2\n");

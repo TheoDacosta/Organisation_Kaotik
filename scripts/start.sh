@@ -1,7 +1,7 @@
 # Active l'environement virtuel
 
 # choix du port
-PORT=12345
+PORT=12349
 
 # Port du serial
 #SERIAL=COM8          # on Windows
