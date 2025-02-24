@@ -5,6 +5,44 @@
 #include <string.h>
 
 /**
+ * @brief Ajoute ou met à jour un vaisseau à partir des données reçues.
+ *
+ * Extrait les informations d'un vaisseau à partir d'un tableau de chaînes de caractères.
+ * Si le vaisseau existe déjà, il est mis à jour. Sinon, il est créé et ajouté à la liste.
+ *
+ * @param params       Tableau contenant les informations du vaisseau sous forme de chaînes de caractères.
+ *                     Format attendu : ["", team_id, ship_id, x, y, broken]
+ * @param spaceships   Liste des vaisseaux existants.
+ * @param nb_spaceships Pointeur sur le nombre total de vaisseaux (mis à jour si un nouveau vaisseau est ajouté).
+ **/
+void parse_spaceship(char** params, Spaceship* spaceships, uint16_t* nb_spaceships)
+{
+    if (params == NULL || spaceships == NULL || nb_spaceships == NULL) {
+        return; // Vérification pour éviter les erreurs
+    }
+
+    // Extraction et conversion des données du vaisseau
+    uint8_t team_id = (uint8_t)atoi(params[1]);
+    int8_t ship_id = (int8_t)atoi(params[2]);
+    uint16_t pos_x = (uint16_t)atoi(params[3]);
+    uint16_t pos_y = (uint16_t)atoi(params[4]);
+    uint8_t broken = (uint8_t)atoi(params[5]);
+
+    // Recherche du vaisseau existant
+    Spaceship* spaceship = find_spaceship_by_id(team_id, ship_id, spaceships);
+
+    if (spaceship == NULL) {
+        // Création du vaisseau s'il n'existe pas
+        create_spaceship(team_id, ship_id, pos_x, pos_y, broken, spaceships, nb_spaceships);
+    } else {
+        // Mise à jour des attributs du vaisseau existant
+        spaceship->x = pos_x;
+        spaceship->y = pos_y;
+        spaceship->broken = broken;
+    }
+}
+
+/**
  * @brief Crée et ajoute un vaisseau spatial à la liste des vaisseaux existants.
  *
  * Cette fonction initialise un vaisseau spatial avec les paramètres fournis

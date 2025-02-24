@@ -22,6 +22,26 @@ void tearDown(void)
     delete_all_spaceships(spaceships, &nb_spaceships);
 }
 
+void test_parse_spaceship(void)
+{
+    // Exemple de donnee de test
+    char* data[] = { "", "12", "3", "30000", "22000", "1" };
+
+    parse_spaceship(data, spaceships, &nb_spaceships);
+
+    // Vérification que le vaisseau a été ajoutée
+    TEST_ASSERT_EQUAL(6, nb_spaceships);
+    Spaceship* new_ship = &spaceships[nb_spaceships - 1];
+
+    TEST_ASSERT_EQUAL(12, new_ship->team_id);
+
+    TEST_ASSERT_EQUAL(3, new_ship->ship_id);
+    TEST_ASSERT_EQUAL(30000, new_ship->x);
+
+    TEST_ASSERT_EQUAL(22000, new_ship->y);
+    TEST_ASSERT_EQUAL(1, new_ship->broken);
+}
+
 void test_create_spaceship(void)
 {
 
@@ -139,6 +159,7 @@ void test_delete_all_spaceships(void)
 int main(void)
 {
     UNITY_BEGIN();
+    RUN_TEST(test_parse_spaceship);
     RUN_TEST(test_create_spaceship);
     RUN_TEST(test_find_spaceship_not_found);
     RUN_TEST(test_find_spaceship_found);
