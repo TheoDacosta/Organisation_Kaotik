@@ -5,9 +5,6 @@
 /**
  * @brief Calcule l'angle de déplacement entre deux points.
  *
- * Utilise la fonction atan2 pour déterminer l'angle en radians,
- * puis le convertit en degrés et ajuste la valeur pour qu'elle soit comprise entre 0 et 359°.
- *
  * @param start_x  Coordonnée X de départ.
  * @param start_y  Coordonnée Y de départ.
  * @param end_x    Coordonnée X d'arrivée.
@@ -16,7 +13,6 @@
  **/
 uint16_t get_travel_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y)
 {
-    // Calcul des différences de coordonnées
     float dx = (float)(end_x - start_x);
     float dy = (float)(end_y - start_y);
 
@@ -31,41 +27,33 @@ uint16_t get_travel_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, ui
         angle_deg += 360.0f;
     }
 
-    // Conversion en uint16_t (valeur entière)
     return (uint16_t)angle_deg;
 }
 
 /**
  * @brief Calcule la distance euclidienne entre deux points dans un plan 2D.
  *
- * Cette fonction utilise le théorème de Pythagore pour calculer la distance
- * entre deux points (x1, y1) et (x2, y2) dans un espace à deux dimensions.
- * Elle renvoie le résultat arrondi à l'entier le plus proche.
- *
  * @param pos_x1  Coordonnée X du premier point.
  * @param pos_y1  Coordonnée Y du premier point.
  * @param pos_x2  Coordonnée X du deuxième point.
  * @param pos_y2  Coordonnée Y du deuxième point.
- * @return    La distance euclidienne entre les deux points, arrondie à l'entier le plus proche.
+ * @return    La distance entre les deux points.
  */
 float calculate_distance(float pos_x1, float pos_y1, float pos_x2, float pos_y2)
 {
-    // Calcul des différences de coordonnées
     float distance_x = pos_x2 - pos_x1;
     float distance_y = pos_y2 - pos_y1;
 
-    // Calcul de la distance euclidienne avec la formule de Pythagore
     float distance = sqrt(pow(distance_x, 2) + pow(distance_y, 2));
 
-    // Retourne la distance arrondie à l'entier le plus proche
     return round(distance);
 }
 
 /**
- * @brief Assigne à chaque vaisseau collecteur la planète la plus proche.
+ * @brief Assigne à chaque collecteur la planète la plus proche.
  *
- * @param collector1     Premier vaisseau collecteur.
- * @param collector2     Deuxième vaisseau collecteur.
+ * @param collector1     Premier collecteur.
+ * @param collector2     Deuxième collecteur.
  * @param planets        Liste des planètes.
  * @param nb_planets     Nombre total de planètes.
  * @param results        Tableau des résultats [vaisseau][planète assignée].

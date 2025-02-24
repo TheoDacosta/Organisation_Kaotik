@@ -1,6 +1,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/**
+ * @brief convert an integer to a string
+ *
+ * @param value integer to convert
+ * @param str result buffer
+ * @param base base of the integer
+ * @return char*  string representation of the integer
+ */
 char* itoa(int value, char* str, int base)
 {
     if (base != 10 || value < 0) {

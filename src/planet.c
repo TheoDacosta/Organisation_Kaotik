@@ -2,15 +2,9 @@
 #include <stdlib.h>
 
 /**
- * @brief Met à jour ou ajoute une planète à partir des données reçues.
+ * @brief Transforme les données reçues en informations sur une planète.
  *
- * Cette fonction extrait les informations d'une planète depuis un tableau de chaînes de caractères
- * et met à jour la structure correspondante dans la liste des planètes.
- * Si la planète existe déjà, ses informations sont mises à jour.
- * Sinon, elle est créée et ajoutée à la liste des planètes.
- *
- * @param data        Tableau contenant les informations de la planète sous forme de chaînes de caractères.
- *                    Format attendu : ["", ID, X, Y, ShipID, Saved]
+ * @param data    Chaine de caractère contenant les données de la planète.
  * @param planets Liste des planètes existantes.
  * @param nb_planets  Pointeur vers le nombre total de planètes (sera mis à jour si une nouvelle planète est ajoutée).
  **/
@@ -47,10 +41,6 @@ void parse_planet(char* data, Planet_t* planets, uint16_t* nb_planets)
 
 /**
  * @brief Recherche une planète dans la liste à partir de son identifiant unique.
- *
- * Cette fonction parcourt la liste des planètes et retourne un pointeur vers
- * la planète correspondant à l'identifiant fourni. Si aucune planète n'est trouvée,
- * la fonction retourne NULL.
  *
  * @param planet_id    Identifiant unique de la planète recherchée.
  * @param planet  Tableau contenant toutes les planètes existantes.
