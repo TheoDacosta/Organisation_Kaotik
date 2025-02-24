@@ -1,4 +1,6 @@
 #include "commands.h"
+#include <stdio.h>
+#include <string.h>
 
 /**
  * @brief Crée une commande de déplacement.
@@ -112,10 +114,11 @@ uint8_t is_valid_id_spaceship(int8_t ship_id)
  * @param ship_id Identifiant du vaisseau.
  * @return 1 si la vitesse est valide, 0 sinon.
  */
-uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id) {
-    if (ship_id <=5) {
+uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id)
+{
+    if (ship_id <= 5) {
         return speed <= MAX_ATTACKERS_SPEED;
-    } else if (ship_id <=7) {
+    } else if (ship_id <= 7) {
         return speed <= MAX_EXPLORERS_SPEED;
     } else {
         return speed <= MAX_COLLECTORS_SPEED;
