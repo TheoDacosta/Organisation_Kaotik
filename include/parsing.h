@@ -1,4 +1,5 @@
 #ifndef PARSING_H
+#define PARSING_H
 
 #include <stdint.h>
 #include <stdio.h>
