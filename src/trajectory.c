@@ -83,6 +83,13 @@ uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* space
     return get_angle(spaceships[id].x, spaceships[id].y, spaceships[id2].x, spaceships[id2].y);
 }
 
+/**
+ * @brief Trouve la planète la plus proche d'un vaisseau.
+ * 
+ * @param spaceship Vaisseau dont on cherche la planète la plus proche.
+ * @param planets Liste des planètes.  
+ * @param nearest_planet Pointeur vers la planète la plus proche. 
+ */
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet)
 {
     *nearest_planet = NULL;
