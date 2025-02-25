@@ -40,19 +40,17 @@ void test_calculate_distance_negative_substract_result(void)
 void test_get_target_angle(void)
 {
 
-    Spaceship_t Defender = { .team_id = 1, .ship_id = 9, .x = 11, .y = 12 };
+    Spaceship_t Defender = { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 };
 
-    Spaceship_t spaceship[NB_MAX_SPACESHIPS] = {
-        { .team_id = 0, .ship_id = 8, .x = 10, .y = 10 },
-        { .team_id = 1, .ship_id = 9, .x = 11, .y = 12 },
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
+        { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 },
         { .team_id = 4, .ship_id = 2, .x = 50, .y = 100 },
         { .team_id = 5, .ship_id = 1, .x = 70, .y = 150 }
     };
 
-    uint16_t angle = get_target_angle(Defender, spaceship);
-    uint16_t target_angle = get_angle(Defender.x, Defender.y, spaceship[1].x, spaceship[1].y);
+    uint16_t target_angle = get_target_angle(Defender, spaceships);
 
-    TEST_ASSERT_EQUAL(target_angle, angle);
+    TEST_ASSERT_EQUAL(66, target_angle);
 }
 
 int main(void)
