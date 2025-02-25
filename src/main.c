@@ -11,6 +11,7 @@
 
 void* vaisseau_1(void* argument);
 void* vaisseau_2(void* argument);
+void* vaisseau_3(void* argument);
 
 Mutex_t mutex_vaisseau_radar;
 Mutex_t serial_mutex;
