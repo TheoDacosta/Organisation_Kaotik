@@ -25,9 +25,9 @@ void os_start()
     osKernelStart();
 }
 
-Thread_t create_thread(ThreadFunc_t func)
+Thread_t create_thread(ThreadFunc_t func, void* argument)
 {
-    osThreadId_t new_thread_id = osThreadNew((OsThreadFunc_t)func, NULL, &thread_attr);
+    osThreadId_t new_thread_id = osThreadNew((OsThreadFunc_t)func, argument, &thread_attr);
     if (new_thread_id == NULL) {
         while (1)
             ;

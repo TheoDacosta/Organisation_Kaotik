@@ -34,7 +34,7 @@ void release_mutex(Mutex_t mutex)
     sched_yield();
 }
 
-Thread_t create_thread(ThreadFunc_t func)
+Thread_t create_thread(ThreadFunc_t func, void* argument)
 {
     pthread_t* new_thread = malloc(sizeof(pthread_t));
     if (new_thread == NULL) {
@@ -42,7 +42,7 @@ Thread_t create_thread(ThreadFunc_t func)
         while (1)
             ;
     }
-    if (pthread_create(new_thread, NULL, func, NULL) != 0) {
+    if (pthread_create(new_thread, NULL, func, argument) != 0) {
         perror("thread creation failed");
         free(new_thread);
         while (1)

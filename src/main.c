@@ -46,15 +46,15 @@ int main(void)
     parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
     release_mutex(mutex_vaisseau_radar);
 
-    create_thread(thread_attackers_1);
-    create_thread(thread_attackers_2);
-    create_thread(thread_attackers_3);
-    create_thread(thread_attackers_4);
-    create_thread(thread_attackers_5);
-    create_thread(thread_explorers_1);
-    create_thread(thread_explorers_2);
-    create_thread(thread_collectors_1);
-    create_thread(thread_collectors_2);
+    create_thread(thread_attackers_1, NULL);
+    create_thread(thread_attackers_2, NULL);
+    create_thread(thread_attackers_3, NULL);
+    create_thread(thread_attackers_4, NULL);
+    create_thread(thread_attackers_5, NULL);
+    create_thread(thread_explorers_1, NULL);
+    create_thread(thread_explorers_2, NULL);
+    create_thread(thread_collectors_1, NULL);
+    create_thread(thread_collectors_2, NULL);
     os_start();
     while (1) {
     }

@@ -14,6 +14,6 @@ Mutex_t create_mutex();
 void get_mutex(Mutex_t mutex);
 void release_mutex(Mutex_t mutex);
 
-Thread_t create_thread(ThreadFunc_t func);
+Thread_t create_thread(ThreadFunc_t func, void* argument);
 
 #endif // OS_MANAGER_H_
