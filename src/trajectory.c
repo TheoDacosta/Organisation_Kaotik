@@ -67,7 +67,8 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
     }
     return NOT_FOUND;
 }
-// TODO::  A supprimer dans le doute
+
+// TODO: A supprimer dans le doute
 uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base)
 {
     if (id >= NB_MAX_SPACESHIPS || id2 >= NB_MAX_SPACESHIPS || spaceships == NULL || base == NULL) {
@@ -79,4 +80,21 @@ uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* space
     }
 
     return get_angle(spaceships[id].x, spaceships[id].y, spaceships[id2].x, spaceships[id2].y);
+}
+
+
+void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet)
+{
+    *nearest_planet = NULL;
+    uint16_t nearest_distance = 200000;
+    uint16_t distance;
+    for(int i=0; i<sizeof(planets);i++)
+    {
+        distance = get_distance(spaceship->x,spaceship->y,planets[i].x,planets[i].y);
+        if(distance<nearest_distance)
+        {
+            nearest_distance=distance;
+            *nearest_planet = &planets[i];
+        }
+    }
 }
