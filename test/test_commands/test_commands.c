@@ -1,16 +1,22 @@
 #include "commands.h"
+#include "os_manager.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unity.h>
 
+Mutex_t serial_mutex;
+
+void setUp(void)
+{
+    serial_mutex = create_mutex();
+}
 
 void test_create_move_command(void)
 {
     char buffer[MAX_COMMAND_SIZE];
     create_move_command(1, 90, 1000, buffer);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", buffer);
-
 }
 
 void test_create_fire_command(void)
@@ -26,7 +32,6 @@ void test_create_radar_command(void)
     create_radar_command(1, buffer);
     TEST_ASSERT_EQUAL_STRING("RADAR 1\n", buffer);
 }
-
 
 void test_verif_angle(void)
 {
@@ -51,7 +56,6 @@ void test_verif_id_spaceship(void)
     TEST_ASSERT_FALSE(is_valid_id_spaceship(0));
     TEST_ASSERT_FALSE(is_valid_id_spaceship(10));
     TEST_ASSERT_FALSE(is_valid_id_spaceship(20));
-   
 }
 
 void test_verif_speed(void)
@@ -60,7 +64,6 @@ void test_verif_speed(void)
     TEST_ASSERT_FALSE(is_valid_speed(2500, 6));
     TEST_ASSERT_FALSE(is_valid_speed(2000, 9));
     TEST_ASSERT_TRUE(is_valid_speed(2000, 7));
-   
 }
 
 int main(void)
