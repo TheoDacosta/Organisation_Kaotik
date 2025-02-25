@@ -56,8 +56,8 @@ void* thread_attackers_1(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle(base.x, base.y, 10000, 10000);
-        send_move_command(1, angle, 1000);
+        angle = get_angle_to_follow(spaceships[0], spaceships[5], -100, 100);
+        send_move_command(1, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -67,8 +67,8 @@ void* thread_attackers_2(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[1], spaceships[3], 100, 100);
-        send_move_command(2, angle, 1000);
+        angle = get_angle_to_follow(spaceships[1], spaceships[5], 100, 100);
+        send_move_command(2, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -78,11 +78,11 @@ void* thread_attackers_3(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_target_angle(spaceships[2], spaceships);
+        angle = get_angle_to_follow(spaceships[2], spaceships[5], 0, 100);
         if (angle == NOT_FOUND) {
             angle = (angle + 180) % 360;
         }
-        send_fire_command(3, angle);
+        send_move_command(3, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -92,8 +92,8 @@ void* thread_attackers_4(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[4], spaceships[3], -100, 100);
-        send_move_command(4, angle, 1000);
+        angle = get_angle_to_follow(spaceships[3], spaceships[6], -100, 100);
+        send_move_command(4, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -103,7 +103,7 @@ void* thread_attackers_5(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[5], spaceships[3], 100, 100);
+        angle = get_angle_to_follow(spaceships[4], spaceships[6], 100, 100);
         send_move_command(5, angle, 1000);
         release_mutex(serial_mutex);
     }
@@ -120,7 +120,7 @@ void* thread_explorers_1(void* argument)
         parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
         release_mutex(mutex_vaisseau_radar);
         angle = get_angle(base.x, base.y, 10000, 10000);
-        send_move_command(6, angle, 1000);
+        send_move_command(6, angle, MAX_EXPLORERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -136,7 +136,7 @@ void* thread_explorers_2(void* argument)
         parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
         release_mutex(mutex_vaisseau_radar);
         angle = get_angle(base.x, base.y, 15000, 15000);
-        send_move_command(7, angle, 1000);
+        send_move_command(7, angle, MAX_EXPLORERS_SPEED);
         release_mutex(serial_mutex);
     }
 }
