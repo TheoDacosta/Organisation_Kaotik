@@ -2,9 +2,9 @@
 #define TRAJECTORY_H
 
 #include "base.h"
+#include "parsing.h"
 #include "planet.h"
 #include "spaceship.h"
-#include "parsing.h"
 
 #include <math.h>
 #include <stdint.h>
@@ -34,4 +34,6 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
 uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base);
 
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet);
+// Calcule la position du vaisseau suiveur avec un décalage par rapport au leader
+uint16_t get_follower_position(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y);
 #endif // TRAJECTORY_H

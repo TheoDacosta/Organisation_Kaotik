@@ -3,10 +3,13 @@
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
 #endif
+#include "base.h"
 #include "commands.h"
 #include "hardware.h"
 #include "os_manager.h"
 #include "parsing.h"
+#include "planet.h"
+#include "spaceship.h"
 #include "trajectory.h"
 
 void* thread_attackers_1(void* argument);
@@ -140,11 +143,22 @@ void* thread_explorers_2(void* argument)
 void* thread_collectors_1(void* argument)
 {
     char buffer[256];
-    uint16_t angle = 0;
+    uint16_t angle_follower = 0;
+
+    Spaceship_t spaceship[NB_MAX_SPACESHIPS];
+    Planet_t planets[NB_MAX_PLANETS];
+    Base_t* base;
+    uint16_t nb_planets = 0;
+    uint16_t nb_spaceships = 0;
+
     while (1) {
         get_mutex(serial_mutex);
-        angle = (angle + 180) % 360;
-        send_move_command(7, angle, 1000);
+
+        gets(buffer);
+        parse_response(buffer, planets, &nb_planets, spaceship, &nb_spaceships, base);
+        angle_follower = get_follower_position(spaceship[0], spaceship[1], 10, 5);
+
+        send_move_command(1, angle_follower, 1000);
         release_mutex(serial_mutex);
     }
 }
@@ -152,11 +166,22 @@ void* thread_collectors_1(void* argument)
 void* thread_collectors_2(void* argument)
 {
     char buffer[256];
-    uint16_t angle = 0;
+    uint16_t angle_learder = 0;
+
+    Spaceship_t spaceship[NB_MAX_SPACESHIPS];
+    Planet_t planets[NB_MAX_PLANETS];
+    Base_t* base;
+    uint16_t nb_planets = 0;
+    uint16_t nb_spaceships = 0;
+
     while (1) {
         get_mutex(serial_mutex);
-        angle = (angle + 180) % 370;
-        send_move_command(8, angle, 1000);
+
+        gets(buffer);
+        parse_response(buffer, planets, &nb_planets, spaceship, &nb_spaceships, base);
+        angle_learder = get_angle(spaceship[0].x, spaceship[0].y, 1500, 1300);
+
+        send_move_command(2, angle_learder, 1000);
         release_mutex(serial_mutex);
     }
 }
