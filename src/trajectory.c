@@ -86,7 +86,7 @@ uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* space
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet)
 {
     *nearest_planet = NULL;
-    uint16_t nearest_distance = 20000;
+    uint16_t nearest_distance = 200000;
     uint16_t distance;
     for(int i=0; i<sizeof(planets);i++)
     {
