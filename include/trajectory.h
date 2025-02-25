@@ -4,6 +4,7 @@
 #include "base.h"
 #include "planet.h"
 #include "spaceship.h"
+#include "parsing.h"
 
 #include <math.h>
 #include <stdint.h>
@@ -30,7 +31,7 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
 uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
 
 // Fonction qui permet de suivre un vaisseau allier
-
 uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base);
 
+void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet);
 #endif // TRAJECTORY_H

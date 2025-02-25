@@ -4,6 +4,11 @@
 #include "trajectory.h"
 #include <unity.h>
 
+Spaceship_t spaceships[NB_MAX_SPACESHIPS];
+uint16_t nb_spaceships = 0;
+Planet_t planets[NB_MAX_PLANETS];
+uint16_t nb_planets;
+
 void test_get_angle(void)
 {
 
@@ -79,6 +84,25 @@ void test_deplacement_vaisseau_suit_autre(void)
     TEST_ASSERT_EQUAL(get_angle(100, 100, 200, 200), angle);
 }
 
+void test_find_nearest_planet(void)
+{
+    // Création des données de test 
+    char* data = "P 12 30 400 0 0,P 13 0 0 0 0,P 14 400 400 0 0";
+    parse_planet(data, planets, &nb_planets);
+
+    data = "S 1 31 300 300 0";
+    parse_spaceship(data, spaceships, &nb_spaceships);
+
+    Planet_t* nearest_planet = NULL;
+
+    
+    find_nearest_planet(spaceships, planets, &nearest_planet);
+
+    
+    TEST_ASSERT_NOT_NULL(nearest_planet);
+    TEST_ASSERT_EQUAL(12, nearest_planet->planet_id); 
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -89,5 +113,6 @@ int main(void)
     RUN_TEST(test_get_target_angle);
     RUN_TEST(test_deplacement_vaisseau_broken);
     RUN_TEST(test_deplacement_vaisseau_suit_autre);
+    RUN_TEST(test_find_nearest_planet);
     return UNITY_END();
 }
