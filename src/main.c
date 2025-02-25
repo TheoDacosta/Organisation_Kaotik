@@ -57,3 +57,18 @@ void* vaisseau_2(void* argument)
         release_mutex(serial_mutex);
     }
 }
+
+void* vaisseau_3(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        angle = get_target_angle(spaceships[2], spaceships);
+        if (angle == NOT_FOUND) {
+            angle = (angle + 180) % 360;
+        }
+        send_fire_command(2, angle);
+        release_mutex(serial_mutex);
+    }
+}
