@@ -9,3 +9,6 @@ venv/
 
 # Ignore log files
 *.log
+
+# Ignore config file
+conf.properties
