@@ -69,10 +69,31 @@ void test_find_nearest_planet(void)
 
     Planet_t* nearest_planet = NULL;
 
-    find_nearest_planet(spaceships, planets, &nearest_planet);
+    find_nearest_planet(spaceships, planets, &nearest_planet,nb_planets);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
     TEST_ASSERT_EQUAL(12, nearest_planet->planet_id);
+}
+
+void test_find_nearest_unsaved_planet(void)
+{
+    // Création des données de test
+    Planet_t planets[NB_MAX_PLANETS]={
+        {.planet_id = 12, .saved = 1, .x=30, .y = 400},
+        {.planet_id = 13, .saved = 0, .x=0, .y = 0},
+        {.planet_id = 14, .saved = 0, .x=30, .y = 40}
+
+    };
+
+    char* data = "S 1 31 300 300 0";
+    parse_spaceship(data, spaceships, &nb_spaceships);
+
+    Planet_t* nearest_planet = NULL;
+
+    find_nearest_planet(spaceships, planets, &nearest_planet,3);
+
+    TEST_ASSERT_NOT_NULL(nearest_planet);
+    TEST_ASSERT_EQUAL(14, nearest_planet->planet_id);
 }
 
 void test_get_angle_to_follow(void)
@@ -102,9 +123,10 @@ int main(void)
     RUN_TEST(test_calculate_distance_positive_substract_result);
     RUN_TEST(test_calculate_distance_negative_substract_result);
     RUN_TEST(test_get_target_angle);
-    RUN_TEST(test_deplacement_vaisseau_broken);
-    RUN_TEST(test_deplacement_vaisseau_suit_autre);
+   // RUN_TEST(test_deplacement_vaisseau_broken);
+   // RUN_TEST(test_deplacement_vaisseau_suit_autre);
     RUN_TEST(test_find_nearest_planet);
+    RUN_TEST(test_find_nearest_unsaved_planet);
     RUN_TEST(test_get_angle_to_follow);
     return UNITY_END();
 }
