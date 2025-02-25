@@ -17,7 +17,7 @@
 #define M_PI (3.14159265358979323846)
 #endif
 
-/** Calcule l'angle de déplacement (0-359°) entre deux points. */
+// Calcule l'angle de déplacement (0-359°) entre deux points.
 uint16_t get_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
 
 // Calcule la distance entre deux points.
@@ -30,10 +30,7 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
 // Récupère l'angle de tir du vaisseau attaquant vers la cible la plus proche
 uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
 
-// Fonction qui permet de suivre un vaisseau allier
-uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base);
-
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet);
 // Calcule la position du vaisseau suiveur avec un décalage par rapport au leader
-uint16_t get_follower_position(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y);
+uint16_t get_angle_to_follow(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y);
 #endif // TRAJECTORY_H

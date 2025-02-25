@@ -58,31 +58,6 @@ void test_get_target_angle(void)
     TEST_ASSERT_EQUAL(66, target_angle);
 }
 
-void test_deplacement_vaisseau_broken(void)
-{
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { 0 };
-    Base_t base = { 50, 50 };
-    spaceships[2].x = 100;
-    spaceships[2].y = 100;
-    spaceships[2].broken = 1;
-    uint16_t angle = deplace_space_from_an_other(2, 0, spaceships, &base);
-    TEST_ASSERT_EQUAL(get_angle(100, 100, 50, 50), angle);
-}
-
-void test_deplacement_vaisseau_suit_autre(void)
-{
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { 0 };
-    Base_t base = { 50, 50 };
-    spaceships[1].x = 100;
-    spaceships[1].y = 100;
-    spaceships[1].broken = 0;
-    spaceships[3].x = 200;
-    spaceships[3].y = 200;
-    spaceships[3].broken = 0;
-    uint16_t angle = deplace_space_from_an_other(1, 3, spaceships, &base);
-    TEST_ASSERT_EQUAL(get_angle(100, 100, 200, 200), angle);
-}
-
 void test_find_nearest_planet(void)
 {
     // Création des données de test
@@ -100,7 +75,7 @@ void test_find_nearest_planet(void)
     TEST_ASSERT_EQUAL(12, nearest_planet->planet_id);
 }
 
-void test_get_follower_position(void)
+void test_get_angle_to_follow(void)
 {
     Planet_t point = { .x = 1500, .y = 1100 };
 
@@ -114,7 +89,7 @@ void test_get_follower_position(void)
     int16_t offset_y = 0;
 
     uint16_t angle_leader = get_angle(spaceship[0].x, spaceship[0].y, point.x, point.y);
-    uint16_t angle_follower = get_follower_position(spaceship[0], spaceship[1], offset_x, offset_y);
+    uint16_t angle_follower = get_angle_to_follow(spaceship[0], spaceship[1], offset_x, offset_y);
 
     // Vérifications
     TEST_ASSERT_EQUAL(36, angle_leader);
@@ -130,6 +105,6 @@ int main(void)
     RUN_TEST(test_deplacement_vaisseau_broken);
     RUN_TEST(test_deplacement_vaisseau_suit_autre);
     RUN_TEST(test_find_nearest_planet);
-    RUN_TEST(test_get_follower_position);
+    RUN_TEST(test_get_angle_to_follow);
     return UNITY_END();
 }

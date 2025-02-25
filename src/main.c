@@ -67,7 +67,7 @@ void* thread_attackers_2(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = deplace_space_from_an_other(1, 3, spaceships, &base);
+        angle = get_angle_to_follow(spaceships[1], spaceships[3], 100, 100);
         send_move_command(2, angle, 1000);
         release_mutex(serial_mutex);
     }
@@ -92,7 +92,7 @@ void* thread_attackers_4(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = deplace_space_from_an_other(4, 3, spaceships, &base);
+        angle = get_angle_to_follow(spaceships[4], spaceships[3], -100, 100);
         send_move_command(4, angle, 1000);
         release_mutex(serial_mutex);
     }
@@ -103,7 +103,7 @@ void* thread_attackers_5(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = deplace_space_from_an_other(5, 3, spaceships, &base);
+        angle = get_angle_to_follow(spaceships[5], spaceships[3], 100, 100);
         send_move_command(5, angle, 1000);
         release_mutex(serial_mutex);
     }
@@ -148,7 +148,8 @@ void* thread_collectors_1(void* argument)
     while (1) {
         get_mutex(serial_mutex);
         find_nearest_planet(&spaceships[7], planets, &target_planet1);
-        send_move_command(8, get_angle(spaceships[7].x, spaceships[7].y, target_planet1->x, target_planet1->y), MAX_COLLECTORS_SPEED);
+        angle = get_angle(spaceships[7].x, spaceships[7].y, target_planet1->x, target_planet1->y);
+        send_move_command(8, angle, MAX_COLLECTORS_SPEED);
         release_mutex(serial_mutex);
     }
 }
@@ -160,7 +161,8 @@ void* thread_collectors_2(void* argument)
     while (1) {
         get_mutex(serial_mutex);
         find_nearest_planet(&spaceships[8], planets, &target_planet2);
-        send_move_command(9, get_angle(spaceships[8].x, spaceships[8].y, target_planet2->x, target_planet2->y), MAX_COLLECTORS_SPEED);
+        angle = get_angle(spaceships[8].x, spaceships[8].y, target_planet2->x, target_planet2->y);
+        send_move_command(9, angle, MAX_COLLECTORS_SPEED);
         release_mutex(serial_mutex);
     }
 }

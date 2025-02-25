@@ -69,31 +69,17 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
     return NOT_FOUND;
 }
 
-// TODO: A supprimer dans le doute
-uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base)
-{
-    if (id >= NB_MAX_SPACESHIPS || id2 >= NB_MAX_SPACESHIPS || spaceships == NULL || base == NULL) {
-        return NOT_FOUND;
-    }
-
-    if (spaceships[id].broken == 1) {
-        return get_angle(spaceships[id].x, spaceships[id].y, base->x, base->y);
-    }
-
-    return get_angle(spaceships[id].x, spaceships[id].y, spaceships[id2].x, spaceships[id2].y);
-}
-
 /**
  * @brief Trouve la planète la plus proche d'un vaisseau.
- * 
+ *
  * @param spaceship Vaisseau dont on cherche la planète la plus proche.
- * @param planets Liste des planètes.  
- * @param nearest_planet Pointeur vers la planète la plus proche. 
+ * @param planets Liste des planètes.
+ * @param nearest_planet Pointeur vers la planète la plus proche.
  */
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet)
 {
     *nearest_planet = NULL;
-    uint16_t nearest_distance = 200000;
+    uint16_t nearest_distance = AREA_LENGTH;
     uint16_t distance;
     for (int i = 0; i < sizeof(planets); i++) {
         distance = get_distance(spaceship->x, spaceship->y, planets[i].x, planets[i].y);
@@ -115,8 +101,7 @@ void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** n
  * @param offset_x Décalage en X par rapport au leader.
  * @param offset_y Décalage en Y par rapport au leader.
  */
-uint16_t get_follower_position(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y)
+uint16_t get_angle_to_follow(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y)
 {
-
     return get_angle(follower.x, follower.y, leader.x - offset_x, leader.y - offset_y);
 }
