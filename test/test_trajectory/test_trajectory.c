@@ -18,21 +18,21 @@ void test_get_angle(void)
 
 void test_calculate_distance_0(void)
 {
-    u_int16_t result = get_distance(2, 3, 2, 3);
+    uint16_t result = get_distance(2, 3, 2, 3);
 
     TEST_ASSERT_EQUAL(0, result);
 }
 
 void test_calculate_distance_positive_substract_result(void)
 {
-    u_int16_t result = get_distance(10, 10, 20, 20);
+    uint16_t result = get_distance(10, 10, 20, 20);
 
     TEST_ASSERT_EQUAL(14, result);
 }
 
 void test_calculate_distance_negative_substract_result(void)
 {
-    u_int16_t result = get_distance(20, 20, 10, 10);
+    uint16_t result = get_distance(20, 20, 10, 10);
 
     TEST_ASSERT_EQUAL(14, result);
 }
@@ -59,6 +59,7 @@ int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_get_angle);
+    RUN_TEST(test_calculate_distance_0);
     RUN_TEST(test_calculate_distance_positive_substract_result);
     RUN_TEST(test_calculate_distance_negative_substract_result);
     RUN_TEST(test_get_target_angle);
