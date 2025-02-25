@@ -1,6 +1,5 @@
 #include "commands.h"
-#include <stdio.h>
-#include <string.h>
+#include "hardware.h"
 
 /**
  * @brief Crée une commande de déplacement.
@@ -49,11 +48,10 @@ void send_move_command(int8_t ship_id, uint16_t angle, uint16_t speed)
 {
     char buffer[100];
     create_move_command(ship_id, angle, speed, buffer);
-    if (strlen(buffer) != 0) {
+    if (buffer[0] != '\0') {
         puts(buffer);
     }
 }
-
 
 /**
  * @brief Envoie une commande de tir.
@@ -66,7 +64,7 @@ void send_fire_command(int8_t ship_id, uint16_t angle)
 {
     char buffer[100];
     create_fire_command(ship_id, angle, buffer);
-    if (strlen(buffer) != 0) {
+    if (buffer[0] != '\0') {
         puts(buffer);
     }
 }
@@ -80,7 +78,7 @@ void send_radar_command(int8_t ship_id)
 {
     char buffer[100];
     create_radar_command(ship_id, buffer);
-    if (strlen(buffer) != 0) {
+    if (buffer[0] != '\0') {
         puts(buffer);
     }
 }
