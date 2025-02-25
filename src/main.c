@@ -40,9 +40,9 @@ void* vaisseau_1(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        send_move_command(1, angle, 1000);
+        angle = get_angle(base.x, base.y, 10000, 10000);
+        send_move_command(3, angle, 1000);
         release_mutex(serial_mutex);
-        angle = (angle + 10) % 360;
     }
 }
 
@@ -52,8 +52,8 @@ void* vaisseau_2(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
+        angle = deplace_space_from_an_other(1, 3, spaceships, &base);
         send_move_command(1, angle, 1000);
         release_mutex(serial_mutex);
-        angle = (angle + 10) % 360;
     }
 }
