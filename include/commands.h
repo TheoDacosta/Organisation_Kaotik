@@ -2,7 +2,6 @@
 #define COMMANDS_H
 
 #include <stdint.h>
-#include <stdlib.h>
 
 #define MAX_COMMAND_SIZE 100
 #define MAX_PLANET_ID 65535
