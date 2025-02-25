@@ -9,9 +9,15 @@
 #include "parsing.h"
 #include "trajectory.h"
 
-void* vaisseau_1(void* argument);
-void* vaisseau_2(void* argument);
-void* vaisseau_3(void* argument);
+void* thread_attackers_1(void* argument);
+void* thread_attackers_2(void* argument);
+void* thread_attackers_3(void* argument);
+void* thread_attackers_4(void* argument);
+void* thread_attackers_5(void* argument);
+void* thread_explorers_1(void* argument);
+void* thread_explorers_2(void* argument);
+void* thread_collectors_1(void* argument);
+void* thread_collectors_2(void* argument);
 
 Mutex_t mutex_vaisseau_radar;
 Mutex_t serial_mutex;
@@ -28,26 +34,33 @@ int main(void)
     os_initialisation();
     serial_mutex = create_mutex();
     mutex_vaisseau_radar = create_mutex();
-    create_thread(vaisseau_1);
-    create_thread(vaisseau_2);
+    create_thread(thread_attackers_1);
+    create_thread(thread_attackers_2);
+    create_thread(thread_attackers_3);
+    create_thread(thread_attackers_4);
+    create_thread(thread_attackers_5);
+    create_thread(thread_explorers_1);
+    create_thread(thread_explorers_2);
+    create_thread(thread_collectors_1);
+    create_thread(thread_collectors_2);
     os_start();
     while (1) {
     }
 }
 
-void* vaisseau_1(void* argument)
+void* thread_attackers_1(void* argument)
 {
     char buffer[256];
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
         angle = get_angle(base.x, base.y, 10000, 10000);
-        send_move_command(3, angle, 1000);
+        send_move_command(0, angle, 1000);
         release_mutex(serial_mutex);
     }
 }
 
-void* vaisseau_2(void* argument)
+void* thread_attackers_2(void* argument)
 {
     char buffer[256];
     uint16_t angle = 0;
@@ -59,7 +72,7 @@ void* vaisseau_2(void* argument)
     }
 }
 
-void* vaisseau_3(void* argument)
+void* thread_attackers_3(void* argument)
 {
     char buffer[256];
     uint16_t angle = 0;
@@ -70,6 +83,80 @@ void* vaisseau_3(void* argument)
             angle = (angle + 180) % 360;
         }
         send_fire_command(2, angle);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_attackers_4(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        angle = deplace_space_from_an_other(4, 3, spaceships, &base);
+        send_move_command(3, angle, 1000);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_attackers_5(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        angle = deplace_space_from_an_other(5, 3, spaceships, &base);
+        send_move_command(4, angle, 1000);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_explorers_1(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        gets(buffer);
+        angle = get_angle(base.x, base.y, 10000, 10000);
+        send_move_command(5, angle, 1000);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_explorers_2(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        gets(buffer);
+        angle = get_angle(base.x, base.y, 15000, 15000);
+        send_move_command(6, angle, 1000);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_collectors_1(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        angle = (angle + 180) % 360;
+        send_move_command(7, angle, 1000);
+        release_mutex(serial_mutex);
+    }
+}
+
+void* thread_collectors_2(void* argument)
+{
+    char buffer[256];
+    uint16_t angle = 0;
+    while (1) {
+        get_mutex(serial_mutex);
+        angle = (angle + 180) % 360;
+        send_move_command(8, angle, 1000);
         release_mutex(serial_mutex);
     }
 }
