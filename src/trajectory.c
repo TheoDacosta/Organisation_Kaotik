@@ -118,5 +118,5 @@ void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** n
 uint16_t get_follower_position(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y)
 {
 
-    return get_angle(follower.x, follower.y, leader.x + offset_x, leader.y + offset_y);
+    return get_angle(follower.x, follower.y, leader.x - offset_x, leader.y - offset_y);
 }
