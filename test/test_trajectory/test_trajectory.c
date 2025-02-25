@@ -3,29 +3,38 @@
 #include "trajectory.h"
 #include <unity.h>
 
-void test_get_travel_angle(void)
+void test_get_angle(void)
 {
 
     // Test 1 : Déplacement vers la droite (0°)
-    TEST_ASSERT_EQUAL(0, get_travel_angle(100, 100, 200, 100));
+    TEST_ASSERT_EQUAL(0, get_angle(100, 100, 200, 100));
 
     // Test 2 : Déplacement vers le haut (90°)
-    TEST_ASSERT_EQUAL(90, get_travel_angle(100, 100, 100, 200));
+    TEST_ASSERT_EQUAL(90, get_angle(100, 100, 100, 200));
 
     // Test 3 : Déplacement en diagonale (315°)
-    TEST_ASSERT_EQUAL(315, get_travel_angle(100, 200, 200, 100));
+    TEST_ASSERT_EQUAL(315, get_angle(100, 200, 200, 100));
 }
 
-void test_calculate_distance(void)
+void test_calculate_distance_0(void)
 {
-    // Test 1: Cas simple, distance entre (0, 0) et (3, 4)
-    float result1 = calculate_distance(0, 0, 3, 4);
+    u_int16_t result = get_distance(2, 3, 2, 3);
 
-    // Test 2: Cas où les deux points sont identiques (distance = 0)
-    float result2 = calculate_distance(2, 3, 2, 3);
+    TEST_ASSERT_EQUAL(0, result);
+}
 
-    TEST_ASSERT_FLOAT_WITHIN(0.1, 5.0, result1);
-    TEST_ASSERT_FLOAT_WITHIN(0.1, 0.0, result2);
+void test_calculate_distance_positive_substract_result(void)
+{
+    u_int16_t result = get_distance(10, 10, 20, 20);
+
+    TEST_ASSERT_EQUAL(14, result);
+}
+
+void test_calculate_distance_negative_substract_result(void)
+{
+    u_int16_t result = get_distance(20, 20, 10, 10);
+
+    TEST_ASSERT_EQUAL(14, result);
 }
 
 void test_get_target_angle(void)
@@ -41,7 +50,7 @@ void test_get_target_angle(void)
     };
 
     uint16_t angle = get_target_angle(Defender, spaceship);
-    uint16_t target_angle = get_travel_angle(Defender.x, Defender.y, spaceship[1].x, spaceship[1].y);
+    uint16_t target_angle = get_angle(Defender.x, Defender.y, spaceship[1].x, spaceship[1].y);
 
     TEST_ASSERT_EQUAL(target_angle, angle);
 }
@@ -49,8 +58,9 @@ void test_get_target_angle(void)
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_get_travel_angle);
-    RUN_TEST(test_calculate_distance);
+    RUN_TEST(test_get_angle);
+    RUN_TEST(test_calculate_distance_positive_substract_result);
+    RUN_TEST(test_calculate_distance_negative_substract_result);
     RUN_TEST(test_get_target_angle);
     return UNITY_END();
 }
