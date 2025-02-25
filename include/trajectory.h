@@ -32,5 +32,5 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
 
 void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet);
 // Calcule la position du vaisseau suiveur avec un décalage par rapport au leader
-uint16_t get_angle_to_follow(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y);
+uint16_t get_angle_to_follow(Spaceship_t follower, Spaceship_t target, int16_t offset_x, int16_t offset_y);
 #endif // TRAJECTORY_H

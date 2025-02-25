@@ -96,12 +96,12 @@ void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** n
  * Cette fonction ajuste la position du vaisseau suiveur pour qu'il suive
  * un vaisseau leader avec un décalage défini en X et Y.
  *
- * @param leader   Vaisseau à suivre.
- * @param follower Pointeur vers le vaisseau suiveur dont la position sera mise à jour.
+ * @param follower Vaisseau suiveur.
+ * @param target   Vaisseau à suivre.
  * @param offset_x Décalage en X par rapport au leader.
  * @param offset_y Décalage en Y par rapport au leader.
  */
-uint16_t get_angle_to_follow(Spaceship_t leader, Spaceship_t follower, int16_t offset_x, int16_t offset_y)
+uint16_t get_angle_to_follow(Spaceship_t follower, Spaceship_t target, int16_t offset_x, int16_t offset_y)
 {
-    return get_angle(follower.x, follower.y, leader.x - offset_x, leader.y - offset_y);
+    return get_angle(follower.x, follower.y, target.x - offset_x, target.y - offset_y);
 }

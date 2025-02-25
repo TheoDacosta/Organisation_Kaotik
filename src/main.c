@@ -33,10 +33,20 @@ Base_t base;
 
 int main(void)
 {
+    char buffer[256];
     hardware_init();
     os_initialisation();
     serial_mutex = create_mutex();
     mutex_vaisseau_radar = create_mutex();
+    // Premier scan radar
+    get_mutex(serial_mutex);
+    send_radar_command(6);
+    gets(buffer);
+    release_mutex(serial_mutex);
+    get_mutex(mutex_vaisseau_radar);
+    parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
+    release_mutex(mutex_vaisseau_radar);
+
     create_thread(thread_attackers_1);
     create_thread(thread_attackers_2);
     create_thread(thread_attackers_3);
@@ -54,9 +64,10 @@ int main(void)
 void* thread_attackers_1(void* argument)
 {
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 1, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[0], spaceships[5], -100, 100);
+        angle = get_angle_to_follow(*my_spaceship, spaceships[5], -100, 100);
         send_move_command(1, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
@@ -65,9 +76,10 @@ void* thread_attackers_1(void* argument)
 void* thread_attackers_2(void* argument)
 {
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 2, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[1], spaceships[5], 100, 100);
+        angle = get_angle_to_follow(*my_spaceship, spaceships[5], 100, 100);
         send_move_command(2, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
@@ -76,9 +88,10 @@ void* thread_attackers_2(void* argument)
 void* thread_attackers_3(void* argument)
 {
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 3, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[2], spaceships[5], 0, 100);
+        angle = get_angle_to_follow(*my_spaceship, spaceships[5], 0, 100);
         if (angle == NOT_FOUND) {
             angle = (angle + 180) % 360;
         }
@@ -90,9 +103,10 @@ void* thread_attackers_3(void* argument)
 void* thread_attackers_4(void* argument)
 {
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 4, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[3], spaceships[6], -100, 100);
+        angle = get_angle_to_follow(*my_spaceship, spaceships[6], -100, 100);
         send_move_command(4, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
@@ -101,9 +115,10 @@ void* thread_attackers_4(void* argument)
 void* thread_attackers_5(void* argument)
 {
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 5, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        angle = get_angle_to_follow(spaceships[4], spaceships[6], 100, 100);
+        angle = get_angle_to_follow(*my_spaceship, spaceships[6], 100, 100);
         send_move_command(5, angle, MAX_ATTACKERS_SPEED);
         release_mutex(serial_mutex);
     }
@@ -113,6 +128,7 @@ void* thread_explorers_1(void* argument)
 {
     char buffer[256];
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 6, spaceships);
     while (1) {
         get_mutex(serial_mutex);
         send_radar_command(6);
@@ -130,6 +146,7 @@ void* thread_explorers_2(void* argument)
 {
     char buffer[256];
     uint16_t angle = 0;
+    Spaceship_t* my_spaceship = find_spaceship(0, 7, spaceships);
     while (1) {
         get_mutex(serial_mutex);
         send_radar_command(7);
@@ -147,10 +164,11 @@ void* thread_collectors_1(void* argument)
 {
     uint16_t angle = 0;
     Planet_t* target_planet1 = NULL;
+    Spaceship_t* my_spaceship = find_spaceship(0, 8, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        find_nearest_planet(&spaceships[7], planets, &target_planet1);
-        angle = get_angle(spaceships[7].x, spaceships[7].y, target_planet1->x, target_planet1->y);
+        find_nearest_planet(my_spaceship, planets, &target_planet1);
+        angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet1->x, target_planet1->y);
         send_move_command(8, angle, MAX_COLLECTORS_SPEED);
         release_mutex(serial_mutex);
     }
@@ -160,10 +178,11 @@ void* thread_collectors_2(void* argument)
 {
     uint16_t angle = 0;
     Planet_t* target_planet2 = NULL;
+    Spaceship_t* my_spaceship = find_spaceship(0, 9, spaceships);
     while (1) {
         get_mutex(serial_mutex);
-        find_nearest_planet(&spaceships[8], planets, &target_planet2);
-        angle = get_angle(spaceships[8].x, spaceships[8].y, target_planet2->x, target_planet2->y);
+        find_nearest_planet(my_spaceship, planets, &target_planet2);
+        angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet2->x, target_planet2->y);
         send_move_command(9, angle, MAX_COLLECTORS_SPEED);
         release_mutex(serial_mutex);
     }
