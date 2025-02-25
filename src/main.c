@@ -155,7 +155,7 @@ void* thread_collectors_2(void* argument)
     uint16_t angle = 0;
     while (1) {
         get_mutex(serial_mutex);
-        angle = (angle + 180) % 360;
+        angle = (angle + 180) % 370;
         send_move_command(8, angle, 1000);
         release_mutex(serial_mutex);
     }
