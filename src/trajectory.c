@@ -1,4 +1,6 @@
 #include "trajectory.h"
+#include "base.h"
+#include "spaceship.h"
 #include <stdlib.h>
 
 /**
@@ -64,4 +66,17 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
         }
     }
     return NOT_FOUND;
+}
+// TODO::  A supprimer dans le doute
+uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base)
+{
+    if (id >= NB_MAX_SPACESHIPS || id2 >= NB_MAX_SPACESHIPS || spaceships == NULL || base == NULL) {
+        return NOT_FOUND;
+    }
+
+    if (spaceships[id].broken == 1) {
+        return get_angle(spaceships[id].x, spaceships[id].y, base->x, base->y);
+    }
+
+    return get_angle(spaceships[id].x, spaceships[id].y, spaceships[id2].x, spaceships[id2].y);
 }

@@ -1,6 +1,7 @@
 #ifndef TRAJECTORY_H
 #define TRAJECTORY_H
 
+#include "base.h"
 #include "planet.h"
 #include "spaceship.h"
 
@@ -27,5 +28,9 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
 
 // Récupère l'angle de tir du vaisseau attaquant vers la cible la plus proche
 uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships);
+
+// Fonction qui permet de suivre un vaisseau allier
+
+uint16_t deplace_space_from_an_other(uint8_t id, uint8_t id2, Spaceship_t* spaceships, Base_t* base);
 
 #endif // TRAJECTORY_H

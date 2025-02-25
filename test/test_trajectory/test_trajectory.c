@@ -1,3 +1,4 @@
+#include "base.h"
 #include "planet.h"
 #include "spaceship.h"
 #include "trajectory.h"
@@ -53,6 +54,31 @@ void test_get_target_angle(void)
     TEST_ASSERT_EQUAL(66, target_angle);
 }
 
+void test_deplacement_vaisseau_broken(void)
+{
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { 0 };
+    Base_t base = { 50, 50 };
+    spaceships[2].x = 100;
+    spaceships[2].y = 100;
+    spaceships[2].broken = 1;
+    uint16_t angle = deplace_space_from_an_other(2, 0, spaceships, &base);
+    TEST_ASSERT_EQUAL(get_angle(100, 100, 50, 50), angle);
+}
+
+void test_deplacement_vaisseau_suit_autre(void)
+{
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { 0 };
+    Base_t base = { 50, 50 };
+    spaceships[1].x = 100;
+    spaceships[1].y = 100;
+    spaceships[1].broken = 0;
+    spaceships[3].x = 200;
+    spaceships[3].y = 200;
+    spaceships[3].broken = 0;
+    uint16_t angle = deplace_space_from_an_other(1, 3, spaceships, &base);
+    TEST_ASSERT_EQUAL(get_angle(100, 100, 200, 200), angle);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -61,5 +87,7 @@ int main(void)
     RUN_TEST(test_calculate_distance_positive_substract_result);
     RUN_TEST(test_calculate_distance_negative_substract_result);
     RUN_TEST(test_get_target_angle);
+    RUN_TEST(test_deplacement_vaisseau_broken);
+    RUN_TEST(test_deplacement_vaisseau_suit_autre);
     return UNITY_END();
 }
