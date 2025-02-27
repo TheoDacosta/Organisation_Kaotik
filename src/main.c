@@ -24,9 +24,9 @@ void* thread_collectors_2(void* argument);
 Mutex_t mutex_vaisseau_radar;
 
 Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets;
+uint16_t nb_planets = 0;
 Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships;
+uint16_t nb_spaceships = 0;
 Base_t base;
 
 int main(void)
@@ -143,11 +143,9 @@ void* thread_explorers_2(void* argument)
 void* thread_collectors_1(void* argument)
 {
     uint16_t angle = 0;
-    Planet_t* target_planet1 = NULL;
     Spaceship_t* my_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
     while (1) {
-        find_nearest_planet(my_spaceship, planets, nb_planets, target_planet1);
-        angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet1->x, target_planet1->y);
+        angle = get_angle(my_spaceship->x, my_spaceship->y, 10000, 10000);
         send_move_command(8, angle, MAX_COLLECTORS_SPEED);
     }
 }
@@ -155,11 +153,9 @@ void* thread_collectors_1(void* argument)
 void* thread_collectors_2(void* argument)
 {
     uint16_t angle = 0;
-    Planet_t* target_planet2 = NULL;
     Spaceship_t* my_spaceship = find_spaceship(0, 9, spaceships, nb_spaceships);
     while (1) {
-        find_nearest_planet(my_spaceship, planets, nb_planets, target_planet2);
-        angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet2->x, target_planet2->y);
+        angle = get_angle(my_spaceship->x, my_spaceship->y, 10000, 10000);
         send_move_command(9, angle, MAX_COLLECTORS_SPEED);
     }
 }
