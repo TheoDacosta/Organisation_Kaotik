@@ -24,9 +24,11 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, Planet_t* planets, ui
     if (return_to_base(my_spaceship, base, MAX_COLLECTORS_SPEED, command))
         return;
     uint16_t angle;
-    Planet_t* nearest_planet = NULL; // TODO: Appeler find_nearest_planet
+    Planet_t* nearest_planet = find_nearest_planet(my_spaceship, planets, nb_planets);
     if (nearest_planet == NULL)
         angle = 0;
+    else
+        angle = get_angle(my_spaceship->x, my_spaceship->y, nearest_planet->x, nearest_planet->y);
     create_move_command(my_spaceship->ship_id, angle, MAX_COLLECTORS_SPEED, command);
 }
 void manage_spaceship_attacker(Spaceship_t* my_spaceship, Spaceship_t* target_spaceship, uint16_t offset_x, uint16_t offset_y, Spaceship_t* spaceships, uint16_t nb_spaceships, Base_t* base, char* command)

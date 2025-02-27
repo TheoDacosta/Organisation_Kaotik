@@ -29,14 +29,26 @@ typedef struct {
     uint16_t offset_y;
 } ThreadArgs_t;
 
+uint8_t is_start(char* response)
+{
+    if (*response == 'S' && *(response + 1) == 'T' && *(response + 2) == 'A' && *(response + 3) == 'R' && *(response + 4) == 'T') {
+        return 1;
+    }
+    return 0;
+}
+
 int main(void)
 {
     char command[MAX_COMMAND_SIZE];
     char response[MAX_RESPONSE_SIZE];
+
     hardware_init();
     os_initialisation();
     serial_mutex = create_mutex();
     parsing_mutex = create_mutex();
+    // Attendre start avant de commencer
+    while (gets(response) == NULL || !is_start(response))
+        ;
 
     // Premier scan radar pour initialiser les données
     create_radar_command(6, command);
@@ -72,23 +84,32 @@ int main(void)
 void* attacker_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE];
+    char response[MAX_RESPONSE_SIZE];
     while (1) {
-        // Appeler la fonction manage_spaceship_attacker
+        create_move_command(1, 0, MAX_ATTACKERS_SPEED, command);
+        send_command(command, response);
     }
 }
 
 void* explorer_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE];
+    char response[MAX_RESPONSE_SIZE];
     while (1) {
-        // Appeler la fonction manage_spaceship_radar
+        manage_spaceship_radar(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, &base, command);
+        send_command(command, response);
     }
 }
 
 void* collector_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE];
+    char response[MAX_RESPONSE_SIZE];
     while (1) {
-        // Appeler la fonction manage_spaceship_collector
+        manage_spaceship_collector(args->my_spaceship, planets, nb_planets, &base, command);
+        send_command(command, response);
     }
 }
