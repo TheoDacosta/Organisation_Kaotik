@@ -1,6 +1,7 @@
 #include "strategie.h"
 #include "commands.h"
 #include "trajectory.h"
+
 void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base)
 {
     Spaceship_t* space = find_spaceship(0, ship_id, spaceships, NB_MAX_SPACESHIPS);
