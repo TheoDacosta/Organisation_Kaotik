@@ -3,6 +3,8 @@
 
 Mutex_t parsing_mutex;
 
+void save_planets_data(Planet_t* planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
+void restore_planets_datas(Planet_t* planets, uint16_t nb_planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
 void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);
 
 /**
@@ -18,13 +20,9 @@ void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t
 void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base)
 {
     get_mutex(parsing_mutex);
-    // Save focus of planets
     uint16_t nb_planets_saved = *nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
-    for (uint16_t i = 0; i < nb_planets_saved; i++) {
-        Planet_t planet_saved_data = { .planet_id = planets[i].planet_id, .focus = planets[i].focus };
-        planets_saved_datas[i] = planet_saved_data;
-    }
+    save_planets_data(planets, planets_saved_datas, nb_planets_saved);
 
     *nb_planets = 0;
     *nb_spaceships = 0;
@@ -44,12 +42,7 @@ void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planet
     token[pos] = '\0';
     parse_data(token, planets, nb_planets, spaceships, nb_spaceships, base);
 
-    // Restore focus of planets
-    for (uint16_t i = 0; i < *nb_planets; i++) {
-        Planet_t* planet_saved = find_planet(planets[i].planet_id, planets_saved_datas, nb_planets_saved);
-        if (planet_saved != NULL)
-            planets[i].focus = planet_saved->focus;
-    }
+    restore_planets_datas(planets, *nb_planets, planets_saved_datas, nb_planets_saved);
     release_mutex(parsing_mutex);
 }
 
@@ -86,5 +79,22 @@ void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t
         break;
     default:
         break;
+    }
+}
+
+void save_planets_data(Planet_t* planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved)
+{
+    for (uint16_t i = 0; i < nb_planets_saved; i++) {
+        Planet_t planet_saved_data = { .planet_id = planets[i].planet_id, .focus = planets[i].focus };
+        planets_saved_datas[i] = planet_saved_data;
+    }
+}
+
+void restore_planets_datas(Planet_t* planets, uint16_t nb_planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved)
+{
+    for (uint16_t i = 0; i < nb_planets; i++) {
+        Planet_t* planet_saved = find_planet(planets[i].planet_id, planets_saved_datas, nb_planets_saved);
+        if (planet_saved != NULL)
+            planets[i].focus = planet_saved->focus;
     }
 }
