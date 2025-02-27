@@ -61,9 +61,17 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
     return NULL;
 }
 
+/**
+ * @brief Calcule le temps écoulé si 1 seconde s'est passée.
+ *
+ * @param time_ecoule Pointeur vers la variable qui recevra le temps écoulé en ms.
+ * @param time_start Temps de départ en ms.
+ * @param time_actuel Temps actuel en ms.
+ *
+ * @return Rien.
+ **/
 void shoot_current_timeMs(uint32_t* time_ecoule, uint32_t time_start, uint32_t time_actuel)
 {
-
     if ((time_actuel - time_start) >= 1000) {
         *time_ecoule = time_actuel - time_start;
     }
