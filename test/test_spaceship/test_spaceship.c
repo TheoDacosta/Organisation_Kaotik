@@ -1,3 +1,5 @@
+#include "base.h"
+#include "commands.h"
 #include "spaceship.h"
 #include "unity.h"
 

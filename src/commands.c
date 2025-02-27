@@ -1,6 +1,7 @@
 #include "commands.h"
 #include "hardware.h"
 #include "os_manager.h"
+#include "trajectory.h"
 
 Mutex_t serial_mutex;
 
@@ -118,5 +119,45 @@ void send_radar_command(int8_t ship_id, char* response)
         puts(buffer);
         gets(response);
         release_mutex(serial_mutex);
+    }
+}
+
+/**
+ * @brief Verifie si l'angle est valide.
+ *
+ * @param angle Angle à vérifier.
+ * @return 1 si l'angle est valide, 0 sinon.
+ */
+uint8_t is_valid_angle(uint16_t angle)
+{
+    return angle <= MAX_ANGLE;
+}
+
+/**
+ * @brief Verifie si l'identifiant du vaisseau est valide.
+ *
+ * @param ship_id Identifiant du vaisseau à vérifier.
+ * @return 1 si l'identifiant est valide, 0 sinon.
+ */
+uint8_t is_valid_id_spaceship(int8_t ship_id)
+{
+    return ship_id > 0 && ship_id <= MAX_SHIP_ID;
+}
+
+/**
+ * @brief Verifie si la vitesse est valide.
+ *
+ * @param speed Vitesse à vérifier.
+ * @param ship_id Identifiant du vaisseau.
+ * @return 1 si la vitesse est valide, 0 sinon.
+ */
+uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id)
+{
+    if (ship_id <= 5) {
+        return speed <= MAX_ATTACKERS_SPEED;
+    } else if (ship_id <= 7) {
+        return speed <= MAX_EXPLORERS_SPEED;
+    } else {
+        return speed <= MAX_COLLECTORS_SPEED;
     }
 }

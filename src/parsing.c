@@ -1,6 +1,8 @@
 #include "parsing.h"
 #include <stdlib.h>
 
+Mutex_t parsing_mutex;
+
 void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);
 
 /**
@@ -15,6 +17,17 @@ void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t
  */
 void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base)
 {
+    get_mutex(parsing_mutex);
+    // Save focus of planets
+    uint16_t nb_planets_saved = *nb_planets;
+    Planet_t planets_saved_datas[NB_MAX_PLANETS];
+    for (uint16_t i = 0; i < nb_planets_saved; i++) {
+        Planet_t planet_saved_data = { planets[i].planet_id, 0, 0, 0, 0, planets[i].focus };
+        planets_saved_datas[i] = planet_saved_data;
+    }
+
+    *nb_planets = 0;
+    *nb_spaceships = 0;
     uint16_t pos = 0;
     const char delimiter = ',';
     char token[MAX_DATA_SIZE];
@@ -30,6 +43,14 @@ void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planet
     }
     token[pos] = '\0';
     parse_data(token, planets, nb_planets, spaceships, nb_spaceships, base);
+
+    // Restore focus of planets
+    for (uint16_t i = 0; i < *nb_planets; i++) {
+        Planet_t* planet_saved = find_planet(planets[i].planet_id, planets_saved_datas, nb_planets_saved);
+        if (planet_saved != NULL)
+            planets[i].focus = planet_saved->focus;
+    }
+    release_mutex(parsing_mutex);
 }
 
 /**
