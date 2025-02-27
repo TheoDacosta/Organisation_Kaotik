@@ -10,31 +10,50 @@ uint16_t nb_planets;
 
 void test_manage_spaceship_radar_is_dead(void)
 {
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { { .broken = 1, .x = 0, .y = 0 } };
+    Spaceship_t spaceships = { .broken = 1, .x = 0, .y = 0 };
+    Spaceship_t spaceships_ref = { .broken = 1, .x = 0, .y = 0 };
     Base_t base = { .x = 10, .y = 10 };
     char cmd_1[MAX_COMMAND_SIZE];
-    manage_spaceship_radar(0, 1, spaceships, &base, cmd_1);
+    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
     TEST_ASSERT_EQUAL_STRING("MOVE 0 45 2000\n", cmd_1);
 }
 
 void test_manage_spaceship_radar_is_not_dead(void)
 {
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = { 0 };
-    Base_t base = { 0 };
-    char execpt[MAX_COMMAND_SIZE];
+    Spaceship_t spaceships = { .broken = 0, .x = 0, .y = 0 };
+    Spaceship_t spaceships_ref = { .broken = 0, .x = 0, .y = 0 };
+    Base_t base = { .x = 10, .y = 10 };
     char cmd_1[MAX_COMMAND_SIZE];
-    spaceships[0].broken = 0;
-    spaceships[0].x = 0;
-    spaceships[0].y = 0;
-    base.x = 10;
-    base.y = 10;
-    // TEST A MODIFIER CAR  LA FONCTION N'EST PAS CONFORME DOIS REROURNER UN CHAINE DE CARTACTERE
-    TEST_ASSERT_EQUAL(10, 10);
+    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("MOVE 0 0 2000\n", cmd_1);
+}
+
+void test_manage_spaceship_attacker_is_not_dead(void)
+{
+    Spaceship_t spaceships = { .broken = 0, .x = 0, .y = 0 };
+    Spaceship_t spaceships_ref = { .broken = 0, .x = 0, .y = 0 };
+    Base_t base = { .x = 10, .y = 10 };
+    char cmd_1[MAX_COMMAND_SIZE];
+    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("MOVE 0 0 2000\n", cmd_1);
+}
+
+void test_manage_spaceship_attacker_dead(void)
+{
+    Spaceship_t spaceships = { .broken = 1, .x = 0, .y = 0 };
+    Spaceship_t spaceships_ref = { .broken = 1, .x = 0, .y = 0 };
+    Base_t base = { .x = 10, .y = 10 };
+    char cmd_1[MAX_COMMAND_SIZE];
+    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("MOVE 0 45 2000\n", cmd_1);
 }
 
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_manage_spaceship_radar_is_dead);
+    RUN_TEST(test_manage_spaceship_radar_is_not_dead);
+    RUN_TEST(test_manage_spaceship_attacker_is_not_dead);
+    RUN_TEST(test_manage_spaceship_attacker_dead);
     return UNITY_END();
 }

@@ -6,10 +6,9 @@
 #include "planet.h"
 #include "spaceship.h"
 #include <stdint.h>
-
-void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base, char* command);
-void manage_spaceship_collector(int8_t ship_id, Spaceship_t* spaceships, Base_t* base, Planet_t* planet, char* command);
-void manage_spaceship_attacker(int8_t ship_id, int8_t ship_ref_id, Spaceship_t* spaceships, Base_t* base, char* command);
+void manage_spaceship_radar(Spaceship_t* space, Spaceship_t* space_ref, Base_t* base, char* command);
+void manage_spaceship_collector(Spaceship_t* space, Spaceship_t* space_ref, Base_t* base, char* command);
+void manage_spaceship_attacker(Spaceship_t* space, Spaceship_t* space_ref, Spaceship_t* space_ships, Base_t* base, char* command);
 
 // Le je dois faire quoi exactement ?
 // Je dois créer des commandes de déplacement, de tir et
