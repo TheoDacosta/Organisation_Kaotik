@@ -1,18 +1,20 @@
 #include "strategie.h"
 #include "commands.h"
+#include "stdio.h"
 #include "trajectory.h"
 
-void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base)
+void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base, char* CMD)
 {
+    uint16_t angle = 0;
     Spaceship_t* space = find_spaceship(0, ship_id, spaceships, NB_MAX_SPACESHIPS);
     if (space->broken) {
-        uint16_t angle = get_angle(space->x, space->y, base->x, base->y);
-        send_move_command(ship_id, angle, MAX_EXPLORERS_SPEED);
+        angle = get_angle(space->x, space->y, base->x, base->y);
+
     } else {
         Spaceship_t* space_ref = find_spaceship(0, ship_id_reference, spaceships, NB_MAX_SPACESHIPS);
-        uint16_t angle = get_angle(space->x, space->y, space_ref->x, space_ref->y);
-        send_move_command(ship_id, angle, MAX_EXPLORERS_SPEED);
+        angle = get_angle(space->x, space->y, space_ref->x, space_ref->y);
     }
+    create_move_command(ship_id, angle, MAX_EXPLORERS_SPEED, CMD);
 }
 
 void manage_spaceship_collector(int8_t ship_id, Spaceship_t* spaceships, Base_t* base, Planet_t* planet)
