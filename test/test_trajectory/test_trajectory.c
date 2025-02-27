@@ -61,19 +61,22 @@ void test_get_target_angle(void)
 void test_find_nearest_planet(void)
 {
     // Création des données de test
-    char* data = "P 12 30 400 0 0,P 13 0 0 0 0,P 14 400 400 0 0";
-    parse_planet(data, planets, &nb_planets);
+    Planet_t planets[NB_MAX_PLANETS] = {
+        { .planet_id = 12, .saved = 0, .x = 30, .y = 400 },
+        { .planet_id = 13, .saved = 0, .x = 0, .y = 0 },
+        { .planet_id = 14, .saved = 0, .x = 30, .y = 40 }
+    };
 
-    data = "S 1 31 300 300 0";
-    parse_spaceship(data, spaceships, &nb_spaceships);
+    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
 
-    Planet_t* nearest_planet;
+    Planet_t* nearest_planet = NULL;
 
-    find_nearest_planet(spaceships, planets, nb_planets, nearest_planet);
+    find_nearest_planet(&spaceship, planets, 3, &nearest_planet);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
-    TEST_ASSERT_EQUAL(12, nearest_planet->planet_id);
+    TEST_ASSERT_EQUAL(12, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
 }
+
 
 void test_find_nearest_unsaved_planet(void)
 {
@@ -82,18 +85,18 @@ void test_find_nearest_unsaved_planet(void)
         { .planet_id = 12, .saved = 1, .x = 30, .y = 400 },
         { .planet_id = 13, .saved = 0, .x = 0, .y = 0 },
         { .planet_id = 14, .saved = 0, .x = 30, .y = 40 }
-
     };
 
-    Spaceship_t spaceship = { .x = 0, .y = 0, .team_id = 0, .ship_id = 2, .broken = 0 };
+    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
 
-    Planet_t* nearest_planet;
+    Planet_t* nearest_planet = NULL;
 
-    find_nearest_planet(spaceships, planets, 3, nearest_planet);
+    find_nearest_planet(&spaceship, planets, 3, &nearest_planet);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
-    TEST_ASSERT_EQUAL(14, nearest_planet->planet_id);
+    TEST_ASSERT_EQUAL(14, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
 }
+
 
 void test_get_angle_to_follow(void)
 {

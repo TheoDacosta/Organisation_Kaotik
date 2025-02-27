@@ -27,7 +27,7 @@ void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
 
 uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships, uint16_t nb_spaceships);
 
-void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets, Planet_t* nearest_planet);
+void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets, Planet_t** nearest_planet);
 
 uint16_t get_angle_to_follow(Spaceship_t follower, Spaceship_t target, int16_t offset_x, int16_t offset_y);
 #endif // TRAJECTORY_H
