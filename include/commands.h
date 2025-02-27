@@ -23,12 +23,6 @@ void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* b
 void create_fire_command(int8_t ship_id, uint16_t angle, char* buffer);
 void create_radar_command(int8_t ship_id, char* buffer);
 
-void send_move_command(int8_t ship_id, uint16_t angle, uint16_t speed);
-void send_fire_command(int8_t ship_id, uint16_t angle);
-void send_radar_command(int8_t ship_id, char* response);
-
-uint8_t is_valid_angle(uint16_t angle);
-uint8_t is_valid_id_spaceship(int8_t ship_id);
-uint8_t is_valid_speed(uint16_t speed, uint8_t ship_id);
+void send_command(char* command, char* response);
 
 #endif // COMMANDS_H

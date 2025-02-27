@@ -1,5 +1,5 @@
-#ifndef STRATEGIE_H
-#define STRATEGIE_H
+#ifndef STRATEGY_H
+#define STRATEGY_H
 
 #include "base.h"
 #include "os_manager.h"
@@ -7,9 +7,9 @@
 #include "spaceship.h"
 #include <stdint.h>
 
-void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base, char* CMD);
-void manage_spaceship_collector(int8_t ship_id, Spaceship_t* spaceships, Base_t* base, Planet_t* planet);
-void manage_spaceship_attacker(int8_t ship_id, int8_t ship_ref_id, Spaceship_t* spaceships, Base_t* base);
+void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base, char* command);
+void manage_spaceship_collector(int8_t ship_id, Spaceship_t* spaceships, Base_t* base, Planet_t* planet, char* command);
+void manage_spaceship_attacker(int8_t ship_id, int8_t ship_ref_id, Spaceship_t* spaceships, Base_t* base, char* command);
 
 // Le je dois faire quoi exactement ?
 // Je dois créer des commandes de déplacement, de tir et
@@ -28,4 +28,4 @@ void manage_spaceship_attacker(int8_t ship_id, int8_t ship_ref_id, Spaceship_t* 
 // -> il me faut les différentes commandes de tir
 // la commande est en vie
 
-#endif // __STRATEGIE_H__
+#endif // __STRATEGY_H__

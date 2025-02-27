@@ -22,7 +22,7 @@ void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planet
     uint16_t nb_planets_saved = *nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
     for (uint16_t i = 0; i < nb_planets_saved; i++) {
-        Planet_t planet_saved_data = { planets[i].planet_id, 0, 0, 0, 0, planets[i].focus };
+        Planet_t planet_saved_data = { .planet_id = planets[i].planet_id, .focus = planets[i].focus };
         planets_saved_datas[i] = planet_saved_data;
     }
 

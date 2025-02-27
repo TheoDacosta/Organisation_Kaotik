@@ -1,7 +1,6 @@
 #include "commands.h"
 #include "planet.h"
-#include "stdio.h"
-#include "strategie.h"
+#include "strategy.h"
 #include "trajectory.h"
 #include "unity.h"
 #include <stdlib.h>
