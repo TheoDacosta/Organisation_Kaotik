@@ -78,7 +78,7 @@ void test_manage_spaceship_collector_go_to_planet()
 void test_manage_spaceship_collector_no_planet()
 {
     manage_spaceship_collector(&spaceship, planets, nb_planets, &base, command);
-    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 180 1000\n", command);
 }
 
 int main(void)
