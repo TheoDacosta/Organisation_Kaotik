@@ -7,7 +7,7 @@
 #include "spaceship.h"
 #include <stdint.h>
 
-void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base);
+void manage_spaceship_radar(int8_t ship_id, int8_t ship_id_reference, Spaceship_t* spaceships, Base_t* base, char* CMD);
 void manage_spaceship_collector(int8_t ship_id, Spaceship_t* spaceships, Base_t* base, Planet_t* planet);
 void manage_spaceship_attacker(int8_t ship_id, int8_t ship_ref_id, Spaceship_t* spaceships, Base_t* base);
 
