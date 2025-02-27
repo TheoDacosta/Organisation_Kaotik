@@ -71,7 +71,7 @@ void test_find_nearest_planet(void)
 
     Planet_t* nearest_planet = NULL;
 
-    find_nearest_planet(&spaceship, planets, 3, &nearest_planet);
+    nearest_planet=find_nearest_planet(&spaceship, planets, 3);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
     TEST_ASSERT_EQUAL(12, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
@@ -91,7 +91,7 @@ void test_find_nearest_unsaved_planet(void)
 
     Planet_t* nearest_planet = NULL;
 
-    find_nearest_planet(&spaceship, planets, 3, &nearest_planet);
+    nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
     TEST_ASSERT_EQUAL(14, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
