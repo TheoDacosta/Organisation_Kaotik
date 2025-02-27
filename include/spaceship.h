@@ -5,7 +5,8 @@
 
 #define NB_MAX_SPACESHIPS 36
 
-typedef struct {
+typedef struct
+{
     uint8_t team_id;
     int8_t ship_id;
     uint16_t x;
@@ -17,4 +18,6 @@ void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceship
 
 Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships, uint16_t nb_spaceships);
 
+//
+void shoot_current_timeMs(uint32_t* time_ecoule, uint32_t time_start, uint32_t time_actuel);
 #endif // SPACESHIP_H

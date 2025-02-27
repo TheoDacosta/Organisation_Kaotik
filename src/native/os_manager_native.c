@@ -3,6 +3,7 @@
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 Mutex_t create_mutex()
 {
@@ -49,6 +50,11 @@ Thread_t create_thread(ThreadFunc_t func, void* argument)
             ;
     }
     return (Thread_t)new_thread;
+}
+
+uint32_t get_current_timeMs()
+{
+    return (clock() * 1000) / CLOCKS_PER_SEC;
 }
 
 void os_initialisation()

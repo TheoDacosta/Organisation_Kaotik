@@ -71,12 +71,11 @@ void test_find_nearest_planet(void)
 
     Planet_t* nearest_planet = NULL;
 
-    nearest_planet=find_nearest_planet(&spaceship, planets, 3);
+    nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
     TEST_ASSERT_NOT_NULL(nearest_planet);
     TEST_ASSERT_EQUAL(12, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
 }
-
 
 void test_find_nearest_unsaved_planet(void)
 {
@@ -121,8 +120,8 @@ void test_find_nearest_unfocus_planet(void)
     // Création des données de test
     Planet_t planets[NB_MAX_PLANETS] = {
         { .planet_id = 12, .focus = 3, .x = 30, .y = 400 },
-        { .planet_id = 13, .focus= 0, .x = 0, .y = 0 },
-        { .planet_id = 14, .focus= 2, .x = 30, .y = 40 }
+        { .planet_id = 13, .focus = 0, .x = 0, .y = 0 },
+        { .planet_id = 14, .focus = 2, .x = 30, .y = 40 }
     };
 
     Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };

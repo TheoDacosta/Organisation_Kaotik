@@ -15,5 +15,6 @@ void get_mutex(Mutex_t mutex);
 void release_mutex(Mutex_t mutex);
 
 Thread_t create_thread(ThreadFunc_t func, void* argument);
+uint32_t get_current_timeMs();
 
 #endif // OS_MANAGER_H_

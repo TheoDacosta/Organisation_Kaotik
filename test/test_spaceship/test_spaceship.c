@@ -1,5 +1,6 @@
 #include "base.h"
 #include "commands.h"
+#include "os_manager.h"
 #include "spaceship.h"
 #include "unity.h"
 
@@ -68,6 +69,33 @@ void test_find_spaceship_found(void)
     TEST_ASSERT_EQUAL(4, found_spaceship->ship_id);
 }
 
+void test_shoot_current_timeMs(void)
+{
+    uint32_t time_start = get_current_timeMs();
+    while (get_current_timeMs() - time_start <= 1000)
+        ;
+
+    uint32_t time_actuel = get_current_timeMs();
+    uint32_t time_ecoule = 0;
+
+    shoot_current_timeMs(&time_ecoule, time_start, time_actuel);
+
+    TEST_ASSERT_GREATER_OR_EQUAL(1000, time_ecoule);
+}
+
+void test_shut_current_timeMs_no_1s(void)
+{
+    uint32_t time_start = get_current_timeMs();
+    while (get_current_timeMs() - time_start > 1000)
+        ;
+    uint32_t time_actuel = get_current_timeMs();
+    uint32_t time_ecoule = 0;
+
+    shoot_current_timeMs(&time_ecoule, time_start, time_actuel);
+
+    TEST_ASSERT_LESS_THAN(1000, time_ecoule);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -75,5 +103,7 @@ int main(void)
     RUN_TEST(test_find_spaceship_not_found_team_id);
     RUN_TEST(test_find_spaceship_not_found_ship_id);
     RUN_TEST(test_find_spaceship_found);
+    RUN_TEST(test_shoot_current_timeMs);
+    RUN_TEST(test_shut_current_timeMs_no_1s);
     return UNITY_END();
 }

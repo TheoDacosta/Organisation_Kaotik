@@ -1,5 +1,6 @@
 #include "cmsis_os2.h"
 #include "os_manager.h"
+#include "stm32f4xx_hal.h"
 
 typedef void (*OsThreadFunc_t)(void* argument);
 
@@ -60,4 +61,9 @@ void release_mutex(Mutex_t mutex)
             ;
     }
     osThreadYield(); //  Permet de bien repasser la main au thread de meme priorité
+}
+
+uint32_t get_current_timeMs()
+{
+    return HAL_GetTick();
 }

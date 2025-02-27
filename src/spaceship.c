@@ -1,4 +1,5 @@
 #include "spaceship.h"
+#include "os_manager.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -58,4 +59,13 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
             return &spaceships[i];
     }
     return NULL;
+}
+
+void shoot_current_timeMs(uint32_t* time_ecoule, uint32_t time_start, uint32_t time_actuel)
+{
+
+    if ((time_actuel - time_start) >= 1000) {
+        *time_ecoule = time_actuel - time_start;
+    }
+    return;
 }
