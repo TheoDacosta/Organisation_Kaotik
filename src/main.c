@@ -147,7 +147,7 @@ void* thread_collectors_1(void* argument)
     Planet_t* target_planet1 = NULL;
     Spaceship_t* my_spaceship = find_spaceship(0, 8, spaceships);
     while (1) {
-        find_nearest_planet(my_spaceship, planets, &target_planet1);
+        find_nearest_planet(my_spaceship, planets, &target_planet1,nb_planets);
         angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet1->x, target_planet1->y);
         send_move_command(8, angle, MAX_COLLECTORS_SPEED);
     }
@@ -159,7 +159,7 @@ void* thread_collectors_2(void* argument)
     Planet_t* target_planet2 = NULL;
     Spaceship_t* my_spaceship = find_spaceship(0, 9, spaceships);
     while (1) {
-        find_nearest_planet(my_spaceship, planets, &target_planet2);
+        find_nearest_planet(my_spaceship, planets, &target_planet2, nb_planets);
         angle = get_angle(my_spaceship->x, my_spaceship->y, target_planet2->x, target_planet2->y);
         send_move_command(9, angle, MAX_COLLECTORS_SPEED);
     }
