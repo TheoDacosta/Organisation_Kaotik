@@ -28,14 +28,14 @@ void setUp(void)
     target_spaceship.y = 10000;
 }
 
-void test_return_base_spaceship_not_broken()
+void test_return_base_spaceship_not_broken(void)
 {
     uint8_t result = return_to_base(&spaceship, &base, 1000, command);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL_STRING("", command);
 }
 
-void test_return_base_spaceship_broken()
+void test_return_base_spaceship_broken(void)
 {
     spaceship.broken = 1;
     uint8_t result = return_to_base(&spaceship, &base, 1000, command);
@@ -66,7 +66,7 @@ void test_manage_spaceship_attacker_fire(void)
     TEST_ASSERT_EQUAL_STRING("FIRE 1 180\n", command);
 }
 
-void test_manage_spaceship_collector_go_to_planet()
+void test_manage_spaceship_collector_go_to_planet(void)
 {
     Planet_t planet = { .planet_id = 1, .x = 0, .y = 10000, .ship_id = 0, .saved = 0 };
     planets[0] = planet;
@@ -75,7 +75,7 @@ void test_manage_spaceship_collector_go_to_planet()
     TEST_ASSERT_EQUAL_STRING("MOVE 1 180 1000\n", command);
 }
 
-void test_manage_spaceship_collector_no_planet()
+void test_manage_spaceship_collector_no_planet(void)
 {
     manage_spaceship_collector(&spaceship, planets, nb_planets, &base, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 180 1000\n", command);
