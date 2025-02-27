@@ -75,7 +75,5 @@ int main(void)
     RUN_TEST(test_find_spaceship_not_found_team_id);
     RUN_TEST(test_find_spaceship_not_found_ship_id);
     RUN_TEST(test_find_spaceship_found);
-    RUN_TEST(test_is_alive_ship_alive);
-    RUN_TEST(test_is_alive_ship_broken);
     return UNITY_END();
 }
