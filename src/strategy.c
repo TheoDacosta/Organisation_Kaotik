@@ -36,6 +36,7 @@ void manage_spaceship_attacker(Spaceship_t* space, Spaceship_t* space_ref, Space
         angle = get_angle(space->x, space->y, base->x, base->y);
     } else if (angle_enemi != NOT_FOUND) {
         create_fire_command(space->ship_id, angle_enemi, command);
+        return;
     } else {
         angle = get_angle(space->x, space->y, space_ref->x, space_ref->y);
     }

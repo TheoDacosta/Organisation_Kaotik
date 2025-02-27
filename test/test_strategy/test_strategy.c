@@ -32,20 +32,33 @@ void test_manage_spaceship_attacker_is_not_dead(void)
 {
     Spaceship_t spaceships = { .broken = 0, .x = 0, .y = 0 };
     Spaceship_t spaceships_ref = { .broken = 0, .x = 0, .y = 0 };
+    Spaceship_t spaceships_tab[NB_MAX_SPACESHIPS] = {};
     Base_t base = { .x = 10, .y = 10 };
     char cmd_1[MAX_COMMAND_SIZE];
-    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
-    TEST_ASSERT_EQUAL_STRING("MOVE 0 0 2000\n", cmd_1);
+    manage_spaceship_attacker(&spaceships, &spaceships_ref, spaceships_tab, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("MOVE 0 0 3000\n", cmd_1);
 }
 
 void test_manage_spaceship_attacker_dead(void)
 {
     Spaceship_t spaceships = { .broken = 1, .x = 0, .y = 0 };
     Spaceship_t spaceships_ref = { .broken = 1, .x = 0, .y = 0 };
+    Spaceship_t spaceships_tab[NB_MAX_SPACESHIPS] = {};
     Base_t base = { .x = 10, .y = 10 };
     char cmd_1[MAX_COMMAND_SIZE];
-    manage_spaceship_radar(&spaceships, &spaceships_ref, &base, cmd_1);
-    TEST_ASSERT_EQUAL_STRING("MOVE 0 45 2000\n", cmd_1);
+    manage_spaceship_attacker(&spaceships, &spaceships_ref, spaceships_tab, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("MOVE 0 45 3000\n", cmd_1);
+}
+
+void test_manage_space_ship_fir(void)
+{
+    Spaceship_t spaceships = { .broken = 0, .x = 0, .y = 0 };
+    Spaceship_t spaceships_ref = { .broken = 0, .x = 0, .y = 0 };
+    Spaceship_t spaceships_tab[NB_MAX_SPACESHIPS] = { { .team_id = 1, .ship_id = 1, .x = 0, .y = 0 } };
+    Base_t base = { .x = 10, .y = 10 };
+    char cmd_1[MAX_COMMAND_SIZE];
+    manage_spaceship_attacker(&spaceships, &spaceships_ref, spaceships_tab, &base, cmd_1);
+    TEST_ASSERT_EQUAL_STRING("FIRE 0 0\n", cmd_1);
 }
 
 int main(void)
@@ -55,5 +68,6 @@ int main(void)
     RUN_TEST(test_manage_spaceship_radar_is_not_dead);
     RUN_TEST(test_manage_spaceship_attacker_is_not_dead);
     RUN_TEST(test_manage_spaceship_attacker_dead);
+    RUN_TEST(test_manage_space_ship_fir);
     return UNITY_END();
 }
