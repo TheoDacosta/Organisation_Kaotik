@@ -47,15 +47,15 @@ void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceship
  * @param team_id    L'ID de l'équipe du vaisseau recherché.
  * @param ship_id    L'ID du vaisseau recherché.
  * @param spaceships Liste des vaisseaux existants.
+ * @param nb_spaceships Nombre total de vaisseaux.
  *
  * @return Un pointeur vers le vaisseau trouvé, ou NULL si aucun vaisseau n'est trouvé.
  **/
-Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships)
+Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships, uint16_t nb_spaceships)
 {
-    for (uint16_t i = 0; i < NB_MAX_SPACESHIPS; i++) {
-        if (spaceships[i].team_id == team_id && spaceships[i].ship_id == ship_id) {
+    for (uint16_t i = 0; i < nb_spaceships; i++) {
+        if (spaceships[i].team_id == team_id && spaceships[i].ship_id == ship_id)
             return &spaceships[i];
-        }
     }
     return NULL;
 }

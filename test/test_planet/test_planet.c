@@ -42,7 +42,7 @@ void test_find_planet_not_found(void)
 {
 
     // Recherche d'une planète qui n'existe pas dans la liste
-    Planet_t* planet = find_planet(490, planets);
+    Planet_t* planet = find_planet(490, planets, nb_planets);
 
     // Vérification que la fonction retourne NULL si la planète n'est pas trouvée
     TEST_ASSERT_NULL(planet);
@@ -51,7 +51,7 @@ void test_find_planet_not_found(void)
 void test_find_planet_found(void)
 {
     // Recherche d'une planète existante dans la liste avec un planet_id
-    Planet_t* planet = find_planet(1001, planets);
+    Planet_t* planet = find_planet(1001, planets, nb_planets);
 
     // Planète est bien trouvée
     TEST_ASSERT_NOT_NULL(planet);

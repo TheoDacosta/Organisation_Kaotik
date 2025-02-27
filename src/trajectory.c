@@ -23,16 +23,15 @@ uint16_t get_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t 
     // Conversion de l'angle en degrés
     float angle_deg = angle_rad * (180.0f / M_PI);
 
-    // Ajustement pour obtenir un angle entre 0 et 359°
     if (angle_deg < 0) {
-        angle_deg += 360.0f;
+        angle_deg += MAX_ANGLE;
     }
 
     return (uint16_t)angle_deg;
 }
 
 /**
- * @brief Calcule la distance euclidienne entre deux points dans un plan 2D.
+ * @brief Calcule la distance entre deux points dans un plan 2D.
  *
  * @param pos_x1  Coordonnée X du premier point.
  * @param pos_y1  Coordonnée Y du premier point.
@@ -42,27 +41,22 @@ uint16_t get_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t 
  */
 uint16_t get_distance(uint16_t pos_x1, uint16_t pos_y1, uint16_t pos_x2, uint16_t pos_y2)
 {
-
-    float distance = sqrt(pow(pos_x2 - pos_x1, 2) + pow(pos_y2 - pos_y1, 2));
-
-    return (uint16_t)distance;
+    return (uint16_t)sqrt(pow(pos_x2 - pos_x1, 2) + pow(pos_y2 - pos_y1, 2));
 }
 /**
  * @brief Retourne l'angle vers le premier vaisseau ennemi à portée.
  *
- * Parcourt la liste des vaisseaux et retourne l'angle vers la première cible
- * ennemie détectée dans la portée de tir.
- *
  * @param attacker Vaisseau attaquant.
  * @param spaceships Liste des vaisseaux.
+ * @param nb_spaceships Nombre de vaisseaux.
  * @return Angle vers la cible si trouvée, sinon NOT_FOUND.
  **/
-uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
+uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
 {
-    for (uint8_t i = 0; i < NB_MAX_SPACESHIPS; i++) {
+    for (uint8_t i = 0; i < nb_spaceships; i++) {
         uint16_t distance = get_distance(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
 
-        if (distance < FIRE_RANGE && spaceships[i].team_id != 0) {
+        if (spaceships[i].team_id != 0 && distance <= FIRE_RANGE) {
             return get_angle(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
         }
     }
@@ -76,29 +70,24 @@ uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships)
  * @param planets Liste des planètes.
  * @param nearest_planet Pointeur vers la planète la plus proche.
  */
-void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** nearest_planet, uint8_t nb_planets)
+void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets, Planet_t* nearest_planet)
 {
-    *nearest_planet = NULL;
+    nearest_planet = NULL;
     uint16_t nearest_distance = AREA_LENGTH;
     uint16_t distance;
     for (int i = 0; i < nb_planets; i++) {
-        if(planets[i].saved==0)
-        {
+        if (planets[i].saved == 0) {
             distance = get_distance(spaceship->x, spaceship->y, planets[i].x, planets[i].y);
             if (distance < nearest_distance) {
                 nearest_distance = distance;
-                *nearest_planet = &planets[i];
+                nearest_planet = &planets[i];
             }
         }
-        
     }
 }
 
 /**
  * @brief Calcule la position du vaisseau suiveur avec un décalage par rapport au leader.
- *
- * Cette fonction ajuste la position du vaisseau suiveur pour qu'il suive
- * un vaisseau leader avec un décalage défini en X et Y.
  *
  * @param follower Vaisseau suiveur.
  * @param target   Vaisseau à suivre.
@@ -107,5 +96,13 @@ void find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, Planet_t** n
  */
 uint16_t get_angle_to_follow(Spaceship_t follower, Spaceship_t target, int16_t offset_x, int16_t offset_y)
 {
-    return get_angle(follower.x, follower.y, target.x - offset_x, target.y - offset_y);
+    int16_t x_target = target.x + offset_x;
+    int16_t y_target = target.y + offset_y;
+    if (x_target < 0 || x_target > AREA_LENGTH) {
+        x_target = target.x;
+    }
+    if (y_target < 0 || y_target > AREA_LENGTH) {
+        y_target = target.y;
+    }
+    return get_angle(follower.x, follower.y, (uint16_t)x_target, (uint16_t)y_target);
 }

@@ -7,7 +7,7 @@ uint16_t nb_spaceships = 0;
 
 void setUp(void)
 {
-    Spaceship_t new_spaceship = { 1, 1, 10000, 11200, 0 };
+    Spaceship_t new_spaceship = { 0, 4, 10000, 11200, 0 };
     spaceships[0] = new_spaceship;
     nb_spaceships++;
 }
@@ -40,7 +40,7 @@ void test_parse_spaceship(void)
 void test_find_spaceship_not_found_team_id(void)
 {
     // Act
-    Spaceship_t* found_spaceship = find_spaceship(5, 1, spaceships);
+    Spaceship_t* found_spaceship = find_spaceship(5, 1, spaceships, nb_spaceships);
 
     // Assert
     TEST_ASSERT_NULL(found_spaceship);
@@ -49,7 +49,7 @@ void test_find_spaceship_not_found_team_id(void)
 void test_find_spaceship_not_found_ship_id(void)
 {
     // Act
-    Spaceship_t* found_spaceship = find_spaceship(1, 5, spaceships);
+    Spaceship_t* found_spaceship = find_spaceship(1, 5, spaceships, nb_spaceships);
 
     // Assert
     TEST_ASSERT_NULL(found_spaceship);
@@ -58,12 +58,12 @@ void test_find_spaceship_not_found_ship_id(void)
 void test_find_spaceship_found(void)
 {
     // Act
-    Spaceship_t* found_spaceship = find_spaceship(1, 1, spaceships);
+    Spaceship_t* found_spaceship = find_spaceship(0, 4, spaceships, nb_spaceships);
 
     TEST_ASSERT_NOT_NULL(found_spaceship);
 
-    TEST_ASSERT_EQUAL(1, found_spaceship->team_id);
-    TEST_ASSERT_EQUAL(1, found_spaceship->ship_id);
+    TEST_ASSERT_EQUAL(0, found_spaceship->team_id);
+    TEST_ASSERT_EQUAL(4, found_spaceship->ship_id);
 }
 
 int main(void)
