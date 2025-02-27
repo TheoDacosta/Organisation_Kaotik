@@ -4,6 +4,11 @@
 
 Base_t base;
 
+void setUp(void)
+{
+    parsing_mutex = create_mutex();
+}
+
 void test_parsing()
 {
     Planet_t planets[NB_MAX_PLANETS];

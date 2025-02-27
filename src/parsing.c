@@ -1,6 +1,8 @@
 #include "parsing.h"
 #include <stdlib.h>
 
+Mutex_t parsing_mutex;
+
 void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);
 
 /**
@@ -15,6 +17,7 @@ void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t
  */
 void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base)
 {
+    get_mutex(parsing_mutex);
     // Save focus of planets
     uint16_t nb_planets_saved = *nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
@@ -47,6 +50,7 @@ void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planet
         if (planet_saved != NULL)
             planets[i].focus = planet_saved->focus;
     }
+    release_mutex(parsing_mutex);
 }
 
 /**

@@ -21,8 +21,6 @@ void* thread_explorers_2(void* argument);
 void* thread_collectors_1(void* argument);
 void* thread_collectors_2(void* argument);
 
-Mutex_t mutex_vaisseau_radar;
-
 Planet_t planets[NB_MAX_PLANETS];
 uint16_t nb_planets = 0;
 Spaceship_t spaceships[NB_MAX_SPACESHIPS];
@@ -35,13 +33,20 @@ int main(void)
     hardware_init();
     os_initialisation();
     serial_mutex = create_mutex();
-    mutex_vaisseau_radar = create_mutex();
+    parsing_mutex = create_mutex();
 
     // Premier scan radar
     send_radar_command(6, buffer);
-    get_mutex(mutex_vaisseau_radar);
     parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
-    release_mutex(mutex_vaisseau_radar);
+    Spaceship_t* attacker_1 = find_spaceship(0, 1, spaceships, nb_spaceships);
+    Spaceship_t* attacker_2 = find_spaceship(0, 2, spaceships, nb_spaceships);
+    Spaceship_t* attacker_3 = find_spaceship(0, 3, spaceships, nb_spaceships);
+    Spaceship_t* attacker_4 = find_spaceship(0, 4, spaceships, nb_spaceships);
+    Spaceship_t* attacker_5 = find_spaceship(0, 5, spaceships, nb_spaceships);
+    Spaceship_t* explorer_1 = find_spaceship(0, 6, spaceships, nb_spaceships);
+    Spaceship_t* explorer_2 = find_spaceship(0, 7, spaceships, nb_spaceships);
+    Spaceship_t* collector_1 = find_spaceship(0, 8, spaceships, nb_spaceships);
+    Spaceship_t* collector_2 = find_spaceship(0, 9, spaceships, nb_spaceships);
 
     create_thread(thread_attackers_1, NULL);
     create_thread(thread_attackers_2, NULL);
@@ -117,9 +122,7 @@ void* thread_explorers_1(void* argument)
     Spaceship_t* my_spaceship = find_spaceship(0, 6, spaceships, nb_spaceships);
     while (1) {
         send_radar_command(6, buffer);
-        get_mutex(mutex_vaisseau_radar);
         parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
-        release_mutex(mutex_vaisseau_radar);
         angle = get_angle(base.x, base.y, 10000, 10000);
         send_move_command(6, angle, MAX_EXPLORERS_SPEED);
     }
@@ -132,9 +135,7 @@ void* thread_explorers_2(void* argument)
     Spaceship_t* my_spaceship = find_spaceship(0, 7, spaceships, nb_spaceships);
     while (1) {
         send_radar_command(7, buffer);
-        get_mutex(mutex_vaisseau_radar);
         parse_response(buffer, planets, &nb_planets, spaceships, &nb_spaceships, &base);
-        release_mutex(mutex_vaisseau_radar);
         angle = get_angle(base.x, base.y, 15000, 15000);
         send_move_command(7, angle, MAX_EXPLORERS_SPEED);
     }
