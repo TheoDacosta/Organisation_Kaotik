@@ -12,7 +12,7 @@ const osThreadAttr_t thread_attr = {
 
 const osMutexAttr_t serial_mutex_attr = {
     "SerialMutex",
-    osMutexRecursive | osMutexPrioInherit,
+    osMutexPrioInherit | osMutexRobust, // look reste bloqué sur -> osMutexRecursive | osMutexPrioInherit, osMutexRobust -< yield ?
     NULL,
     0U
 };
@@ -48,6 +48,7 @@ Mutex_t create_mutex()
 
 void get_mutex(Mutex_t mutex)
 {
+    // changer le osWaitForever par un timeout dans le cas ou il reste bloqué
     if (osMutexAcquire((osMutexId_t)mutex, osWaitForever) != osOK) {
         while (1)
             ;
