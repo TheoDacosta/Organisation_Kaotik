@@ -11,10 +11,10 @@ const osThreadAttr_t thread_attr = {
 };
 
 const osMutexAttr_t serial_mutex_attr = {
-    "SerialMutex",
-    osMutexRecursive | osMutexPrioInherit,
-    NULL,
-    0U
+    .name = "Mutex",
+    .attr_bits = osMutexRecursive | osMutexPrioInherit,
+    .cb_mem = NULL,
+    .cb_size = 0U,
 };
 
 void os_initialisation()
@@ -48,7 +48,8 @@ Mutex_t create_mutex()
 
 void get_mutex(Mutex_t mutex)
 {
-    if (osMutexAcquire((osMutexId_t)mutex, osWaitForever) != osOK) {
+    osStatus_t status = osMutexAcquire((osMutexId_t)mutex, osWaitForever);
+    if (status != osOK) {
         while (1)
             ;
     }
@@ -56,11 +57,11 @@ void get_mutex(Mutex_t mutex)
 
 void release_mutex(Mutex_t mutex)
 {
-    if (osMutexRelease((osMutexId_t)mutex) != osOK) {
+    osStatus_t status = osMutexRelease((osMutexId_t)mutex);
+    if (status != osOK) {
         while (1)
             ;
     }
-    osThreadYield(); //  Permet de bien repasser la main au thread de meme priorité
 }
 
 uint32_t get_current_timeMs()
