@@ -13,12 +13,9 @@ python -m space_collector.killall &
 sleep 1
 
 # start the server
-python -m space_collector.game.server -p $PORT --timeout 10 &
+python -m space_collector.game.server -p $PORT --timeout 1 &
 
 sleep 3
-
-# start the viewer / on small screens : --small-window
-python -m space_collector.viewer -p $PORT --small-window &
 
 # Communication en serie
 python -m space_collector.serial2tcp -p $PORT --serial $SERIAL --team-name "OK"
