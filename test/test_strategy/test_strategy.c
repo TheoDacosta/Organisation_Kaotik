@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets = 0;
+uint16_t nb_planets;
 Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships = 0;
+uint16_t nb_spaceships;
 Spaceship_t spaceship;
 Spaceship_t target_spaceship;
 Base_t base = { .x = 10000, .y = 20000 };
@@ -16,6 +16,8 @@ char command[MAX_COMMAND_SIZE];
 
 void setUp(void)
 {
+    nb_planets = 0;
+    nb_spaceships = 0;
     spaceship.team_id = 0;
     spaceship.ship_id = 1;
     spaceship.broken = 0;
@@ -78,7 +80,7 @@ void test_manage_spaceship_collector_go_to_planet(void)
 void test_manage_spaceship_collector_no_planet(void)
 {
     manage_spaceship_collector(&spaceship, planets, nb_planets, &base, command);
-    TEST_ASSERT_EQUAL_STRING("MOVE 1 180 1000\n", command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
 }
 
 int main(void)
