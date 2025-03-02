@@ -39,43 +39,25 @@ uint8_t is_start(char* response)
 
 int main(void)
 {
-    char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
+    char response[MAX_RESPONSE_SIZE] = { 0 };
 
     hardware_init();
     os_initialisation();
     serial_mutex = create_mutex();
-    parsing_mutex = create_mutex();
     // Attendre start avant de commencer
     while (gets(response) == NULL || !is_start(response))
         ;
-
-    // Premier scan radar pour initialiser les données
-    create_radar_command(6, command);
-    send_command(command, response);
-    parse_response(response, planets, &nb_planets, spaceships, &nb_spaceships, &base);
-
-    Spaceship_t* collector_1_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
-    Spaceship_t* collector_2_spaceship = find_spaceship(0, 9, spaceships, nb_spaceships);
-    ThreadArgs_t attacker1_args = { find_spaceship(0, 1, spaceships, nb_spaceships), collector_1_spaceship, -100, 100 };
-    ThreadArgs_t attacker2_args = { find_spaceship(0, 2, spaceships, nb_spaceships), collector_1_spaceship, 100, 100 };
-    ThreadArgs_t attacker3_args = { find_spaceship(0, 3, spaceships, nb_spaceships), collector_1_spaceship, 0, -100 };
-    ThreadArgs_t attacker4_args = { find_spaceship(0, 4, spaceships, nb_spaceships), collector_2_spaceship, -100, -100 };
-    ThreadArgs_t attacker5_args = { find_spaceship(0, 5, spaceships, nb_spaceships), collector_2_spaceship, 100, 100 };
-    ThreadArgs_t explorer1_args = { find_spaceship(0, 6, spaceships, nb_spaceships), collector_1_spaceship, 0, 0 };
-    ThreadArgs_t explorer2_args = { find_spaceship(0, 7, spaceships, nb_spaceships), collector_2_spaceship, 0, 0 };
-    ThreadArgs_t collector1_args = { collector_1_spaceship, NULL, 0, 0 };
-    ThreadArgs_t collector2_args = { collector_2_spaceship, NULL, 0, 0 };
+    ThreadArgs_t attacker1_args = { NULL, NULL, -100, 100 };
 
     create_thread(attacker_thread, &attacker1_args);
-    create_thread(attacker_thread, &attacker2_args);
-    create_thread(attacker_thread, &attacker3_args);
-    create_thread(attacker_thread, &attacker4_args);
-    create_thread(attacker_thread, &attacker5_args);
-    create_thread(explorer_thread, &explorer1_args);
-    create_thread(explorer_thread, &explorer2_args);
-    create_thread(collector_thread, &collector1_args);
-    create_thread(collector_thread, &collector2_args);
+    // create_thread(attacker_thread, &attacker2_args);
+    // create_thread(attacker_thread, &attacker3_args);
+    // create_thread(attacker_thread, &attacker4_args);
+    // create_thread(attacker_thread, &attacker5_args);
+    // create_thread(explorer_thread, &explorer1_args);
+    // create_thread(explorer_thread, &explorer2_args);
+    // create_thread(collector_thread, &collector1_args);
+    // create_thread(collector_thread, &collector2_args);
     os_start();
     while (1) {
     }
@@ -84,11 +66,18 @@ int main(void)
 void* attacker_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
-    char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
+    char command[MAX_COMMAND_SIZE] = { 0 };
+    char response[MAX_RESPONSE_SIZE] = { 0 };
     while (1) {
         create_move_command(1, 0, MAX_ATTACKERS_SPEED, command);
-        send_command(command, response);
+        get_mutex(serial_mutex);
+        puts(command);
+        gets(response);
+        release_mutex(serial_mutex);
+        if (response[0] != 'O' || response[1] != 'K') {
+            while (1)
+                ;
+        }
     }
 }
 
