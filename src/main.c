@@ -87,7 +87,7 @@ void* attacker_thread(void* argument)
     char command[MAX_COMMAND_SIZE];
     char response[MAX_RESPONSE_SIZE];
     while (1) {
-        create_move_command(1, 0, MAX_ATTACKERS_SPEED, command);
+        manage_spaceship_attacker(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, spaceships, nb_spaceships, &base, command);
         send_command(command, response);
     }
 }

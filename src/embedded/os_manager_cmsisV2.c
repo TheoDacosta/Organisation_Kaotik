@@ -4,15 +4,21 @@
 
 typedef void (*OsThreadFunc_t)(void* argument);
 
+/*
+ /!\ Pour la gestion des mutexes par les threads, stack_size doit être > 1024
+     Mais stack_size < 2048 pour ne pas dépasser la taille de la pile avec 10 threads en même temps (9 threads + main)
+ Dans le cas où on aurai moins de threads lancés simultanément, on pourrait augmenter la taille de la pile des threads
+ Ou alors on pourrait augmenter la taille allouée à la pile
+*/
 const osThreadAttr_t thread_attr = {
     .name = "Thread",
-    .stack_size = 1024,
+    .stack_size = 1536,
     .priority = (osPriority_t)osPriorityNormal,
 };
 
-const osMutexAttr_t serial_mutex_attr = {
-    "SerialMutex",
-    osMutexPrioInherit | osMutexRobust, // look reste bloqué sur -> osMutexRecursive | osMutexPrioInherit, osMutexRobust -< yield ?
+const osMutexAttr_t mutex_attr = {
+    "Mutex",
+    osMutexRecursive | osMutexPrioInherit,
     NULL,
     0U
 };
@@ -38,7 +44,7 @@ Thread_t create_thread(ThreadFunc_t func, void* argument)
 
 Mutex_t create_mutex()
 {
-    osMutexId_t new_mutex_id = osMutexNew(&serial_mutex_attr);
+    osMutexId_t new_mutex_id = osMutexNew(&mutex_attr);
     if (new_mutex_id == NULL) {
         while (1)
             ;
@@ -48,8 +54,8 @@ Mutex_t create_mutex()
 
 void get_mutex(Mutex_t mutex)
 {
-    // changer le osWaitForever par un timeout dans le cas ou il reste bloqué
-    if (osMutexAcquire((osMutexId_t)mutex, osWaitForever) != osOK) {
+    osStatus_t status = osMutexAcquire((osMutexId_t)mutex, osWaitForever);
+    if (status != osOK) {
         while (1)
             ;
     }
@@ -57,11 +63,12 @@ void get_mutex(Mutex_t mutex)
 
 void release_mutex(Mutex_t mutex)
 {
-    if (osMutexRelease((osMutexId_t)mutex) != osOK) {
+    osStatus_t status = osMutexRelease((osMutexId_t)mutex);
+    if (status != osOK) {
         while (1)
             ;
     }
-    osThreadYield(); //  Permet de bien repasser la main au thread de meme priorité
+    osThreadYield(); // Permet de repasser la main à un autre thread de même priorité si existant et prêt
 }
 
 uint32_t get_current_timeMs()
