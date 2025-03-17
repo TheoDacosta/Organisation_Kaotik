@@ -22,5 +22,5 @@ void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceship
 Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships, uint16_t nb_spaceships);
 
 //
-void shoot_current_timeMs(uint32_t* time_ecoule, uint32_t time_start, uint32_t time_actuel);
+void shoot_current_timeMs(uint32_t* elapsed_time, uint32_t start_time, uint32_t current_time, Spaceship_t* my_spaceship, Spaceship_t* spaceships, uint16_t nb_spaceships, char* commande);
 #endif // SPACESHIP_H

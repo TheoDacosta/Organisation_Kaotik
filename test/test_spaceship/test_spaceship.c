@@ -67,29 +67,43 @@ void test_find_spaceship_found(void)
 
 void test_shoot_current_timeMs(void)
 {
-    uint32_t time_start = get_current_timeMs();
-    while (get_current_timeMs() - time_start <= 1000)
-        ;
+    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .x = 100, .y = 100 };
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
+        { .team_id = 2, .ship_id = 10, .x = 100, .y = 100 },
+        { .team_id = 2, .ship_id = 12, .x = 200, .y = 200 }
+    };
 
-    uint32_t time_actuel = get_current_timeMs();
-    uint32_t time_ecoule = 0;
+    char command[MAX_COMMAND_SIZE];
 
-    shoot_current_timeMs(&time_ecoule, time_start, time_actuel);
+    uint32_t start_time = 0;
 
-    TEST_ASSERT_GREATER_OR_EQUAL(1000, time_ecoule);
+    uint32_t current_time = 1200;
+    uint32_t elapsed_time = 0;
+
+    shoot_current_timeMs(&elapsed_time, start_time, current_time, &spaceship, spaceships, nb_spaceships, command);
+
+    TEST_ASSERT_GREATER_OR_EQUAL(1000, elapsed_time);
+    TEST_ASSERT_EQUAL_STRING("FIRE 8 0\n", command);
 }
 
 void test_shut_current_timeMs_no_1s(void)
 {
-    uint32_t time_start = get_current_timeMs();
-    while (get_current_timeMs() - time_start > 1000)
-        ;
-    uint32_t time_actuel = get_current_timeMs();
-    uint32_t time_ecoule = 0;
+    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .x = 100, .y = 100 };
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
+        { .team_id = 2, .ship_id = 10, .x = 100, .y = 100 },
+        { .team_id = 2, .ship_id = 12, .x = 200, .y = 200 }
+    };
 
-    shoot_current_timeMs(&time_ecoule, time_start, time_actuel);
+    char command[MAX_COMMAND_SIZE] = "";
 
-    TEST_ASSERT_LESS_THAN(1000, time_ecoule);
+    uint32_t start_time = 0;
+    uint32_t current_time = 700;
+    uint32_t elapsed_time = 0;
+
+    shoot_current_timeMs(&elapsed_time, start_time, current_time, &spaceship, spaceships, nb_spaceships, command);
+
+    TEST_ASSERT_LESS_THAN(1000, elapsed_time);
+    TEST_ASSERT_EQUAL_STRING("", command);
 }
 
 int main(void)

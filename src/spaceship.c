@@ -1,5 +1,7 @@
 #include "spaceship.h"
+#include "commands.h"
 #include "os_manager.h"
+#include "trajectory.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -67,16 +69,19 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
 /**
  * @brief Calcule le temps écoulé si 1 seconde s'est passée.
  *
- * @param time_ecoule Pointeur vers la variable qui recevra le temps écoulé en ms.
+ * @param elapsed_time Pointeur vers la variable qui recevra le temps écoulé en ms.
  * @param time_start Temps de départ en ms.
  * @param time_actuel Temps actuel en ms.
  *
  * @return Rien.
  **/
-void shoot_current_timeMs(uint32_t* time_ecoule, uint32_t time_start, uint32_t time_actuel)
+void shoot_current_timeMs(uint32_t* elapsed_time, uint32_t start_time, uint32_t current_time, Spaceship_t* my_spaceship, Spaceship_t* spaceships, uint16_t nb_spaceships, char* commande)
 {
-    if ((time_actuel - time_start) >= 1000) {
-        *time_ecoule = time_actuel - time_start;
+    if ((current_time - start_time) >= 1000) {
+        uint16_t angle_to_enemy = get_target_angle(my_spaceship, spaceships, nb_spaceships);
+        create_fire_command(my_spaceship->ship_id, angle_to_enemy, commande);
+
+        *elapsed_time = current_time - start_time;
     }
     return;
 }
