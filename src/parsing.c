@@ -23,6 +23,10 @@ void parse_data(char* data);
  */
 void parse_response(const char* response)
 {
+    if (response == NULL || (response[0] == 'O' && response[1] == 'K' && response[2] == '\0')) {
+        return;
+    }
+
     get_mutex(parsing_mutex);
     uint16_t nb_planets_saved = nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
