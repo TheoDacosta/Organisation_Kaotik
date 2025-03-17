@@ -45,7 +45,7 @@ void test_return_base_spaceship_broken(void)
 void test_manage_spaceship_radar_follow_target(void)
 {
 
-    manage_spaceship_radar(&spaceship, &target_spaceship, 0, 0, &base, command);
+    manage_spaceship_radar(&spaceship, &target_spaceship, 0, 0, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 2000\n", command);
 }
 
