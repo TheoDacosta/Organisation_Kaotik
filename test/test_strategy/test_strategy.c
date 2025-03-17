@@ -8,6 +8,7 @@
 Spaceship_t spaceship;
 Spaceship_t target_spaceship;
 char command[MAX_COMMAND_SIZE];
+Point_t target;
 
 void setUp(void)
 {
@@ -25,6 +26,8 @@ void setUp(void)
     target_spaceship.y = 10000;
     base.x = 10000;
     base.y = 20000;
+    target.x = 20000;
+    target.y = 10000;
 }
 
 void test_return_base_spaceship_not_broken(void)
@@ -45,7 +48,7 @@ void test_return_base_spaceship_broken(void)
 void test_manage_spaceship_radar_follow_target(void)
 {
 
-    manage_spaceship_radar(&spaceship, &target_spaceship, 0, 0, command);
+    manage_spaceship_radar(&spaceship, target, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 2000\n", command);
 }
 

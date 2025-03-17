@@ -91,7 +91,8 @@ void* explorer_thread(void* argument)
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
     while (1) {
-        manage_spaceship_radar(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, command);
+        Point_t target = { args->target_spaceship->x + args->offset_x, args->target_spaceship->y + args->offset_y };
+        manage_spaceship_radar(args->my_spaceship, target, command);
         send_command(command, response);
     }
 }
