@@ -68,7 +68,7 @@ uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16
  *
  * @param spaceship Vaisseau dont on cherche la planète la plus proche.
  * @param planets Liste des planètes.
- * @return Pointeur vers la planète la plus proche.
+ * @return Pointeur vers la planète la plus proche ou NULL si aucune planète n'est trouvée.
  */
 Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets)
 {
@@ -76,7 +76,7 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
     uint16_t nearest_distance = AREA_LENGTH;
     uint16_t distance;
     for (int i = 0; i < nb_planets; i++) {
-        if (planets[i].saved == 0 && planets[i].ship_id == 0 && (planets[i].focus == 0 || planets[i].focus == spaceship->ship_id)) {
+        if (!planets[i].saved && planets[i].ship_id == -1 && (!planets[i].focus || planets[i].focus == spaceship->ship_id)) {
             distance = get_distance(spaceship->x, spaceship->y, planets[i].x, planets[i].y);
             if (distance < nearest_distance) {
                 nearest_distance = distance;
