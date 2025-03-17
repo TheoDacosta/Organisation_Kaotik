@@ -10,6 +10,8 @@ typedef void* Mutex_t;
 void os_initialisation();
 void os_start();
 
+void os_delayMs(uint32_t delay);
+
 Mutex_t create_mutex();
 void get_mutex(Mutex_t mutex);
 void release_mutex(Mutex_t mutex);

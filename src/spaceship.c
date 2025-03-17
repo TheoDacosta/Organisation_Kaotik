@@ -72,16 +72,21 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
  * @param elapsed_time Pointeur vers la variable qui recevra le temps écoulé en ms.
  * @param time_start Temps de départ en ms.
  * @param time_actuel Temps actuel en ms.
- *
- * @return Rien.
  **/
-void shoot_current_timeMs(uint32_t* elapsed_time, uint32_t start_time, uint32_t current_time, Spaceship_t* my_spaceship, Spaceship_t* spaceships, uint16_t nb_spaceships, char* commande)
+void shoot_current_timeMs(Spaceship_t* my_spaceship, Spaceship_t* spaceships, uint16_t nb_spaceships, char* commande)
 {
-    if ((current_time - start_time) >= 1000) {
+    if (can_shoot(my_spaceship)) {
         uint16_t angle_to_enemy = get_target_angle(my_spaceship, spaceships, nb_spaceships);
         create_fire_command(my_spaceship->ship_id, angle_to_enemy, commande);
-
-        *elapsed_time = current_time - start_time;
+        my_spaceship->last_shoot_time = get_current_timeMs();
     }
     return;
+}
+
+uint8_t can_shoot(Spaceship_t* spaceship)
+{
+    if ((get_current_timeMs() - spaceship->last_shoot_time) > 1000)
+        return 1;
+    else
+        return 0;
 }

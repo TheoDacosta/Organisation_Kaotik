@@ -6,5 +6,6 @@
 
 char* itoa(int value, char* str, int base); /* only base=10 and value>=0 is supported */
 void hardware_init(void);
+char* gets(char* s);
 
 #endif // HARDWARE_H_

@@ -65,45 +65,22 @@ void test_find_spaceship_found(void)
     TEST_ASSERT_EQUAL(4, found_spaceship->ship_id);
 }
 
-void test_shoot_current_timeMs(void)
+void test_can_shoot_after_long_pause()
 {
-    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .position = { .x = 100, .y = 100 } };
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
-        { .team_id = 2, .ship_id = 10, .position = { .x = 100, .y = 100 } },
-        { .team_id = 2, .ship_id = 12, .position = { .x = 200, .y = 200 } }
-    };
+    Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
 
-    char command[MAX_COMMAND_SIZE];
+    os_delayMs(1100);
 
-    uint32_t start_time = 0;
-
-    uint32_t current_time = 1200;
-    uint32_t elapsed_time = 0;
-
-    shoot_current_timeMs(&elapsed_time, start_time, current_time, &spaceship, spaceships, nb_spaceships, command);
-
-    TEST_ASSERT_GREATER_OR_EQUAL(1000, elapsed_time);
-    TEST_ASSERT_EQUAL_STRING("FIRE 8 0\n", command);
+    TEST_ASSERT_TRUE(can_shoot(&spaceship));
 }
 
-void test_shut_current_timeMs_no_1s(void)
+void test_can_not_shoot_after_short_pause()
 {
-    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .position = { .x = 100, .y = 100 } };
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
-        { .team_id = 2, .ship_id = 10, .position = { .x = 100, .y = 100 } },
-        { .team_id = 2, .ship_id = 12, .position = { .x = 200, .y = 200 } }
-    };
+    Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
 
-    char command[MAX_COMMAND_SIZE] = "";
+    os_delayMs(900);
 
-    uint32_t start_time = 0;
-    uint32_t current_time = 700;
-    uint32_t elapsed_time = 0;
-
-    shoot_current_timeMs(&elapsed_time, start_time, current_time, &spaceship, spaceships, nb_spaceships, command);
-
-    TEST_ASSERT_LESS_THAN(1000, elapsed_time);
-    TEST_ASSERT_EQUAL_STRING("", command);
+    TEST_ASSERT_FALSE(can_shoot(&spaceship));
 }
 
 int main(void)
@@ -113,7 +90,7 @@ int main(void)
     RUN_TEST(test_find_spaceship_not_found_team_id);
     RUN_TEST(test_find_spaceship_not_found_ship_id);
     RUN_TEST(test_find_spaceship_found);
-    RUN_TEST(test_shoot_current_timeMs);
-    RUN_TEST(test_shut_current_timeMs_no_1s);
+    RUN_TEST(test_can_shoot_after_long_pause);
+    RUN_TEST(test_can_not_shoot_after_short_pause);
     return UNITY_END();
 }
