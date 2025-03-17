@@ -67,10 +67,10 @@ void test_find_spaceship_found(void)
 
 void test_shoot_current_timeMs(void)
 {
-    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .x = 100, .y = 100 };
+    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .position = { .x = 100, .y = 100 } };
     Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
-        { .team_id = 2, .ship_id = 10, .x = 100, .y = 100 },
-        { .team_id = 2, .ship_id = 12, .x = 200, .y = 200 }
+        { .team_id = 2, .ship_id = 10, .position = { .x = 100, .y = 100 } },
+        { .team_id = 2, .ship_id = 12, .position = { .x = 200, .y = 200 } }
     };
 
     char command[MAX_COMMAND_SIZE];
@@ -88,10 +88,10 @@ void test_shoot_current_timeMs(void)
 
 void test_shut_current_timeMs_no_1s(void)
 {
-    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .x = 100, .y = 100 };
+    Spaceship_t spaceship = { .team_id = 0, .ship_id = 8, .position = { .x = 100, .y = 100 } };
     Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
-        { .team_id = 2, .ship_id = 10, .x = 100, .y = 100 },
-        { .team_id = 2, .ship_id = 12, .x = 200, .y = 200 }
+        { .team_id = 2, .ship_id = 10, .position = { .x = 100, .y = 100 } },
+        { .team_id = 2, .ship_id = 12, .position = { .x = 200, .y = 200 } }
     };
 
     char command[MAX_COMMAND_SIZE] = "";
