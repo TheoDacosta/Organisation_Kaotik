@@ -15,6 +15,7 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Spaceship_t* target_space
 {
     if (return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command))
         return;
+
     uint16_t angle = get_angle_to_follow(my_spaceship, target_spaceship, offset_x, offset_y);
     create_move_command(my_spaceship->ship_id, angle, MAX_EXPLORERS_SPEED, command);
 }

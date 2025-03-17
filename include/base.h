@@ -1,13 +1,9 @@
 #ifndef BASE_H
 #define BASE_H
 
-#include <stdint.h>
+#include "point.h"
 
-typedef struct {
-    uint16_t x;
-    uint16_t y;
-} Base_t;
-
+typedef Point_t Base_t;
 extern Base_t base;
 
 #endif // BASE_H
