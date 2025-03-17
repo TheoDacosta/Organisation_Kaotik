@@ -4,10 +4,6 @@
 #include "spaceship.h"
 #include "unity.h"
 
-// Définition d'un tableau statique de vaiseau pour les tests
-Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships = 0;
-
 void setUp(void)
 {
     Spaceship_t new_spaceship = { 0, 4, 10000, 11200, 0 };

@@ -4,11 +4,6 @@
 #include "trajectory.h"
 #include <unity.h>
 
-Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships = 0;
-Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets;
-
 void test_get_angle(void)
 {
 

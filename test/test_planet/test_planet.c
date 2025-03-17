@@ -2,9 +2,6 @@
 #include "unity.h"
 #include <stdlib.h>
 
-Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets;
-
 void setUp(void)
 {
     Planet_t new_planet = { 1001, 1000, 2000, 1, 0, 0 };

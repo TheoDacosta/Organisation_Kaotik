@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+Spaceship_t spaceships[NB_MAX_SPACESHIPS];
+uint16_t nb_spaceships = 0;
+
 /**
  * @brief Transforme les données reçues en informations sur un vaisseau.
  *

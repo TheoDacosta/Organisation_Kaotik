@@ -18,12 +18,6 @@ void* attacker_thread(void* argument);
 void* explorer_thread(void* argument);
 void* collector_thread(void* argument);
 
-Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets = 0;
-Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships = 0;
-Base_t base;
-
 typedef struct {
     Spaceship_t* my_spaceship;
     Spaceship_t* target_spaceship;
@@ -107,7 +101,7 @@ void* collector_thread(void* argument)
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
     while (1) {
-        manage_spaceship_collector(args->my_spaceship, planets, nb_planets, &base, command);
+        manage_spaceship_collector(args->my_spaceship, command);
         send_command(command, response);
     }
 }

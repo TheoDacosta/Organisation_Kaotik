@@ -5,13 +5,8 @@
 #include "unity.h"
 #include <stdlib.h>
 
-Planet_t planets[NB_MAX_PLANETS];
-uint16_t nb_planets;
-Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-uint16_t nb_spaceships;
 Spaceship_t spaceship;
 Spaceship_t target_spaceship;
-Base_t base = { .x = 10000, .y = 20000 };
 char command[MAX_COMMAND_SIZE];
 
 void setUp(void)
@@ -28,11 +23,13 @@ void setUp(void)
     target_spaceship.broken = 0;
     target_spaceship.x = 20000;
     target_spaceship.y = 10000;
+    base.x = 10000;
+    base.y = 20000;
 }
 
 void test_return_base_spaceship_not_broken(void)
 {
-    uint8_t result = return_to_base(&spaceship, &base, 1000, command);
+    uint8_t result = return_to_base(&spaceship, 1000, command);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL_STRING("", command);
 }
@@ -40,7 +37,7 @@ void test_return_base_spaceship_not_broken(void)
 void test_return_base_spaceship_broken(void)
 {
     spaceship.broken = 1;
-    uint8_t result = return_to_base(&spaceship, &base, 1000, command);
+    uint8_t result = return_to_base(&spaceship, 1000, command);
     TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", command);
 }
@@ -73,13 +70,13 @@ void test_manage_spaceship_collector_go_to_planet(void)
     Planet_t planet = { .planet_id = 1, .x = 0, .y = 10000, .ship_id = 0, .saved = 0 };
     planets[0] = planet;
     nb_planets = 1;
-    manage_spaceship_collector(&spaceship, planets, nb_planets, &base, command);
+    manage_spaceship_collector(&spaceship, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 180 1000\n", command);
 }
 
 void test_manage_spaceship_collector_no_planet(void)
 {
-    manage_spaceship_collector(&spaceship, planets, nb_planets, &base, command);
+    manage_spaceship_collector(&spaceship, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
 }
 

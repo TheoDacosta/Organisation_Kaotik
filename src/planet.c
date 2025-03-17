@@ -1,6 +1,9 @@
 #include "planet.h"
 #include <stdlib.h>
 
+Planet_t planets[NB_MAX_PLANETS];
+uint16_t nb_planets = 0;
+
 /**
  * @brief Transforme les données reçues en informations sur une planète.
  *

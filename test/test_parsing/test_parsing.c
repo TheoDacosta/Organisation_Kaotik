@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include <unity.h>
 
-Base_t base;
-
 void setUp(void)
 {
     parsing_mutex = create_mutex();
