@@ -31,7 +31,7 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
         angle = get_angle(my_spaceship->x, my_spaceship->y, nearest_planet->x, nearest_planet->y);
     create_move_command(my_spaceship->ship_id, angle, MAX_COLLECTORS_SPEED, command);
 }
-void manage_spaceship_attacker(Spaceship_t* my_spaceship, Spaceship_t* target_spaceship, uint16_t offset_x, uint16_t offset_y, Spaceship_t* spaceships, uint16_t nb_spaceships, Base_t* base, char* command)
+void manage_spaceship_attacker(Spaceship_t* my_spaceship, Spaceship_t* target_spaceship, uint16_t offset_x, uint16_t offset_y, char* command)
 {
     if (return_to_base(my_spaceship, MAX_ATTACKERS_SPEED, command))
         return;

@@ -52,7 +52,7 @@ void test_manage_spaceship_radar_follow_target(void)
 void test_manage_spaceship_attacker_follow_target(void)
 {
 
-    manage_spaceship_attacker(&spaceship, &target_spaceship, 0, 0, spaceships, nb_spaceships, &base, command);
+    manage_spaceship_attacker(&spaceship, &target_spaceship, 0, 0, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 3000\n", command);
 }
 
@@ -61,7 +61,7 @@ void test_manage_spaceship_attacker_fire(void)
     Spaceship_t enemy_spaceship = { .team_id = 1, .ship_id = 3, .broken = 0, .x = 8000, .y = 10000 };
     spaceships[0] = enemy_spaceship;
     nb_spaceships = 1;
-    manage_spaceship_attacker(&spaceship, &target_spaceship, 0, 0, spaceships, nb_spaceships, &base, command);
+    manage_spaceship_attacker(&spaceship, &target_spaceship, 0, 0, command);
     TEST_ASSERT_EQUAL_STRING("FIRE 1 180\n", command);
 }
 
