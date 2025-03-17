@@ -34,11 +34,11 @@ void parse_spaceship(char* data)
     while (*data != ' ')
         data++;
     data++;
-    new_spaceship->x = (uint16_t)atoi(data);
+    new_spaceship->position.x = (uint16_t)atoi(data);
     while (*data != ' ')
         data++;
     data++;
-    new_spaceship->y = (uint16_t)atoi(data);
+    new_spaceship->position.y = (uint16_t)atoi(data);
     while (*data != ' ')
         data++;
     data++;

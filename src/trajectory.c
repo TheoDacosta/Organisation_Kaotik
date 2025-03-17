@@ -6,16 +6,14 @@
 /**
  * @brief Calcule l'angle de déplacement entre deux points.
  *
- * @param start_x  Coordonnée X de départ.
- * @param start_y  Coordonnée Y de départ.
- * @param end_x    Coordonnée X d'arrivée.
- * @param end_y    Coordonnée Y d'arrivée.
+ * @param start_point  Coordonnées de départ.
+ * @param end_point    Coordonnées d'arrivée.
  * @return         Angle de déplacement en degrés (0-359).
  **/
-uint16_t get_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y)
+uint16_t get_angle(Point_t start_point, Point_t end_point)
 {
-    float dx = (float)(end_x - start_x);
-    float dy = (float)(end_y - start_y);
+    float dx = (float)(end_point.x - start_point.x);
+    float dy = (float)(end_point.y - start_point.y);
 
     // Calcul de l'angle en radians
     float angle_rad = atan2(dy, dx);
@@ -33,15 +31,13 @@ uint16_t get_angle(uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t 
 /**
  * @brief Calcule la distance entre deux points dans un plan 2D.
  *
- * @param pos_x1  Coordonnée X du premier point.
- * @param pos_y1  Coordonnée Y du premier point.
- * @param pos_x2  Coordonnée X du deuxième point.
- * @param pos_y2  Coordonnée Y du deuxième point.
+ * @param point1  Coordonnées du premier point.
+ * @param point2  Coordonnées du deuxième point.
  * @return    La distance entre les deux points.
  */
-uint16_t get_distance(uint16_t pos_x1, uint16_t pos_y1, uint16_t pos_x2, uint16_t pos_y2)
+uint16_t get_distance(Point_t point1, Point_t point2)
 {
-    return (uint16_t)sqrt(pow(pos_x2 - pos_x1, 2) + pow(pos_y2 - pos_y1, 2));
+    return (uint16_t)sqrt(pow(point2.x - point1.x, 2) + pow(point2.y - point1.y, 2));
 }
 /**
  * @brief Retourne l'angle vers le premier vaisseau ennemi à portée.
@@ -54,10 +50,10 @@ uint16_t get_distance(uint16_t pos_x1, uint16_t pos_y1, uint16_t pos_x2, uint16_
 uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
 {
     for (uint8_t i = 0; i < nb_spaceships; i++) {
-        uint16_t distance = get_distance(attacker->x, attacker->y, spaceships[i].x, spaceships[i].y);
+        uint16_t distance = get_distance(attacker->position, spaceships[i].position);
 
         if (spaceships[i].team_id != 0 && distance <= FIRE_RANGE) {
-            return get_angle(attacker->x, attacker->y, spaceships[i].x, spaceships[i].y);
+            return get_angle(attacker->position, spaceships[i].position);
         }
     }
     return NOT_FOUND;
@@ -77,7 +73,7 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
     uint16_t distance;
     for (int i = 0; i < nb_planets; i++) {
         if (!planets[i].saved && planets[i].ship_id == -1 && (!planets[i].focus || planets[i].focus == spaceship->ship_id)) {
-            distance = get_distance(spaceship->x, spaceship->y, planets[i].x, planets[i].y);
+            distance = get_distance(spaceship->position, planets[i].position);
             if (distance < nearest_distance) {
                 nearest_distance = distance;
                 nearest_planet = &planets[i]; // Mise à jour correcte du pointeur
@@ -88,22 +84,23 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
 }
 
 /**
- * @brief Calcule la position du vaisseau suiveur avec un décalage par rapport au leader.
+ * @brief Calcule la position d'un point avec décalage.
  *
- * @param follower Vaisseau suiveur.
- * @param target   Vaisseau à suivre.
- * @param offset_x Décalage en X par rapport au leader.
- * @param offset_y Décalage en Y par rapport au leader.
+ * @param point   Point à décaler.
+ * @param offset_x Décalage en X.
+ * @param offset_y Décalage en Y.
+ * @param point_with_offset Pointeur vers le point avec décalage.
  */
-uint16_t get_angle_to_follow(Spaceship_t* follower, Spaceship_t* target, int16_t offset_x, int16_t offset_y)
+void get_point_with_offset(Point_t point, int16_t offset_x, int16_t offset_y, Point_t* point_with_offset)
 {
-    int16_t x_target = target->x + offset_x;
-    int16_t y_target = target->y + offset_y;
-    if (x_target < 0 || x_target > AREA_LENGTH) {
-        x_target = target->x;
+    int16_t x_point = point.x + offset_x;
+    int16_t y_point = point.y + offset_y;
+    if (x_point < 0 || x_point > AREA_LENGTH) {
+        x_point = point.x;
     }
-    if (y_target < 0 || y_target > AREA_LENGTH) {
-        y_target = target->y;
+    if (y_point < 0 || y_point > AREA_LENGTH) {
+        y_point = point.y;
     }
-    return get_angle(follower->x, follower->y, (uint16_t)x_target, (uint16_t)y_target);
+    point_with_offset->x = (uint16_t)x_point;
+    point_with_offset->y = (uint16_t)y_point;
 }

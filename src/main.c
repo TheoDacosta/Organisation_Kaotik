@@ -80,9 +80,10 @@ void* attacker_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
+    Point_t* target;
     while (1) {
-        Point_t target = { args->target_spaceship->x + args->offset_x, args->target_spaceship->y + args->offset_y };
-        manage_spaceship_attacker(args->my_spaceship, target, command);
+        get_point_with_offset(args->target_spaceship->position, args->offset_x, args->offset_y, target);
+        manage_spaceship_attacker(args->my_spaceship, *target, command);
         send_command(command, response);
     }
 }
@@ -91,9 +92,10 @@ void* explorer_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
+    Point_t* target;
     while (1) {
-        Point_t target = { args->target_spaceship->x + args->offset_x, args->target_spaceship->y + args->offset_y };
-        manage_spaceship_radar(args->my_spaceship, target, command);
+        get_point_with_offset(args->target_spaceship->position, args->offset_x, args->offset_y, target);
+        manage_spaceship_radar(args->my_spaceship, *target, command);
         send_command(command, response);
         parse_response(response);
     }

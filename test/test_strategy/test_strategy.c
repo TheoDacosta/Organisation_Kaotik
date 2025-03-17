@@ -17,13 +17,13 @@ void setUp(void)
     spaceship.team_id = 0;
     spaceship.ship_id = 1;
     spaceship.broken = 0;
-    spaceship.x = 10000;
-    spaceship.y = 10000;
+    spaceship.position.x = 10000;
+    spaceship.position.y = 10000;
     target_spaceship.team_id = 1;
     target_spaceship.ship_id = 3;
     target_spaceship.broken = 0;
-    target_spaceship.x = 20000;
-    target_spaceship.y = 10000;
+    target_spaceship.position.x = 20000;
+    target_spaceship.position.y = 10000;
     base.x = 10000;
     base.y = 20000;
     target.x = 20000;
@@ -61,7 +61,7 @@ void test_manage_spaceship_attacker_follow_target(void)
 
 void test_manage_spaceship_attacker_fire(void)
 {
-    Spaceship_t enemy_spaceship = { .team_id = 1, .ship_id = 3, .broken = 0, .x = 8000, .y = 10000 };
+    Spaceship_t enemy_spaceship = { .team_id = 1, .ship_id = 3, .broken = 0, .position = { .x = 8000, .y = 10000 } };
     spaceships[0] = enemy_spaceship;
     nb_spaceships = 1;
     manage_spaceship_attacker(&spaceship, target, command);
@@ -70,7 +70,7 @@ void test_manage_spaceship_attacker_fire(void)
 
 void test_manage_spaceship_collector_go_to_planet(void)
 {
-    Planet_t planet = { .planet_id = 1, .x = 0, .y = 10000, .ship_id = -1, .saved = 0 };
+    Planet_t planet = { .planet_id = 1, .position = { .x = 0, .y = 10000 }, .ship_id = -1, .saved = 0 };
     planets[0] = planet;
     nb_planets = 1;
     manage_spaceship_collector(&spaceship, command);

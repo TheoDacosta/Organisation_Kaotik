@@ -5,7 +5,7 @@
 uint8_t return_to_base(Spaceship_t* spaceship, uint16_t speed, char* command)
 {
     if (spaceship->broken) {
-        uint16_t angle = get_angle(spaceship->x, spaceship->y, base.x, base.y);
+        uint16_t angle = get_angle(spaceship->position, base);
         create_move_command(spaceship->ship_id, angle, speed, command);
     }
     return spaceship->broken;
@@ -15,7 +15,7 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* com
 {
     if (return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command))
         return;
-    uint16_t angle = get_angle(my_spaceship->x, my_spaceship->y, target.x, target.y);
+    uint16_t angle = get_angle(my_spaceship->position, target);
     create_move_command(my_spaceship->ship_id, angle, MAX_EXPLORERS_SPEED, command);
 }
 
@@ -28,7 +28,7 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
     if (nearest_planet == NULL)
         angle = 0;
     else
-        angle = get_angle(my_spaceship->x, my_spaceship->y, nearest_planet->x, nearest_planet->y);
+        angle = get_angle(my_spaceship->position, nearest_planet->position);
     create_move_command(my_spaceship->ship_id, angle, MAX_COLLECTORS_SPEED, command);
 }
 void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* command)
@@ -40,6 +40,6 @@ void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* 
         create_fire_command(my_spaceship->ship_id, angle_to_enemy, command);
         return;
     }
-    uint16_t angle = get_angle(my_spaceship->x, my_spaceship->y, target.x, target.y);
+    uint16_t angle = get_angle(my_spaceship->position, target);
     create_move_command(my_spaceship->ship_id, angle, MAX_ATTACKERS_SPEED, command);
 }

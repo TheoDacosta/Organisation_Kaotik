@@ -4,36 +4,50 @@
 #include "trajectory.h"
 #include <unity.h>
 
-void test_get_angle(void)
+void test_get_angle_right(void)
 {
+    Point_t start_point = { .x = 100, .y = 100 };
+    Point_t end_point = { .x = 200, .y = 100 };
+    TEST_ASSERT_EQUAL(0, get_angle(start_point, end_point));
+}
 
-    // Test 1 : Déplacement vers la droite (0°)
-    TEST_ASSERT_EQUAL(0, get_angle(100, 100, 200, 100));
+void test_get_angle_up(void)
+{
+    Point_t start_point = { .x = 100, .y = 100 };
+    Point_t end_point = { .x = 100, .y = 200 };
+    TEST_ASSERT_EQUAL(90, get_angle(start_point, end_point));
+}
 
-    // Test 2 : Déplacement vers le haut (90°)
-    TEST_ASSERT_EQUAL(90, get_angle(100, 100, 100, 200));
-
-    // Test 3 : Déplacement en diagonale (315°)
-    TEST_ASSERT_EQUAL(315, get_angle(100, 200, 200, 100));
+void test_get_angle_up_right(void)
+{
+    Point_t start_point = { .x = 100, .y = 200 };
+    Point_t end_point = { .x = 200, .y = 100 };
+    TEST_ASSERT_EQUAL(315, get_angle(start_point, end_point));
 }
 
 void test_calculate_distance_0(void)
 {
-    uint16_t result = get_distance(2, 3, 2, 3);
+    Point_t point1 = { .x = 2, .y = 3 };
+    Point_t point2 = { .x = 2, .y = 3 };
+    uint16_t result = get_distance(point1, point2);
 
     TEST_ASSERT_EQUAL(0, result);
 }
 
 void test_calculate_distance_positive_substract_result(void)
 {
-    uint16_t result = get_distance(10, 10, 20, 20);
+    Point_t point1 = { .x = 10, .y = 10 };
+    Point_t point2 = { .x = 20, .y = 20 };
+    uint16_t result = get_distance(point1, point2);
 
     TEST_ASSERT_EQUAL(14, result);
 }
 
 void test_calculate_distance_negative_substract_result(void)
 {
-    uint16_t result = get_distance(20, 20, 10, 10);
+    Point_t point1 = { .x = 20, .y = 20 };
+    Point_t point2 = { .x = 10, .y = 10 };
+    uint16_t result = get_distance(point1, point2);
 
     TEST_ASSERT_EQUAL(14, result);
 }
@@ -41,12 +55,12 @@ void test_calculate_distance_negative_substract_result(void)
 void test_get_target_angle(void)
 {
 
-    Spaceship_t defender = { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 };
+    Spaceship_t defender = { .team_id = 0, .ship_id = 9, .position = { .x = 11, .y = 12 } };
 
     Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
-        { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 },
-        { .team_id = 4, .ship_id = 2, .x = 50, .y = 100 },
-        { .team_id = 5, .ship_id = 1, .x = 70, .y = 150 }
+        { .team_id = 0, .ship_id = 9, .position = { .x = 11, .y = 12 } },
+        { .team_id = 4, .ship_id = 2, .position = { .x = 50, .y = 100 } },
+        { .team_id = 5, .ship_id = 1, .position = { .x = 70, .y = 150 } }
     };
 
     uint16_t target_angle = get_target_angle(&defender, spaceships, 3);
@@ -57,12 +71,12 @@ void test_find_nearest_planet(void)
 {
     // Création des données de test
     Planet_t planets[NB_MAX_PLANETS] = {
-        { .planet_id = 12, .saved = 0, .focus = 0, .x = 30, .y = 400, .ship_id = -1 },
-        { .planet_id = 13, .saved = 0, .focus = 0, .x = 0, .y = 0, .ship_id = -1 },
-        { .planet_id = 14, .saved = 0, .focus = 0, .x = 30, .y = 40, .ship_id = -1 }
+        { .planet_id = 12, .saved = 0, .focus = 0, .position = { .x = 30, .y = 400 }, .ship_id = -1 },
+        { .planet_id = 13, .saved = 0, .focus = 0, .position = { .x = 0, .y = 0 }, .ship_id = -1 },
+        { .planet_id = 14, .saved = 0, .focus = 0, .position = { .x = 30, .y = 40 }, .ship_id = -1 }
     };
 
-    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
+    Spaceship_t spaceship = { .position = { .x = 40, .y = 500 }, .team_id = 0, .ship_id = 2, .broken = 0 };
 
     Planet_t* nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
@@ -74,12 +88,12 @@ void test_find_nearest_unsaved_planet(void)
 {
     // Création des données de test
     Planet_t planets[NB_MAX_PLANETS] = {
-        { .planet_id = 12, .saved = 1, .focus = 0, .x = 30, .y = 400, .ship_id = -1 },
-        { .planet_id = 13, .saved = 0, .focus = 0, .x = 0, .y = 0, .ship_id = -1 },
-        { .planet_id = 14, .saved = 0, .focus = 0, .x = 30, .y = 40, .ship_id = -1 }
+        { .planet_id = 12, .saved = 1, .focus = 0, .position = { .x = 30, .y = 400 }, .ship_id = -1 },
+        { .planet_id = 13, .saved = 0, .focus = 0, .position = { .x = 0, .y = 0 }, .ship_id = -1 },
+        { .planet_id = 14, .saved = 0, .focus = 0, .position = { .x = 30, .y = 40 }, .ship_id = -1 }
     };
 
-    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
+    Spaceship_t spaceship = { .position = { .x = 40, .y = 500 }, .team_id = 0, .ship_id = 2, .broken = 0 };
 
     Planet_t* nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
@@ -91,12 +105,12 @@ void test_find_nearest_untaken_planet(void)
 {
     // Création des données de test
     Planet_t planets[NB_MAX_PLANETS] = {
-        { .planet_id = 12, .saved = 0, .focus = 0, .x = 30, .y = 400, .ship_id = 5 },
-        { .planet_id = 13, .saved = 0, .focus = 0, .x = 0, .y = 0, .ship_id = -1 },
-        { .planet_id = 14, .saved = 0, .focus = 0, .x = 30, .y = 40, .ship_id = -1 }
+        { .planet_id = 12, .saved = 0, .focus = 0, .position = { .x = 30, .y = 400 }, .ship_id = 5 },
+        { .planet_id = 13, .saved = 0, .focus = 0, .position = { .x = 0, .y = 0 }, .ship_id = -1 },
+        { .planet_id = 14, .saved = 0, .focus = 0, .position = { .x = 30, .y = 40 }, .ship_id = -1 }
     };
 
-    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
+    Spaceship_t spaceship = { .position = { .x = 40, .y = 500 }, .team_id = 0, .ship_id = 2, .broken = 0 };
 
     Planet_t* nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
@@ -108,12 +122,12 @@ void test_find_nearest_unfocus_planet(void)
 {
     // Création des données de test
     Planet_t planets[NB_MAX_PLANETS] = {
-        { .planet_id = 12, .saved = 0, .focus = 3, .x = 30, .y = 400, .ship_id = -1 },
-        { .planet_id = 13, .saved = 0, .focus = 0, .x = 0, .y = 0, .ship_id = -1 },
-        { .planet_id = 14, .saved = 0, .focus = 2, .x = 30, .y = 40, .ship_id = -1 }
+        { .planet_id = 12, .saved = 0, .focus = 3, .position = { .x = 30, .y = 400 }, .ship_id = -1 },
+        { .planet_id = 13, .saved = 0, .focus = 0, .position = { .x = 0, .y = 0 }, .ship_id = -1 },
+        { .planet_id = 14, .saved = 0, .focus = 2, .position = { .x = 30, .y = 40 }, .ship_id = -1 }
     };
 
-    Spaceship_t spaceship = { .x = 40, .y = 500, .team_id = 0, .ship_id = 2, .broken = 0 };
+    Spaceship_t spaceship = { .position = { .x = 40, .y = 500 }, .team_id = 0, .ship_id = 2, .broken = 0 };
 
     Planet_t* nearest_planet = find_nearest_planet(&spaceship, planets, 3);
 
@@ -121,39 +135,29 @@ void test_find_nearest_unfocus_planet(void)
     TEST_ASSERT_EQUAL(14, nearest_planet->planet_id); // Le plus proche est la planète 14 (30, 40)
 }
 
-void test_get_angle_to_follow(void)
+void test_get_point_with_offset(void)
 {
-    Planet_t point = { .x = 1500, .y = 1100 };
-
-    Spaceship_t spaceship[NB_MAX_SPACESHIPS] = {
-        { .team_id = 1, .ship_id = 8, .x = 10, .y = 10 }, // Leader
-        { .team_id = 1, .ship_id = 9, .x = 20, .y = 10 }, // Follower
-    };
-
-    // Décalage souhaité pour le vaisseau suiveur
-    int16_t offset_x = 10;
-    int16_t offset_y = 0;
-
-    uint16_t angle_leader = get_angle(spaceship[0].x, spaceship[0].y, point.x, point.y);
-    uint16_t angle_follower = get_angle_to_follow(&spaceship[0], &spaceship[1], offset_x, offset_y);
-
+    Point_t point = { .x = 10, .y = 20 };
+    Point_t point_with_offset;
+    get_point_with_offset(point, 5, 10, &point_with_offset);
     // Vérifications
-    TEST_ASSERT_EQUAL(36, angle_leader);
-    TEST_ASSERT_EQUAL(0, angle_follower);
+    TEST_ASSERT_EQUAL(15, point_with_offset.x);
+    TEST_ASSERT_EQUAL(30, point_with_offset.y);
 }
 
 int main(void)
 {
     UNITY_BEGIN();
+    RUN_TEST(test_get_angle_right);
+    RUN_TEST(test_get_angle_up);
+    RUN_TEST(test_get_angle_up_right);
+    RUN_TEST(test_calculate_distance_0);
     RUN_TEST(test_calculate_distance_positive_substract_result);
     RUN_TEST(test_calculate_distance_negative_substract_result);
-    RUN_TEST(test_get_target_angle);
-    // RUN_TEST(test_deplacement_vaisseau_broken);
-    // RUN_TEST(test_deplacement_vaisseau_suit_autre);
     RUN_TEST(test_find_nearest_planet);
     RUN_TEST(test_find_nearest_unsaved_planet);
     RUN_TEST(test_find_nearest_untaken_planet);
     RUN_TEST(test_find_nearest_unfocus_planet);
-    RUN_TEST(test_get_angle_to_follow);
+    RUN_TEST(test_get_point_with_offset);
     return UNITY_END();
 }

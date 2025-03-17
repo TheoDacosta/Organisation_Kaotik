@@ -26,11 +26,11 @@ void parse_planet(char* data)
     while (*data != ' ')
         data++;
     data++;
-    planet->x = atoi(data);
+    planet->position.x = atoi(data);
     while (*data != ' ')
         data++;
     data++;
-    planet->y = atoi(data);
+    planet->position.y = atoi(data);
     while (*data != ' ')
         data++;
     data++;

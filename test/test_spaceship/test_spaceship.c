@@ -6,7 +6,7 @@
 
 void setUp(void)
 {
-    Spaceship_t new_spaceship = { 0, 4, 10000, 11200, 0 };
+    Spaceship_t new_spaceship = { .team_id = 0, .ship_id = 4, .position = { .x = 3217, .y = 4321 }, .broken = 0 };
     spaceships[0] = new_spaceship;
     nb_spaceships++;
 }
@@ -30,8 +30,8 @@ void test_parse_spaceship(void)
     TEST_ASSERT_EQUAL(1, new_ship->team_id);
     TEST_ASSERT_EQUAL(31, new_ship->ship_id);
 
-    TEST_ASSERT_EQUAL(3217, new_ship->x);
-    TEST_ASSERT_EQUAL(4321, new_ship->y);
+    TEST_ASSERT_EQUAL(3217, new_ship->position.x);
+    TEST_ASSERT_EQUAL(4321, new_ship->position.y);
 
     TEST_ASSERT_EQUAL(0, new_ship->broken);
 }

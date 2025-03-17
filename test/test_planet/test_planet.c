@@ -4,7 +4,7 @@
 
 void setUp(void)
 {
-    Planet_t new_planet = { 1001, 1000, 2000, 1, 0, 0 };
+    Planet_t new_planet = { .planet_id = 1001, .saved = 0, .focus = 0, .position = { .x = 3217, .y = 4321 }, .ship_id = -1 };
     planets[0] = new_planet;
     nb_planets++;
 }
@@ -28,8 +28,8 @@ void test_parse_planet(void)
     Planet_t* new_planet = &planets[nb_planets - 1];
     TEST_ASSERT_EQUAL(12, new_planet->planet_id);
 
-    TEST_ASSERT_EQUAL(3217, new_planet->x);
-    TEST_ASSERT_EQUAL(4321, new_planet->y);
+    TEST_ASSERT_EQUAL(3217, new_planet->position.x);
+    TEST_ASSERT_EQUAL(4321, new_planet->position.y);
 
     TEST_ASSERT_EQUAL(31, new_planet->ship_id);
     TEST_ASSERT_EQUAL(0, new_planet->saved);
