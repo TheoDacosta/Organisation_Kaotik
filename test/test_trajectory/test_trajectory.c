@@ -46,7 +46,7 @@ void test_calculate_distance_negative_substract_result(void)
 void test_get_target_angle(void)
 {
 
-    Spaceship_t Defender = { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 };
+    Spaceship_t defender = { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 };
 
     Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
         { .team_id = 0, .ship_id = 9, .x = 11, .y = 12 },
@@ -54,7 +54,7 @@ void test_get_target_angle(void)
         { .team_id = 5, .ship_id = 1, .x = 70, .y = 150 }
     };
 
-    uint16_t target_angle = get_target_angle(Defender, spaceships, 3);
+    uint16_t target_angle = get_target_angle(&defender, spaceships, 3);
     TEST_ASSERT_EQUAL(66, target_angle);
 }
 
@@ -148,7 +148,7 @@ void test_get_angle_to_follow(void)
     int16_t offset_y = 0;
 
     uint16_t angle_leader = get_angle(spaceship[0].x, spaceship[0].y, point.x, point.y);
-    uint16_t angle_follower = get_angle_to_follow(spaceship[0], spaceship[1], offset_x, offset_y);
+    uint16_t angle_follower = get_angle_to_follow(&spaceship[0], &spaceship[1], offset_x, offset_y);
 
     // Vérifications
     TEST_ASSERT_EQUAL(36, angle_leader);

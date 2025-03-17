@@ -9,7 +9,6 @@
 #include "spaceship.h"
 
 #define MAX_DATA_SIZE 100
-#define MAX_RESPONSE_SIZE 1000
 
 enum DataType_t {
     DATA_TYPE_PLANET = 'P',

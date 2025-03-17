@@ -51,13 +51,13 @@ uint16_t get_distance(uint16_t pos_x1, uint16_t pos_y1, uint16_t pos_x2, uint16_
  * @param nb_spaceships Nombre de vaisseaux.
  * @return Angle vers la cible si trouvée, sinon NOT_FOUND.
  **/
-uint16_t get_target_angle(Spaceship_t attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
+uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
 {
     for (uint8_t i = 0; i < nb_spaceships; i++) {
-        uint16_t distance = get_distance(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
+        uint16_t distance = get_distance(attacker->x, attacker->y, spaceships[i].x, spaceships[i].y);
 
         if (spaceships[i].team_id != 0 && distance <= FIRE_RANGE) {
-            return get_angle(attacker.x, attacker.y, spaceships[i].x, spaceships[i].y);
+            return get_angle(attacker->x, attacker->y, spaceships[i].x, spaceships[i].y);
         }
     }
     return NOT_FOUND;
@@ -80,13 +80,12 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
             distance = get_distance(spaceship->x, spaceship->y, planets[i].x, planets[i].y);
             if (distance < nearest_distance) {
                 nearest_distance = distance;
-                nearest_planet = &planets[i];  // Mise à jour correcte du pointeur
+                nearest_planet = &planets[i]; // Mise à jour correcte du pointeur
             }
         }
     }
     return nearest_planet;
 }
-
 
 /**
  * @brief Calcule la position du vaisseau suiveur avec un décalage par rapport au leader.
@@ -96,15 +95,15 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
  * @param offset_x Décalage en X par rapport au leader.
  * @param offset_y Décalage en Y par rapport au leader.
  */
-uint16_t get_angle_to_follow(Spaceship_t follower, Spaceship_t target, int16_t offset_x, int16_t offset_y)
+uint16_t get_angle_to_follow(Spaceship_t* follower, Spaceship_t* target, int16_t offset_x, int16_t offset_y)
 {
-    int16_t x_target = target.x + offset_x;
-    int16_t y_target = target.y + offset_y;
+    int16_t x_target = target->x + offset_x;
+    int16_t y_target = target->y + offset_y;
     if (x_target < 0 || x_target > AREA_LENGTH) {
-        x_target = target.x;
+        x_target = target->x;
     }
     if (y_target < 0 || y_target > AREA_LENGTH) {
-        y_target = target.y;
+        y_target = target->y;
     }
-    return get_angle(follower.x, follower.y, (uint16_t)x_target, (uint16_t)y_target);
+    return get_angle(follower->x, follower->y, (uint16_t)x_target, (uint16_t)y_target);
 }

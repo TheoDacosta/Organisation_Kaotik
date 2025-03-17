@@ -15,7 +15,7 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Spaceship_t* target_space
 {
     if (return_to_base(my_spaceship, base, MAX_EXPLORERS_SPEED, command))
         return;
-    uint16_t angle = get_angle_to_follow(*my_spaceship, *target_spaceship, offset_x, offset_y);
+    uint16_t angle = get_angle_to_follow(my_spaceship, target_spaceship, offset_x, offset_y);
     create_move_command(my_spaceship->ship_id, angle, MAX_EXPLORERS_SPEED, command);
 }
 
@@ -35,11 +35,11 @@ void manage_spaceship_attacker(Spaceship_t* my_spaceship, Spaceship_t* target_sp
 {
     if (return_to_base(my_spaceship, base, MAX_ATTACKERS_SPEED, command))
         return;
-    uint16_t angle_to_enemy = get_target_angle(*my_spaceship, spaceships, nb_spaceships);
+    uint16_t angle_to_enemy = get_target_angle(my_spaceship, spaceships, nb_spaceships);
     if (angle_to_enemy != NOT_FOUND) {
         create_fire_command(my_spaceship->ship_id, angle_to_enemy, command);
         return;
     }
-    uint16_t angle = get_angle_to_follow(*my_spaceship, *target_spaceship, offset_x, offset_y);
+    uint16_t angle = get_angle_to_follow(my_spaceship, target_spaceship, offset_x, offset_y);
     create_move_command(my_spaceship->ship_id, angle, MAX_ATTACKERS_SPEED, command);
 }

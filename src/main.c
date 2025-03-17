@@ -12,6 +12,8 @@
 #include "strategy.h"
 #include "trajectory.h"
 
+extern char response[MAX_RESPONSE_SIZE];
+
 void* attacker_thread(void* argument);
 void* explorer_thread(void* argument);
 void* collector_thread(void* argument);
@@ -40,7 +42,6 @@ uint8_t is_start(char* response)
 int main(void)
 {
     char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
 
     hardware_init();
     os_initialisation();
@@ -85,7 +86,6 @@ void* attacker_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
     while (1) {
         manage_spaceship_attacker(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, spaceships, nb_spaceships, &base, command);
         send_command(command, response);
@@ -96,7 +96,6 @@ void* explorer_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
     while (1) {
         manage_spaceship_radar(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, &base, command);
         send_command(command, response);
@@ -107,7 +106,6 @@ void* collector_thread(void* argument)
 {
     ThreadArgs_t* args = (ThreadArgs_t*)argument;
     char command[MAX_COMMAND_SIZE];
-    char response[MAX_RESPONSE_SIZE];
     while (1) {
         manage_spaceship_collector(args->my_spaceship, planets, nb_planets, &base, command);
         send_command(command, response);

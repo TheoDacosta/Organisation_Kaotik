@@ -4,6 +4,7 @@
 #include "trajectory.h"
 
 Mutex_t serial_mutex;
+char response[MAX_RESPONSE_SIZE];
 
 void build_command(char* dest, char* command, int args[], int nb_args)
 {
@@ -35,9 +36,8 @@ void build_command(char* dest, char* command, int args[], int nb_args)
  */
 void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* buffer)
 {
-    char* command = "MOVE";
     int args[] = { ship_id, angle, speed };
-    build_command(buffer, command, args, 3);
+    build_command(buffer, "MOVE", args, 3);
 }
 
 /**
@@ -49,9 +49,8 @@ void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* b
  */
 void create_fire_command(int8_t ship_id, uint16_t angle, char* buffer)
 {
-    char* command = "FIRE";
     int args[] = { ship_id, angle };
-    build_command(buffer, command, args, 2);
+    build_command(buffer, "FIRE", args, 2);
 }
 
 /**
@@ -62,9 +61,8 @@ void create_fire_command(int8_t ship_id, uint16_t angle, char* buffer)
  */
 void create_radar_command(int8_t ship_id, char* buffer)
 {
-    char* command = "RADAR";
     int args[] = { ship_id };
-    build_command(buffer, command, args, 1);
+    build_command(buffer, "RADAR", args, 1);
 }
 
 /**

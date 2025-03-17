@@ -15,6 +15,6 @@ typedef struct {
 
 void parse_planet(char* data, Planet_t* planet, uint16_t* nb_planets);
 
-Planet_t* find_planet(uint16_t planet_id, Planet_t* planet, uint16_t nb_planets);
+Planet_t* find_planet(uint16_t planet_id, Planet_t* planets, uint16_t nb_planets);
 
 #endif // PLANET_H
