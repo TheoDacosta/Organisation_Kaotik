@@ -13,10 +13,17 @@ uint8_t return_to_base(Spaceship_t* spaceship, uint16_t speed, char* command)
 
 void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* command)
 {
+    static uint32_t counter = 0;
     if (return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command))
         return;
+    if (counter % 5 == 0) {
+        create_radar_command(my_spaceship->ship_id, command);
+        counter++;
+        return;
+    }
     uint16_t angle = get_angle(my_spaceship->position, target);
     create_move_command(my_spaceship->ship_id, angle, MAX_EXPLORERS_SPEED, command);
+    counter++;
 }
 
 void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
