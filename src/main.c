@@ -48,7 +48,7 @@ int main(void)
     // Premier scan radar pour initialiser les données
     create_radar_command(6, command);
     send_command(command, response);
-    parse_response(response, planets, &nb_planets, spaceships, &nb_spaceships, &base);
+    parse_response(response);
 
     Spaceship_t* collector_1_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
     Spaceship_t* collector_2_spaceship = find_spaceship(0, 9, spaceships, nb_spaceships);
@@ -95,6 +95,7 @@ void* explorer_thread(void* argument)
         Point_t target = { args->target_spaceship->x + args->offset_x, args->target_spaceship->y + args->offset_y };
         manage_spaceship_radar(args->my_spaceship, target, command);
         send_command(command, response);
+        parse_response(response);
     }
 }
 

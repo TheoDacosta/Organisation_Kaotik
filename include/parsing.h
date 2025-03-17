@@ -18,6 +18,6 @@ enum DataType_t {
 
 extern Mutex_t parsing_mutex;
 
-void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);
+void parse_response(const char* response);
 
 #endif // PARSING_H

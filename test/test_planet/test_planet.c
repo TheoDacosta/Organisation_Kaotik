@@ -20,7 +20,7 @@ void test_parse_planet(void)
     char* data = "P 12 3217 4321 31 0";
 
     // Act
-    parse_planet(data, planets, &nb_planets);
+    parse_planet(data);
 
     // Assert
     TEST_ASSERT_EQUAL(2, nb_planets);

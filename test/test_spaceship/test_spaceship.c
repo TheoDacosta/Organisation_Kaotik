@@ -21,7 +21,7 @@ void test_parse_spaceship(void)
     // Exemple de donnee de test
     char* data = "S 1 31 3217 4321 0";
 
-    parse_spaceship(data, spaceships, &nb_spaceships);
+    parse_spaceship(data);
 
     // Vérification que le vaisseau a été ajoutée
     TEST_ASSERT_EQUAL(2, nb_spaceships);

@@ -17,7 +17,7 @@ typedef struct
 extern Spaceship_t spaceships[NB_MAX_SPACESHIPS];
 extern uint16_t nb_spaceships;
 
-void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceships);
+void parse_spaceship(char* data);
 
 Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships, uint16_t nb_spaceships);
 

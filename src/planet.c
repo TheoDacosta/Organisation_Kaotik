@@ -11,14 +11,14 @@ uint16_t nb_planets = 0;
  * @param planets     Liste des planètes existantes.
  * @param nb_planets  Pointeur vers le nombre total de planètes (sera mis à jour si une nouvelle planète est ajoutée).
  **/
-void parse_planet(char* data, Planet_t* planets, uint16_t* nb_planets)
+void parse_planet(char* data)
 {
-    if (data == NULL || planets == NULL || nb_planets == NULL) {
+    if (data == NULL) {
         while (1)
             ;
     }
 
-    Planet_t* planet = &planets[*nb_planets];
+    Planet_t* planet = &planets[nb_planets];
 
     data++; // Ignore le premier caractère (type de données)
     data++; // Ignore l'espace
@@ -40,7 +40,7 @@ void parse_planet(char* data, Planet_t* planets, uint16_t* nb_planets)
     data++;
     planet->saved = atoi(data);
 
-    (*nb_planets)++;
+    nb_planets++;
 }
 
 /**

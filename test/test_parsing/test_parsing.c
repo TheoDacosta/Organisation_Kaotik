@@ -9,12 +9,8 @@ void setUp(void)
 
 void test_parsing()
 {
-    Planet_t planets[NB_MAX_PLANETS];
-    uint16_t nb_planets = 0;
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-    uint16_t nb_spaceships = 0;
 
-    parse_response("P 12 3217 4321 31 0,S 1 31 3217 4321 0,B 3217 4321", planets, &nb_planets, spaceships, &nb_spaceships, &base);
+    parse_response("P 12 3217 4321 31 0,S 1 31 3217 4321 0,B 3217 4321");
 
     TEST_ASSERT_EQUAL(1, nb_planets);
     TEST_ASSERT_EQUAL(12, planets[0].planet_id);
@@ -36,16 +32,12 @@ void test_parsing()
 
 void test_parsing_keep_focus()
 {
-    Planet_t planets[NB_MAX_PLANETS] = {
-        { .planet_id = 12, .saved = 0, .x = 30, .y = 400, .focus = 1 },
-        { .planet_id = 13, .saved = 0, .x = 0, .y = 0, .focus = 0 },
-        { .planet_id = 14, .saved = 0, .x = 30, .y = 40 }
-    };
-    uint16_t nb_planets = 3;
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS];
-    uint16_t nb_spaceships = 0;
+    planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .x = 30, .y = 400, .focus = 1 };
+    planets[1] = (Planet_t) { .planet_id = 13, .saved = 0, .x = 0, .y = 0, .focus = 0 };
+    planets[2] = (Planet_t) { .planet_id = 14, .saved = 0, .x = 30, .y = 40 };
+    nb_planets = 3;
 
-    parse_response("P 12 3217 4321 31 0,S 1 31 3217 4321 0,B 3217 4321", planets, &nb_planets, spaceships, &nb_spaceships, &base);
+    parse_response("P 12 3217 4321 31 0,S 1 31 3217 4321 0,B 3217 4321");
 
     TEST_ASSERT_EQUAL(1, nb_planets);
     TEST_ASSERT_EQUAL(12, planets[0].planet_id);

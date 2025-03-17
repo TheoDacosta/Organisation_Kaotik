@@ -15,14 +15,14 @@ uint16_t nb_spaceships = 0;
  * @param spaceships   Liste des vaisseaux existants.
  * @param nb_spaceships Pointeur sur le nombre total de vaisseaux (mis à jour si un nouveau vaisseau est ajouté).
  **/
-void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceships)
+void parse_spaceship(char* data)
 {
-    if (data == NULL || spaceships == NULL || nb_spaceships == NULL) {
+    if (data == NULL) {
         while (1)
             ;
     }
 
-    Spaceship_t* new_spaceship = &spaceships[*nb_spaceships];
+    Spaceship_t* new_spaceship = &spaceships[nb_spaceships];
 
     data++; // Ignore le premier caractère (type de données)
     data++; // Ignore l'espace
@@ -44,7 +44,7 @@ void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceship
     data++;
     new_spaceship->broken = (uint8_t)atoi(data);
 
-    (*nb_spaceships)++;
+    nb_spaceships++;
 }
 
 /**

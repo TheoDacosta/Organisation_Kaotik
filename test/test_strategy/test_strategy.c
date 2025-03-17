@@ -70,7 +70,7 @@ void test_manage_spaceship_attacker_fire(void)
 
 void test_manage_spaceship_collector_go_to_planet(void)
 {
-    Planet_t planet = { .planet_id = 1, .x = 0, .y = 10000, .ship_id = 0, .saved = 0 };
+    Planet_t planet = { .planet_id = 1, .x = 0, .y = 10000, .ship_id = -1, .saved = 0 };
     planets[0] = planet;
     nb_planets = 1;
     manage_spaceship_collector(&spaceship, command);
