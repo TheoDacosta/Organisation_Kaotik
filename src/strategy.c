@@ -13,7 +13,6 @@ uint8_t return_to_base(Spaceship_t* spaceship, uint16_t speed, char* command)
 
 void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* command)
 {
-    static uint32_t counter = 0;
     if (return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command))
         return;
     if (can_scan(my_spaceship)) {
