@@ -82,12 +82,13 @@ int main(void)
 void* attacker_thread(void* argument)
 {
     const ThreadArgs_t* args = (const ThreadArgs_t*)argument;
-    char command[MAX_COMMAND_SIZE] = "MOVE 6 6 6\n";
+    char command[MAX_COMMAND_SIZE] = { 0 };
     while (1) {
         if (args->my_spaceship->ship_id <= 0 || args->my_spaceship->ship_id > MAX_SHIP_ID) {
             while (1)
                 ;
         }
+        create_move_command(args->my_spaceship->ship_id, 0, MAX_ATTACKERS_SPEED, command);
         send_command(command);
     }
 }

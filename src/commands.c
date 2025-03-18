@@ -53,7 +53,7 @@ void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* b
             ;
     }
     int args[] = { ship_id, angle, speed };
-    // build_command(buffer, "MOVE", args, 3);
+    build_command(buffer, "MOVE", args, 3);
 }
 
 /**
