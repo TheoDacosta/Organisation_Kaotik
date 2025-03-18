@@ -1,3 +1,4 @@
+#include "commands.h"
 #include "os_manager.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -83,6 +84,82 @@ void init_socket(struct sockaddr_in serv_addr, uint16_t port)
     printf("Connected to the server successfully\n");
 }
 
+uint16_t len(const char* str)
+{
+    uint16_t length = 0;
+    while (*str != '\0') {
+        length++;
+        str++;
+    }
+    return length;
+}
+
+void str_copy(const char* src, char* dest)
+{
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+}
+
+void add_endline(const char* str, char* str_result)
+{
+    while (*str != '\0') {
+        *str_result = *str;
+        str_result++;
+        str++;
+    }
+    *str_result = '\n';
+    str_result++;
+    *str_result = '\0';
+}
+
+void send_message(const char* message)
+{
+    char message_with_endline[MAX_COMMAND_SIZE];
+    if (message[len(message) - 1] != '\n') {
+        add_endline(message, message_with_endline);
+    } else {
+        str_copy(message, message_with_endline);
+    }
+    printf("sending: %s\n", message_with_endline);
+    if (send(sockfd, message_with_endline, len(message_with_endline), 0) < 0) {
+        printf("Unable to send message\n");
+        exit(1);
+    }
+}
+
+void receive_message(char* response)
+{
+    if (recv(sockfd, response, MAX_RESPONSE_SIZE, 0) < 0) {
+        printf("Unable to receive message\n");
+        exit(1);
+    }
+    char* original_response = response;
+    char c = -1;
+    while (c != '\n') {
+        c = *response;
+        response++;
+    }
+    *response = '\0';
+    response = original_response;
+    printf("received: %s\n", response);
+}
+
+int puts(const char* str)
+{
+    send_message(str);
+    return 0;
+}
+
+char* gets(char* str)
+{
+    receive_message(str);
+    return str;
+}
+
 uint8_t is_localhost(char* address)
 {
     char* localhost = "localhost";
@@ -105,7 +182,7 @@ void os_initialisation(int argc, char* argv[])
     char* address = argv[1];
     if (is_localhost(address)) {
         char* localhost = "127.0.0.1";
-        address = localhost;
+        str_copy(localhost, address);
     }
     if (inet_addr(address) == INADDR_NONE) {
         printf("Invalid address\n");
@@ -117,6 +194,14 @@ void os_initialisation(int argc, char* argv[])
     struct sockaddr_in serv_addr;
     init_address(&serv_addr, address, port);
     init_socket(serv_addr, port);
+    // Start the game
+    send_message(team_name);
+    char response[MAX_RESPONSE_SIZE] = { 0 };
+    receive_message(response);
+    if (!(response[0] == 'O' && response[1] == 'K' && response[2] == '\n' && response[3] == '\0')) {
+        printf("Connection refused by the server");
+        exit(1);
+    }
 }
 void os_start()
 {

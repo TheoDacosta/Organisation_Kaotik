@@ -16,12 +16,14 @@ platformio run --environment native
 sleep 1
 
 # start the server
-python -m space_collector.game.server -p $PORT --timeout 10 &
+python -m space_collector.game.server -p $PORT --timeout 5 &
 
 sleep 3
 
 # start the viewer / on small screens : --small-window
 python -m space_collector.viewer -p $PORT --small-window &
 
+sleep 3
+
 # Launch the native code with communication parameters
-./.pio/build/native/program "localhost" $PORT "OK"
+./.pio/build/native/program "localhost" $PORT "OrganisationKaotik"
