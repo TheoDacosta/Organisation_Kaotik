@@ -1,9 +1,14 @@
 #include "os_manager.h"
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <pthread.h>
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
+
+static int sockfd;
 
 Mutex_t create_mutex()
 {
@@ -57,14 +62,61 @@ uint32_t get_current_timeMs()
     return (clock() * 1000) / CLOCKS_PER_SEC;
 }
 
-void os_initialisation(int argc, char* argv[])
+void init_address(struct sockaddr_in* serv_addr, char* addr, uint16_t port)
 {
-    if (argc != 3) {
-        printf("Usage: %s <port> <team_name>\n", argv[0]);
+    serv_addr->sin_family = AF_INET;
+    serv_addr->sin_addr.s_addr = inet_addr(addr);
+    serv_addr->sin_port = htons(port);
+}
+
+void init_socket(struct sockaddr_in serv_addr, uint16_t port)
+{
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        printf("Unable to create socket\n");
         exit(1);
     }
-    uint16_t port = (uint16_t)atoi(argv[1]);
-    char* team_name = argv[2];
+    if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+        printf("Unable to connect to the server\n");
+        exit(1);
+    }
+    printf("Connected to the server successfully\n");
+}
+
+uint8_t is_localhost(char* address)
+{
+    char* localhost = "localhost";
+    while (*address != '\0' && *localhost != '\0') {
+        if (*address != *localhost) {
+            return 0;
+        }
+        address++;
+        localhost++;
+    }
+    return *address == *localhost;
+}
+
+void os_initialisation(int argc, char* argv[])
+{
+    if (argc != 4) {
+        printf("Usage: %s <address> <port> <team_name>\n", argv[0]);
+        exit(1);
+    }
+    char* address = argv[1];
+    if (is_localhost(address)) {
+        char* localhost = "127.0.0.1";
+        address = localhost;
+    }
+    if (inet_addr(address) == INADDR_NONE) {
+        printf("Invalid address\n");
+        exit(1);
+    }
+    uint16_t port = (uint16_t)atoi(argv[2]);
+    char* team_name = argv[3];
+
+    struct sockaddr_in serv_addr;
+    init_address(&serv_addr, address, port);
+    init_socket(serv_addr, port);
 }
 void os_start()
 {

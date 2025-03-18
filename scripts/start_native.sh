@@ -24,4 +24,4 @@ sleep 3
 python -m space_collector.viewer -p $PORT --small-window &
 
 # Launch the native code with communication parameters
-./.pio/build/native/program $PORT "OK"
+./.pio/build/native/program "localhost" $PORT "OK"
