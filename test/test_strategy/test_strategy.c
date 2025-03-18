@@ -83,6 +83,14 @@ void test_manage_spaceship_collector_no_planet(void)
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
 }
 
+void test_manage_strategy_can_scan(void)
+{
+    Spaceship_t spaceship = { .team_id = 0, .ship_id = 1, .position = { .x = 10000, .y = 10000 }, .broken = 0, .last_radar_time = 20000 };
+    nb_spaceships = 1;
+    manage_spaceship_radar(&spaceship, target, command);
+    TEST_ASSERT_EQUAL_STRING("RADAR 1\n", command);
+}
+
 void test_mannage_planet_collect_return_to_base(void)
 {
     Planet_t planet = { .planet_id = 1, .position = { .x = 0, .y = 10000 }, .ship_id = 1, .saved = 0 };
@@ -103,6 +111,7 @@ int main(void)
     RUN_TEST(test_manage_spaceship_collector_go_to_planet);
     RUN_TEST(test_manage_spaceship_collector_no_planet);
     RUN_TEST(test_mannage_planet_collect_return_to_base);
+    RUN_TEST(test_manage_strategy_can_scan);
 
     return UNITY_END();
 }
