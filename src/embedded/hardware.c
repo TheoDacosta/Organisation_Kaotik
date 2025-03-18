@@ -74,10 +74,6 @@ char* gets(char* str)
 
 char* itoa(int value, char* str, int base)
 {
-    str[0] = '6';
-    str[1] = 0;
-    return str;
-
     if (base != 10 || value < 0) {
         while (1)
             ;
