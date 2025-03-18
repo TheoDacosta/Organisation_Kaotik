@@ -57,8 +57,14 @@ uint32_t get_current_timeMs()
     return (clock() * 1000) / CLOCKS_PER_SEC;
 }
 
-void os_initialisation()
+void os_initialisation(int argc, char* argv[])
 {
+    if (argc != 3) {
+        printf("Usage: %s <port> <team_name>\n", argv[0]);
+        exit(1);
+    }
+    uint16_t port = (uint16_t)atoi(argv[1]);
+    char* team_name = argv[2];
 }
 void os_start()
 {

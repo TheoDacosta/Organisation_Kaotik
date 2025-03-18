@@ -7,7 +7,7 @@ typedef void* Thread_t;
 typedef void* (*ThreadFunc_t)(void* argument);
 typedef void* Mutex_t;
 
-void os_initialisation();
+void os_initialisation(int argc, char* argv[]);
 void os_start();
 
 void os_delayMs(uint32_t delay);

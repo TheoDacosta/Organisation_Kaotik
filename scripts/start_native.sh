@@ -11,7 +11,7 @@ SERIAL=$(grep serial conf.properties | cut -d'=' -f2)
 python -m space_collector.killall &
 
 # Build the native code
-platformio run --environment native &
+platformio run --environment native
 
 sleep 1
 
@@ -24,4 +24,4 @@ sleep 3
 python -m space_collector.viewer -p $PORT --small-window &
 
 # Launch the native code with communication parameters
-./.pio/build/native/program --port $PORT --team-name "OK"
+./.pio/build/native/program $PORT "OK"
