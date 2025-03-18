@@ -8,13 +8,6 @@ char response[MAX_RESPONSE_SIZE];
 
 void build_command(char* dest, char* command, int args[], int nb_args)
 {
-    char* poete = "MOVE 6 6 6\n";
-    while (*poete != '\0') {
-        *dest++ = *poete++;
-    }
-    *dest = '\0';
-    return;
-
     char* origin_dest = dest;
     while (*command != '\0') {
         *dest = *command;
