@@ -101,7 +101,8 @@ void os_initialisation(int argc, char* argv[])
     }
     uint16_t port = (uint16_t)atoi(argv[2]);
     char* team_name = argv[3];
-
+    // init socket and logger
+    init_logger(team_name);
     struct sockaddr_in serv_addr;
     init_address(&serv_addr, address, port);
     init_socket(serv_addr, port);

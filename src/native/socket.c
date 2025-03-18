@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 static int sockfd;
+static FILE* logfile;
 
 void init_address(struct sockaddr_in* serv_addr, char* addr, uint16_t port)
 {
@@ -17,14 +18,25 @@ void init_socket(struct sockaddr_in serv_addr, uint16_t port)
 {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
-        printf("Unable to create socket\n");
+        perror("Unable to create socket\n");
         exit(1);
     }
     if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-        printf("Unable to connect to the server\n");
+        perror("Unable to connect to the server\n");
         exit(1);
     }
     printf("Connected to the server successfully\n");
+}
+
+void init_logger(char* team_name)
+{
+    char filename[MAX_FILENAME_SIZE] = "client_";
+    str_copy(team_name, &filename[len(filename)]);
+    str_copy(".log", &filename[len(filename)]);
+    logfile = fopen(filename, "w");
+    if (logfile == NULL) {
+        perror("Unable to open the logging file\n");
+    }
 }
 
 void send_message(const char* message)
@@ -35,9 +47,11 @@ void send_message(const char* message)
     } else {
         str_copy(message, message_with_endline);
     }
-    printf("sending: %s\n", message_with_endline);
+    if (logfile != NULL)
+        fprintf(logfile, "sending: %s", message_with_endline);
+    printf("sending: %s", message_with_endline);
     if (send(sockfd, message_with_endline, len(message_with_endline), 0) < 0) {
-        printf("Unable to send message\n");
+        perror("Unable to send message\n");
         exit(1);
     }
 }
@@ -45,7 +59,7 @@ void send_message(const char* message)
 void receive_message(char* response)
 {
     if (recv(sockfd, response, MAX_RESPONSE_SIZE, 0) < 0) {
-        printf("Unable to receive message\n");
+        perror("Unable to receive message\n");
         exit(1);
     }
     char* original_response = response;
@@ -56,7 +70,9 @@ void receive_message(char* response)
     }
     *response = '\0';
     response = original_response;
-    printf("received: %s\n", response);
+    if (logfile != NULL)
+        fprintf(logfile, "received: %s", response);
+    printf("received: %s", response);
 }
 
 uint8_t is_address_valid(const char* address)
