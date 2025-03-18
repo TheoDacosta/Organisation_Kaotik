@@ -7,7 +7,9 @@
 void setUp(void)
 {
     Spaceship_t new_spaceship = { .team_id = 0, .ship_id = 4, .position = { .x = 3217, .y = 4321 }, .broken = 0 };
+    Spaceship_t new_spaceship_current = { .last_shoot_time = get_current_timeMs() };
     spaceships[0] = new_spaceship;
+    spaceships[1] = new_spaceship_current;
     nb_spaceships++;
 }
 
@@ -67,20 +69,20 @@ void test_find_spaceship_found(void)
 
 void test_can_shoot_after_long_pause()
 {
-    Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
+    // Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
 
     os_delayMs(1100);
 
-    TEST_ASSERT_TRUE(can_shoot(&spaceship));
+    TEST_ASSERT_TRUE(can_shoot(&spaceships[1]));
 }
 
 void test_can_not_shoot_after_short_pause()
 {
-    Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
+    // Spaceship_t spaceship = { .last_shoot_time = get_current_timeMs() };
 
     os_delayMs(900);
 
-    TEST_ASSERT_FALSE(can_shoot(&spaceship));
+    TEST_ASSERT_FALSE(can_shoot(&spaceships[1]));
 }
 
 int main(void)
