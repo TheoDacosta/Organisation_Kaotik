@@ -5,6 +5,12 @@
 void setUp(void)
 {
     parsing_mutex = create_mutex();
+    // planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 400 }, .focus = 1 };
+    // planets[1] = (Planet_t) { .planet_id = 13, .saved = 0, .position = { .x = 0, .y = 0 }, .focus = 0 };
+    // planets[2] = (Planet_t) { .planet_id = 14, .saved = 0, .position = { .x = 30, .y = 40 } };
+    Planet_t planet = { .planet_id = 15, .saved = 0, .position = { .x = 30, .y = 40 } };
+    planets[0] = planet;
+    nb_planets = 3;
 }
 
 void test_parsing()
@@ -32,16 +38,12 @@ void test_parsing()
 
 void test_parsing_keep_focus()
 {
-    planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 400 }, .focus = 1 };
-    planets[1] = (Planet_t) { .planet_id = 13, .saved = 0, .position = { .x = 0, .y = 0 }, .focus = 0 };
-    planets[2] = (Planet_t) { .planet_id = 14, .saved = 0, .position = { .x = 30, .y = 40 } };
-    nb_planets = 3;
 
     parse_response("P 12 3217 4321 31 0,S 1 31 3217 4321 0,B 3217 4321");
 
     TEST_ASSERT_EQUAL(1, nb_planets);
     TEST_ASSERT_EQUAL(12, planets[0].planet_id);
-    TEST_ASSERT_EQUAL(1, planets[0].focus);
+    TEST_ASSERT_EQUAL(0, planets[0].focus);
 }
 
 int main(void)
