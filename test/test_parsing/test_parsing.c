@@ -5,9 +5,6 @@
 void setUp(void)
 {
     parsing_mutex = create_mutex();
-    // planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 400 }, .focus = 1 };
-    // planets[1] = (Planet_t) { .planet_id = 13, .saved = 0, .position = { .x = 0, .y = 0 }, .focus = 0 };
-    // planets[2] = (Planet_t) { .planet_id = 14, .saved = 0, .position = { .x = 30, .y = 40 } };
     Planet_t planet = { .planet_id = 15, .saved = 0, .position = { .x = 30, .y = 40 } };
     planets[0] = planet;
     nb_planets = 3;
