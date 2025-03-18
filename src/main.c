@@ -51,12 +51,6 @@ int main(void)
 
     // Premier scan radar pour initialiser les données
     send_command("RADAR 6\n");
-    char* fake_response = "P 57072 12000 12000 -1 0,P 34576 9000 5000 -1 0,P 31252 16000 9000 -1 0,P 11964 10000 4000 -1 0,P 59321 11000 13000 -1 0,S 0 1 10000 0 0,S 0 2 11500 0 0,S 0 3 8500 0 0,S 0 4 13000 0 0,S 0 5 7000 0 0,S 0 6 14500 0 0,S 0 7 5500 0 0,S 0 8 16000 0 0,S 0 9 4000 0 0,B 10000 0";
-    uint16_t i;
-    for (i = 0; fake_response[i] != '\0'; i++) {
-        response[i] = fake_response[i];
-    }
-    response[i] = '\0';
     parse_response(planets, &nb_planets, spaceships, &nb_spaceships, &base);
 
     Spaceship_t* collector_1_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
