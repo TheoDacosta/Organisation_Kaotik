@@ -16,9 +16,14 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* com
     static uint32_t counter = 0;
     if (return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command))
         return;
-    if (counter % 5 == 0) {
+    // if (counter % 5 == 0) {
+    //     create_radar_command(my_spaceship->ship_id, command);
+    //     counter++;
+    //     return;
+    // }
+    if (can_scan(my_spaceship)) {
         create_radar_command(my_spaceship->ship_id, command);
-        counter++;
+        my_spaceship->last_radar_time = get_current_timeMs();
         return;
     }
     uint16_t angle = get_angle(my_spaceship->position, target);

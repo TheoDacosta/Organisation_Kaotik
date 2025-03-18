@@ -13,6 +13,7 @@ typedef struct
     Point_t position;
     uint8_t broken; // 0 ou 1
     uint32_t last_shoot_time;
+    uint32_t last_radar_time;
 } Spaceship_t;
 
 extern Spaceship_t spaceships[NB_MAX_SPACESHIPS];
@@ -26,4 +27,6 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
 void shoot_current_timeMs(Spaceship_t* my_spaceship, char* commande);
 
 uint8_t can_shoot();
+
+uint8_t can_scan(Spaceship_t* my_spaceship);
 #endif // SPACESHIP_H

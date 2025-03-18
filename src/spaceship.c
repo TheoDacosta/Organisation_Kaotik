@@ -90,3 +90,12 @@ uint8_t can_shoot(Spaceship_t* spaceship)
     else
         return 0;
 }
+
+uint8_t can_scan(Spaceship_t* spaceship)
+{
+    if ((get_current_timeMs() - spaceship->last_radar_time) > 1000) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
