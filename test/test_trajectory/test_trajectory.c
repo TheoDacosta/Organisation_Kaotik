@@ -57,13 +57,18 @@ void test_get_target_angle(void)
 
     Spaceship_t defender = { .team_id = 0, .ship_id = 9, .position = { .x = 11, .y = 12 } };
 
-    Spaceship_t spaceships[NB_MAX_SPACESHIPS] = {
+    Spaceship_t wanted_spaceships[NB_MAX_SPACESHIPS] = {
         { .team_id = 0, .ship_id = 9, .position = { .x = 11, .y = 12 } },
         { .team_id = 4, .ship_id = 2, .position = { .x = 50, .y = 100 } },
         { .team_id = 5, .ship_id = 1, .position = { .x = 70, .y = 150 } }
     };
 
-    uint16_t target_angle = get_target_angle(&defender, spaceships, 3);
+    spaceships[0] = wanted_spaceships[0];
+    spaceships[1] = wanted_spaceships[1];
+    spaceships[2] = wanted_spaceships[2];
+
+    nb_spaceships = 3;
+    uint16_t target_angle = get_target_angle(&defender);
     TEST_ASSERT_EQUAL(66, target_angle);
 }
 

@@ -26,7 +26,7 @@ uint16_t get_distance(Point_t point1, Point_t point2);
 void determine_target_planets(Spaceship_t collector1, Spaceship_t collector2,
     Planet_t* planets, uint16_t nb_planets, Planet_t* target_planet1, Planet_t* target_planet2);
 
-uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16_t nb_spaceships);
+uint16_t get_target_angle(Spaceship_t* attacker);
 
 Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets);
 

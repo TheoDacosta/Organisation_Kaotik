@@ -47,7 +47,7 @@ uint16_t get_distance(Point_t point1, Point_t point2)
  * @param nb_spaceships Nombre de vaisseaux.
  * @return Angle vers la cible si trouvée, sinon NOT_FOUND.
  **/
-uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
+uint16_t get_target_angle(Spaceship_t* attacker)
 {
     for (uint8_t i = 0; i < nb_spaceships; i++) {
         uint16_t distance = get_distance(attacker->position, spaceships[i].position);

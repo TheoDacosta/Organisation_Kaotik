@@ -76,7 +76,7 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
 void shoot_current_timeMs(Spaceship_t* my_spaceship, char* commande)
 {
     if (can_shoot(my_spaceship)) {
-        uint16_t angle_to_enemy = get_target_angle(my_spaceship, spaceships, nb_spaceships);
+        uint16_t angle_to_enemy = get_target_angle(my_spaceship);
         create_fire_command(my_spaceship->ship_id, angle_to_enemy, commande);
         my_spaceship->last_shoot_time = get_current_timeMs();
     }

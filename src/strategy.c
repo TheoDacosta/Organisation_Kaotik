@@ -42,7 +42,7 @@ void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* 
 {
     if (return_to_base(my_spaceship, MAX_ATTACKERS_SPEED, command))
         return;
-    uint16_t angle_to_enemy = get_target_angle(my_spaceship, spaceships, nb_spaceships);
+    uint16_t angle_to_enemy = get_target_angle(my_spaceship);
     if (angle_to_enemy != NOT_FOUND) {
         create_fire_command(my_spaceship->ship_id, angle_to_enemy, command);
         my_spaceship->last_shoot_time = get_current_timeMs();
