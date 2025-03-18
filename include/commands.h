@@ -19,12 +19,13 @@
 #define FIRE_RANGE 5000
 
 extern Mutex_t serial_mutex;
+extern Mutex_t response_mutex;
 extern char response[MAX_RESPONSE_SIZE];
 
 void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* buffer);
 void create_fire_command(int8_t ship_id, uint16_t angle, char* buffer);
 void create_radar_command(int8_t ship_id, char* buffer);
 
-void send_command(char* command, char* response);
+void send_command(char* command);
 
 #endif // COMMANDS_H

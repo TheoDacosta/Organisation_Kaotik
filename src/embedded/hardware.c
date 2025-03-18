@@ -6,7 +6,7 @@ static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void Error_Handler(void);
-#define UART_RECEIVE_TIMEOUT (100) // ms
+#define UART_RECEIVE_TIMEOUT (1000) // ms
 
 void hardware_init(void)
 {
@@ -71,6 +71,10 @@ char* gets(char* str)
 
 char* itoa(int value, char* str, int base)
 {
+    str[0] = '6';
+    str[1] = 0;
+    return str;
+
     if (base != 10 || value < 0) {
         while (1)
             ;

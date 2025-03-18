@@ -4,10 +4,19 @@
 #include "trajectory.h"
 
 Mutex_t serial_mutex;
+Mutex_t response_mutex;
 char response[MAX_RESPONSE_SIZE];
 
 void build_command(char* dest, char* command, int args[], int nb_args)
 {
+    char* poete = "MOVE 6 6 6\n";
+    while (*poete != '\0') {
+        *dest++ = *poete++;
+    }
+    *dest = '\0';
+    return;
+
+    char* origin_dest = dest;
     while (*command != '\0') {
         *dest = *command;
         dest++;
@@ -24,6 +33,10 @@ void build_command(char* dest, char* command, int args[], int nb_args)
     *dest = '\n';
     dest++;
     *dest = '\0';
+    if (dest - origin_dest >= MAX_COMMAND_SIZE) {
+        while (1)
+            ;
+    }
 }
 
 /**
@@ -36,8 +49,12 @@ void build_command(char* dest, char* command, int args[], int nb_args)
  */
 void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* buffer)
 {
+    if (ship_id <= 0 || ship_id > MAX_SHIP_ID) {
+        while (1)
+            ;
+    }
     int args[] = { ship_id, angle, speed };
-    build_command(buffer, "MOVE", args, 3);
+    // build_command(buffer, "MOVE", args, 3);
 }
 
 /**
@@ -69,14 +86,12 @@ void create_radar_command(int8_t ship_id, char* buffer)
  * @brief Envoie une commande et récupère la réponse.
  *
  * @param command Commande à envoyer.
- * @param response Réponse à récupérer.
  */
-void send_command(char* command, char* response)
+void send_command(char* command)
 {
     if (command[0] != '\0') {
-        get_mutex(serial_mutex);
+        get_mutex(response_mutex);
         puts(command);
-        gets(response);
-        release_mutex(serial_mutex);
+        release_mutex(response_mutex);
     }
 }

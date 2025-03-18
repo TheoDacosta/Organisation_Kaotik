@@ -51,7 +51,7 @@ uint16_t get_distance(uint16_t pos_x1, uint16_t pos_y1, uint16_t pos_x2, uint16_
  * @param nb_spaceships Nombre de vaisseaux.
  * @return Angle vers la cible si trouvée, sinon NOT_FOUND.
  **/
-uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16_t nb_spaceships)
+uint16_t get_target_angle(const Spaceship_t* const attacker, const Spaceship_t* const spaceships, uint16_t nb_spaceships)
 {
     for (uint8_t i = 0; i < nb_spaceships; i++) {
         uint16_t distance = get_distance(attacker->x, attacker->y, spaceships[i].x, spaceships[i].y);
@@ -70,7 +70,7 @@ uint16_t get_target_angle(Spaceship_t* attacker, Spaceship_t* spaceships, uint16
  * @param planets Liste des planètes.
  * @return Pointeur vers la planète la plus proche.
  */
-Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets)
+Planet_t* find_nearest_planet(const Spaceship_t* const spaceship, Planet_t* planets, uint16_t nb_planets)
 {
     Planet_t* nearest_planet = NULL;
     uint16_t nearest_distance = AREA_LENGTH;
@@ -95,7 +95,7 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
  * @param offset_x Décalage en X par rapport au leader.
  * @param offset_y Décalage en Y par rapport au leader.
  */
-uint16_t get_angle_to_follow(Spaceship_t* follower, Spaceship_t* target, int16_t offset_x, int16_t offset_y)
+uint16_t get_angle_to_follow(const Spaceship_t* const follower, const Spaceship_t* const target, int16_t offset_x, int16_t offset_y)
 {
     int16_t x_target = target->x + offset_x;
     int16_t y_target = target->y + offset_y;

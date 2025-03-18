@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "commands.h"
 #include <stdlib.h>
 
 Mutex_t parsing_mutex;
@@ -10,16 +11,15 @@ void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t
 /**
  * @brief Récupération des données du jeu (planètes, vaisseaux, base).
  *
- * @param response Chaines de caractères contenant les données du jeu.
  * @param planets Liste des planètes.
  * @param nb_planets Nombre de planètes.
  * @param spaceships Liste des vaisseaux.
  * @param nb_spaceships Nombre de vaisseaux.
  * @param base Coordonnées de la base.
  */
-void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base)
+void parse_response(Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base)
 {
-    get_mutex(parsing_mutex);
+    get_mutex(response_mutex);
     uint16_t nb_planets_saved = *nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
     save_planets_data(planets, planets_saved_datas, nb_planets_saved);
@@ -43,7 +43,7 @@ void parse_response(const char* response, Planet_t* planets, uint16_t* nb_planet
     parse_data(token, planets, nb_planets, spaceships, nb_spaceships, base);
 
     restore_planets_datas(planets, *nb_planets, planets_saved_datas, nb_planets_saved);
-    release_mutex(parsing_mutex);
+    release_mutex(response_mutex);
 }
 
 /**

@@ -12,8 +12,6 @@
 #include "strategy.h"
 #include "trajectory.h"
 
-extern char response[MAX_RESPONSE_SIZE];
-
 void* attacker_thread(void* argument);
 void* explorer_thread(void* argument);
 void* collector_thread(void* argument);
@@ -25,15 +23,15 @@ uint16_t nb_spaceships = 0;
 Base_t base;
 
 typedef struct {
-    Spaceship_t* my_spaceship;
-    Spaceship_t* target_spaceship;
-    uint16_t offset_x;
-    uint16_t offset_y;
+    const Spaceship_t* const my_spaceship;
+    const Spaceship_t* const target_spaceship;
+    const int16_t offset_x;
+    const int16_t offset_y;
 } ThreadArgs_t;
 
-uint8_t is_start(char* response)
+uint8_t is_start()
 {
-    if (*response == 'S' && *(response + 1) == 'T' && *(response + 2) == 'A' && *(response + 3) == 'R' && *(response + 4) == 'T') {
+    if (response[0] == 'S' && (response[1]) == 'T' && (response[2]) == 'A' && (response[3]) == 'R' && (response[4]) == 'T') {
         return 1;
     }
     return 0;
@@ -46,15 +44,17 @@ int main(void)
     hardware_init();
     os_initialisation();
     serial_mutex = create_mutex();
+    response_mutex = create_mutex();
     parsing_mutex = create_mutex();
     // Attendre start avant de commencer
-    while (gets(response) == NULL || !is_start(response))
+    // Pas de gestion de mutexes car les threads ne sont pas encore lancés
+    while (gets(response) == NULL || !is_start())
         ;
 
     // Premier scan radar pour initialiser les données
-    create_radar_command(6, command);
-    send_command(command, response);
-    parse_response(response, planets, &nb_planets, spaceships, &nb_spaceships, &base);
+    send_command("RADAR 6\n");
+    gets(response);
+    parse_response(planets, &nb_planets, spaceships, &nb_spaceships, &base);
 
     Spaceship_t* collector_1_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
     Spaceship_t* collector_2_spaceship = find_spaceship(0, 9, spaceships, nb_spaceships);
@@ -69,14 +69,14 @@ int main(void)
     ThreadArgs_t collector2_args = { collector_2_spaceship, NULL, 0, 0 };
 
     create_thread(attacker_thread, &attacker1_args);
-    create_thread(attacker_thread, &attacker2_args);
-    create_thread(attacker_thread, &attacker3_args);
-    create_thread(attacker_thread, &attacker4_args);
-    create_thread(attacker_thread, &attacker5_args);
-    create_thread(explorer_thread, &explorer1_args);
-    create_thread(explorer_thread, &explorer2_args);
-    create_thread(collector_thread, &collector1_args);
-    create_thread(collector_thread, &collector2_args);
+    // create_thread(attacker_thread, &attacker2_args);
+    // create_thread(attacker_thread, &attacker3_args);
+    // create_thread(attacker_thread, &attacker4_args);
+    // create_thread(attacker_thread, &attacker5_args);
+    // create_thread(explorer_thread, &explorer1_args);
+    // create_thread(explorer_thread, &explorer2_args);
+    // create_thread(collector_thread, &collector1_args);
+    // create_thread(collector_thread, &collector2_args);
     os_start();
     while (1) {
     }
@@ -84,30 +84,33 @@ int main(void)
 
 void* attacker_thread(void* argument)
 {
-    ThreadArgs_t* args = (ThreadArgs_t*)argument;
-    char command[MAX_COMMAND_SIZE];
+    const ThreadArgs_t* args = (const ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE] = "MOVE 6 6 6\n";
     while (1) {
-        manage_spaceship_attacker(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, spaceships, nb_spaceships, &base, command);
-        send_command(command, response);
+        if (args->my_spaceship->ship_id <= 0 || args->my_spaceship->ship_id > MAX_SHIP_ID) {
+            while (1)
+                ;
+        }
+        send_command(command);
     }
 }
 
 void* explorer_thread(void* argument)
 {
-    ThreadArgs_t* args = (ThreadArgs_t*)argument;
-    char command[MAX_COMMAND_SIZE];
+    const ThreadArgs_t* args = (const ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE] = { 0 };
     while (1) {
         manage_spaceship_radar(args->my_spaceship, args->target_spaceship, args->offset_x, args->offset_y, &base, command);
-        send_command(command, response);
+        send_command(command);
     }
 }
 
 void* collector_thread(void* argument)
 {
-    ThreadArgs_t* args = (ThreadArgs_t*)argument;
-    char command[MAX_COMMAND_SIZE];
+    const ThreadArgs_t* args = (const ThreadArgs_t*)argument;
+    char command[MAX_COMMAND_SIZE] = { 0 };
     while (1) {
         manage_spaceship_collector(args->my_spaceship, planets, nb_planets, &base, command);
-        send_command(command, response);
+        send_command(command);
     }
 }
