@@ -39,8 +39,13 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
     Planet_t* nearest_planet = find_nearest_planet(my_spaceship, planets, nb_planets);
     if (nearest_planet == NULL)
         angle = 0;
-    else
-        angle = get_angle(my_spaceship->position, nearest_planet->position);
+    else {
+        if (nearest_planet->ship_id == my_spaceship->ship_id) {
+            angle = get_angle(my_spaceship->position, base);
+        } else {
+            angle = get_angle(my_spaceship->position, nearest_planet->position);
+        }
+    }
     create_move_command(my_spaceship->ship_id, angle, MAX_COLLECTORS_SPEED, command);
 }
 void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* command)

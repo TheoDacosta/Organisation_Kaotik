@@ -83,6 +83,15 @@ void test_manage_spaceship_collector_no_planet(void)
     TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
 }
 
+void test_mannage_planet_collect_return_to_base(void)
+{
+    Planet_t planet = { .planet_id = 1, .position = { .x = 0, .y = 10000 }, .ship_id = 1, .saved = 0 };
+    planets[0] = planet;
+    nb_planets = 1;
+    manage_spaceship_collector(&spaceship, command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -93,5 +102,7 @@ int main(void)
     RUN_TEST(test_manage_spaceship_attacker_fire);
     RUN_TEST(test_manage_spaceship_collector_go_to_planet);
     RUN_TEST(test_manage_spaceship_collector_no_planet);
+    RUN_TEST(test_mannage_planet_collect_return_to_base);
+
     return UNITY_END();
 }
