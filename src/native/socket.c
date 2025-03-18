@@ -25,7 +25,6 @@ void init_socket(struct sockaddr_in serv_addr, uint16_t port)
         perror("Unable to connect to the server\n");
         exit(1);
     }
-    printf("Connected to the server successfully\n");
 }
 
 void init_logger(char* team_name)

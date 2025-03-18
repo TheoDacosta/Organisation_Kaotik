@@ -1,3 +1,4 @@
+#include "socket.h"
 #include <stdint.h>
 #include <stdio.h>
 
@@ -35,4 +36,16 @@ char* itoa(int value, char* str, int base)
 
 void hardware_init()
 {
+}
+
+int puts(const char* str)
+{
+    send_message(str);
+    return 0;
+}
+
+char* gets(char* str)
+{
+    receive_message(str);
+    return str;
 }

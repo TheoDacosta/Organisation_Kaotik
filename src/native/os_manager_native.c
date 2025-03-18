@@ -59,18 +59,6 @@ uint32_t get_current_timeMs()
     return (clock() * 1000) / CLOCKS_PER_SEC;
 }
 
-int puts(const char* str)
-{
-    send_message(str);
-    return 0;
-}
-
-char* gets(char* str)
-{
-    receive_message(str);
-    return str;
-}
-
 uint8_t is_localhost(char* address)
 {
     char* localhost = "localhost";
@@ -107,6 +95,7 @@ void os_initialisation(int argc, char* argv[])
     init_address(&serv_addr, address, port);
     init_socket(serv_addr, port);
     // Start the game
+    send_message("0\n");
     send_message(team_name);
     char response[MAX_RESPONSE_SIZE] = { 0 };
     receive_message(response);
