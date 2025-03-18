@@ -3,7 +3,6 @@
 #include "os_manager.h"
 #include "trajectory.h"
 
-Mutex_t serial_mutex;
 Mutex_t response_mutex;
 char response[MAX_RESPONSE_SIZE];
 
@@ -90,11 +89,9 @@ void create_radar_command(int8_t ship_id, char* buffer)
 void send_command(char* command)
 {
     if (command[0] != '\0') {
-        get_mutex(serial_mutex);
         get_mutex(response_mutex);
         puts(command);
         gets(response);
         release_mutex(response_mutex);
-        release_mutex(serial_mutex);
     }
 }

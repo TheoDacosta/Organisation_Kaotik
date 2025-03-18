@@ -6,7 +6,7 @@ Base_t base;
 
 void setUp(void)
 {
-    parsing_mutex = create_mutex();
+    response_mutex = create_mutex();
 }
 
 void test_parsing()

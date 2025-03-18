@@ -2,8 +2,6 @@
 #include "commands.h"
 #include <stdlib.h>
 
-Mutex_t parsing_mutex;
-
 void save_planets_data(Planet_t* planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
 void restore_planets_datas(Planet_t* planets, uint16_t nb_planets, Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
 void parse_data(char* data, Planet_t* planets, uint16_t* nb_planets, Spaceship_t* spaceships, uint16_t* nb_spaceships, Base_t* base);

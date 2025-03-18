@@ -43,7 +43,6 @@ int main(void)
 
     hardware_init();
     os_initialisation();
-    serial_mutex = create_mutex();
     response_mutex = create_mutex();
     // Attendre start avant de commencer
     // Pas de gestion de mutexes car les threads ne sont pas encore lancés
