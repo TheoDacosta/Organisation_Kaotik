@@ -1,4 +1,5 @@
 #include "hardware.h"
+#include "commands.h"
 
 UART_HandleTypeDef huart2;
 
@@ -59,11 +60,13 @@ static char uart_read_char()
 
 char* gets(char* str)
 {
+    uint16_t nb_chars = 0;
     char* original_str = str;
     char c = -1;
-    while (c != '\n') {
+    while (c != '\n' && nb_chars < MAX_RESPONSE_SIZE - 10) {
         c = uart_read_char();
         *str++ = c;
+        nb_chars++;
     }
     *(str - 1) = 0;
     return original_str;

@@ -18,7 +18,7 @@ const osThreadAttr_t thread_attr = {
 
 const osMutexAttr_t mutex_attr = {
     "Mutex",
-    osMutexRecursive | osMutexPrioInherit,
+    osMutexPrioInherit,
     NULL,
     0U
 };
@@ -68,7 +68,11 @@ void release_mutex(Mutex_t mutex)
         while (1)
             ;
     }
-    osThreadYield(); // Permet de repasser la main à un autre thread de même priorité si existant et prêt
+    // status = osThreadYield(); // Permet de repasser la main à un autre thread de même priorité si existant et prêt
+    // if (status != osOK) {
+    //     while (1)
+    //         ;
+    // }
 }
 
 uint32_t get_current_timeMs()
