@@ -12,7 +12,7 @@ typedef void (*OsThreadFunc_t)(void* argument);
 */
 const osThreadAttr_t thread_attr = {
     .name = "Thread",
-    .stack_size = 1024,
+    .stack_size = 1536,
     .priority = (osPriority_t)osPriorityNormal,
 };
 
