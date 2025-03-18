@@ -68,10 +68,6 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
 
 /**
  * @brief Calcule le temps écoulé si 1 seconde s'est passée.
- *
- * @param elapsed_time Pointeur vers la variable qui recevra le temps écoulé en ms.
- * @param time_start Temps de départ en ms.
- * @param time_actuel Temps actuel en ms.
  **/
 void shoot(Spaceship_t* my_spaceship, char* commande)
 {
