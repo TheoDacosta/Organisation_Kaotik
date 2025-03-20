@@ -1,25 +1,16 @@
 
-# choix du port
-PORT=$(python -c "import random; print(random.randint(2000, 3000))")
-
-# Recuperation address
+# Recuperation configuration
+PORT=$(grep port conf.properties | cut -d'=' -f2)
 ADDRESS=$(grep address conf.properties | cut -d'=' -f2)
 
-# stop the server and the viewer if they are running
+# stop the viewer if he is running
 python -m space_collector.killall &
 
 # Build the native code
 platformio run --environment native
 
-sleep 1
-
-# start the server
-python -m space_collector.game.server -a $ADDRESS -p $PORT --timeout 5 &
-
-sleep 3
-
 # start the viewer / on small screens : --small-window
-python -m space_collector.viewer -p $PORT --small-window &
+python -m space_collector.viewer -a $ADDRESS -p $PORT --small-window &
 
 sleep 3
 
