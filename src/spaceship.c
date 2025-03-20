@@ -108,7 +108,8 @@ void scan(Spaceship_t* spaceship, char* command)
  */
 uint8_t can_scan(Spaceship_t* spaceship)
 {
-    return ((get_current_timeMs() - spaceship->last_radar_time) > SCAN_COOLDOWN);
+    // return ((get_current_timeMs() - spaceship->last_radar_time) > SCAN_COOLDOWN);
+    return 1;
 }
 
 /**
