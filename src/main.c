@@ -33,12 +33,12 @@ uint8_t is_start(char* response)
     return 0;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
     char command[MAX_COMMAND_SIZE];
 
     hardware_init();
-    os_initialisation();
+    os_initialisation(argc, argv);
     serial_mutex = create_mutex();
     parsing_mutex = create_mutex();
     // Attendre start avant de commencer

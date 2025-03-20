@@ -23,7 +23,7 @@ const osMutexAttr_t mutex_attr = {
     0U
 };
 
-void os_initialisation()
+void os_initialisation(int argc, char* argv[])
 {
     osKernelInitialize();
 }
