@@ -124,6 +124,9 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
             spaceships[nb_spaceships] = spaceships_parsed[i];
             nb_spaceships++;
         } else {
+            if (spaceships_parsed[i].broken) {
+                (*spaceship).planet_id = 0;
+            }
             (*spaceship).team_id = spaceships_parsed[i].team_id;
             (*spaceship).ship_id = spaceships_parsed[i].ship_id;
             (*spaceship).position.x = spaceships_parsed[i].position.x;
