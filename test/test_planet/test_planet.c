@@ -9,6 +9,21 @@ void setUp(void)
     nb_planets++;
 }
 
+void test_init_planet(void)
+{
+    Planet_t planets[NB_MAX_PLANETS];
+    init_planet(planets);
+
+    for (int i = 0; i < NB_MAX_PLANETS; i++) {
+        TEST_ASSERT_EQUAL(0, planets[i].planet_id);
+        TEST_ASSERT_EQUAL(-1, planets[i].ship_id);
+        TEST_ASSERT_EQUAL(0, planets[i].position.x);
+        TEST_ASSERT_EQUAL(0, planets[i].position.y);
+        TEST_ASSERT_EQUAL(0, planets[i].saved);
+        TEST_ASSERT_EQUAL(0, planets[i].focus);
+    }
+}
+
 void tearDown(void)
 {
     nb_planets = 0;
@@ -61,5 +76,6 @@ int main(void)
     RUN_TEST(test_find_planet_not_found);
     RUN_TEST(test_find_planet_found);
     RUN_TEST(test_parse_planet);
+    RUN_TEST(test_init_planet);
     return UNITY_END();
 }

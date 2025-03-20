@@ -59,3 +59,10 @@ Planet_t* find_planet(uint16_t planet_id, Planet_t* planets, uint16_t nb_planets
     }
     return NULL;
 }
+
+void init_planet(Planet_t planets[])
+{
+    for (int i = 0; i < NB_MAX_PLANETS; i++) {
+        planets[i] = DEFAULT_PLANET;
+    }
+}
