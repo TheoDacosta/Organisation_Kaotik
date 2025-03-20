@@ -95,14 +95,30 @@ void test_init_spaceships(void)
 
 void test_can_scan_after_long_pause()
 {
-    os_delayMs(1100);
+    os_delayMs(SCAN_COOLDOWN + 100);
     TEST_ASSERT_TRUE(can_scan(&spaceships[1]));
 }
 
 void test_can_not_scan_after_short_pause()
 {
-    os_delayMs(900);
+    os_delayMs(SCAN_COOLDOWN - 100);
     TEST_ASSERT_FALSE(can_scan(&spaceships[1]));
+}
+
+void test_shoot(void)
+{
+    char command[MAX_COMMAND_SIZE];
+    spaceships[nb_spaceships] = (Spaceship_t) { .team_id = 1, .ship_id = 4, .position = { .x = 3217, .y = 4321 }, .broken = 0 };
+    nb_spaceships++;
+    shoot(&spaceships[0], command);
+    TEST_ASSERT_EQUAL_STRING("FIRE 4 0\n", command);
+}
+
+void test_scan(void)
+{
+    char command[MAX_COMMAND_SIZE];
+    scan(&spaceships[0], command);
+    TEST_ASSERT_EQUAL_STRING("RADAR 4\n", command);
 }
 
 int main(void)
@@ -117,5 +133,7 @@ int main(void)
     RUN_TEST(test_init_spaceships);
     RUN_TEST(test_can_scan_after_long_pause);
     RUN_TEST(test_can_not_scan_after_short_pause);
+    RUN_TEST(test_shoot);
+    RUN_TEST(test_scan);
     return UNITY_END();
 }

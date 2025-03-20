@@ -41,7 +41,6 @@ void parse_response(const char* response)
     token[pos] = '\0';
     parse_data(token, planets_parsed, &nb_planets_parsed, spaceships_parsed, &nb_spaceships_parsed);
     save_datas(planets_parsed, nb_planets_parsed, spaceships_parsed, nb_spaceships_parsed);
-
     release_mutex(response_mutex);
 }
 
@@ -120,4 +119,6 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
             // On garde le dernier tir/scan courant
         }
     }
+    nb_planets = nb_planets_parsed;
+    nb_spaceships = nb_spaceships_parsed;
 }
