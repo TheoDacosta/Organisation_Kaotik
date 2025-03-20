@@ -44,11 +44,10 @@ int main(int argc, char* argv[])
     while (gets(response) == NULL || !is_start(response))
         ;
 
-    // Premier scan radar pour initialiser les données
-    init_spaceships(spaceships);
     create_radar_command(6, command);
     send_command(command, response);
     parse_response(response);
+    init_spaceships(spaceships);
 
     Spaceship_t* collector_1_spaceship = find_spaceship(0, 8, spaceships, nb_spaceships);
     Spaceship_t* collector_2_spaceship = find_spaceship(0, 9, spaceships, nb_spaceships);
