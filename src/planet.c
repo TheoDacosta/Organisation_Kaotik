@@ -59,6 +59,14 @@ Planet_t* find_planet(uint16_t planet_id)
     return NULL;
 }
 
+/**
+ * @brief Initialise un tableau de planètes avec des valeurs par défaut.
+ *
+ * Cette fonction parcourt un tableau de planètes et initialise chaque élément
+ * avec une valeur par défaut définie par la constante DEFAULT_PLANET.
+ *
+ * @param planets Tableau de planètes à initialiser.
+ */
 void init_planets(Planet_t planets[])
 {
     for (int i = 0; i < NB_MAX_PLANETS; i++) {
