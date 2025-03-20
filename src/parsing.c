@@ -96,12 +96,21 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
             planets[nb_planets] = planets_parsed[i];
             nb_planets++;
         } else {
+            // affect planet_id of spaceship if planet is taken
             if (planets_parsed[i].ship_id != -1) {
                 Spaceship_t* spaceship = find_spaceship(0, planets_parsed[i].ship_id);
                 if (spaceship != NULL) {
                     (*spaceship).planet_id = planets_parsed[i].planet_id;
                 }
             }
+            // reset planet_id of spaceship if planet is saved
+            if (planets_parsed[i].saved && (*planet).ship_id != 0) {
+                Spaceship_t* spaceship = find_spaceship(0, (*planet).ship_id);
+                if (spaceship != NULL) {
+                    (*spaceship).planet_id = 0;
+                }
+            }
+
             (*planet).planet_id = planets_parsed[i].planet_id;
             (*planet).position.x = planets_parsed[i].position.x;
             (*planet).position.y = planets_parsed[i].position.y;

@@ -76,7 +76,7 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
             distance = get_distance(spaceship->position, planets[i].position);
             if (distance < nearest_distance) {
                 nearest_distance = distance;
-                nearest_planet = &planets[i]; // Mise à jour correcte du pointeur
+                nearest_planet = &planets[i];
             }
         }
     }
