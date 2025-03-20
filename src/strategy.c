@@ -4,16 +4,14 @@
 
 void return_to_base(Spaceship_t* spaceship, uint16_t speed, char* command)
 {
-    
+
     uint16_t angle = get_angle(spaceship->position, base);
     create_move_command(spaceship->ship_id, angle, speed, command);
-   
 }
 
 void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* command)
 {
-    if (my_spaceship->broken)
-    {
+    if (my_spaceship->broken) {
         return_to_base(my_spaceship, MAX_EXPLORERS_SPEED, command);
         return;
     }
@@ -28,8 +26,7 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* com
 
 void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
 {
-    if (my_spaceship->broken)
-    {
+    if (my_spaceship->broken) {
         return_to_base(my_spaceship, MAX_COLLECTORS_SPEED, command);
         return;
     }
@@ -48,8 +45,7 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
 }
 void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* command)
 {
-    if (my_spaceship->broken)
-    {
+    if (my_spaceship->broken) {
         return_to_base(my_spaceship, MAX_ATTACKERS_SPEED, command);
         return;
     }
