@@ -3,9 +3,6 @@
 PORT=$(grep port conf.properties | cut -d'=' -f2)
 ADDRESS=$(grep address conf.properties | cut -d'=' -f2)
 TEAMNAME=$(grep teamname conf.properties | cut -d'=' -f2)
-if [ -z "$TEAMNAME"]; then
-  TEAMNAME="OrganisationKaotik"
-fi
 
 # stop the viewer if he is running
 python -m space_collector.killall &
