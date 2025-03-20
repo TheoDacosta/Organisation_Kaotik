@@ -13,6 +13,19 @@ void setUp(void)
     nb_spaceships++;
 }
 
+void test_init_spaceships(void)
+{
+    Spaceship_t spaceships[NB_MAX_SPACESHIPS];
+    init_spaceships(spaceships);
+    TEST_ASSERT_EQUAL(0, spaceships[0].team_id);
+    TEST_ASSERT_EQUAL(-1, spaceships[0].ship_id);
+    TEST_ASSERT_EQUAL(0, spaceships[0].position.x);
+    TEST_ASSERT_EQUAL(0, spaceships[0].position.y);
+    TEST_ASSERT_EQUAL(0, spaceships[0].broken);
+    TEST_ASSERT_EQUAL(0, spaceships[0].last_shoot_time);
+    TEST_ASSERT_EQUAL(0, spaceships[0].last_radar_time);
+}
+
 void tearDown(void)
 {
     nb_spaceships = 0;
@@ -94,5 +107,6 @@ int main(void)
     RUN_TEST(test_find_spaceship_found);
     RUN_TEST(test_can_shoot_after_long_pause);
     RUN_TEST(test_can_not_shoot_after_short_pause);
+    RUN_TEST(test_init_spaceships);
     return UNITY_END();
 }

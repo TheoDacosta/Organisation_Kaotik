@@ -88,3 +88,10 @@ uint8_t can_scan(Spaceship_t* spaceship)
 {
     return ((get_current_timeMs() - spaceship->last_radar_time) > 1000);
 }
+
+void init_spaceships(Spaceship_t spaceships[])
+{
+    for (int i = 0; i < NB_MAX_SPACESHIPS; i++) {
+        spaceships[i] = DEFAULT_SPACESHIP;
+    }
+}

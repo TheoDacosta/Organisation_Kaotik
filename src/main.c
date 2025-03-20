@@ -45,6 +45,7 @@ int main(int argc, char* argv[])
         ;
 
     // Premier scan radar pour initialiser les données
+    init_spaceships(spaceships);
     create_radar_command(6, command);
     send_command(command, response);
     parse_response(response);
