@@ -5,9 +5,10 @@
 #include <stdint.h>
 
 #define NB_MAX_SPACESHIPS 36
-#define DEFAULT_SPACESHIP (Spaceship_t) { .team_id = 0, .ship_id = -1, .position = { 0, 0 }, .broken = 0, .planet_id=0, .last_shoot_time = 0, .last_radar_time = 0 }
+#define DEFAULT_SPACESHIP (Spaceship_t) { .team_id = 0, .ship_id = -1, .position = { 0, 0 }, .broken = 0, .planet_id = 0, .last_shoot_time = 0, .last_radar_time = 0 }
+// in ms
 #define SHOOT_COOLDOWN 1000
-#define SCAN_COOLDOWN 1000
+#define SCAN_COOLDOWN 250
 
 typedef struct
 {
@@ -27,7 +28,6 @@ void init_spaceships(Spaceship_t spaceships[]);
 void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceships);
 
 Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id);
-
 
 void shoot(Spaceship_t* spaceship, char* command);
 uint8_t can_shoot(Spaceship_t* spaceship);
