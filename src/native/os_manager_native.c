@@ -9,6 +9,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#define MAX_ADDRESS_SIZE 16
+
 Mutex_t create_mutex()
 {
     pthread_mutex_t* mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
@@ -79,11 +81,14 @@ void os_initialisation(int argc, char* argv[])
         exit(1);
     }
     char* address = argv[1];
+    char address_copy[MAX_ADDRESS_SIZE] = { 0 };
     if (is_localhost(address)) {
         char* localhost = "127.0.0.1";
-        str_copy(localhost, address);
+        str_copy(localhost, address_copy, MAX_ADDRESS_SIZE);
+    } else {
+        str_copy(address, address_copy, MAX_ADDRESS_SIZE);
     }
-    if (!is_address_valid(address)) {
+    if (!is_address_valid(address_copy)) {
         perror("Invalid address\n");
         exit(1);
     }

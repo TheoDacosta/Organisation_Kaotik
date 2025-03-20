@@ -30,8 +30,8 @@ void init_socket(struct sockaddr_in serv_addr, uint16_t port)
 void init_logger(char* team_name)
 {
     char filename[MAX_FILENAME_SIZE] = "client_";
-    str_copy(team_name, &filename[len(filename)]);
-    str_copy(".log", &filename[len(filename)]);
+    str_copy(team_name, &filename[len(filename)], MAX_FILENAME_SIZE - len(filename));
+    str_copy(".log", &filename[len(filename)], MAX_FILENAME_SIZE - len(filename));
     logfile = fopen(filename, "w");
     if (logfile == NULL) {
         perror("Unable to open the logging file\n");
@@ -42,9 +42,9 @@ void send_message(const char* message)
 {
     char message_with_endline[MAX_COMMAND_SIZE];
     if (message[len(message) - 1] != '\n') {
-        add_endline(message, message_with_endline);
+        add_endline(message, message_with_endline, MAX_COMMAND_SIZE);
     } else {
-        str_copy(message, message_with_endline);
+        str_copy(message, message_with_endline, MAX_COMMAND_SIZE);
     }
     if (logfile != NULL)
         fprintf(logfile, "sending: %s", message_with_endline);
