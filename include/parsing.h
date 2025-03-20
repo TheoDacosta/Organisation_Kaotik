@@ -16,7 +16,7 @@ enum DataType_t {
     DATA_TYPE_BASE = 'B'
 };
 
-extern Mutex_t parsing_mutex;
+extern Mutex_t response_mutex;
 
 void parse_response(const char* response);
 

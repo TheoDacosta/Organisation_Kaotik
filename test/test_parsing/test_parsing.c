@@ -4,7 +4,7 @@
 
 void setUp(void)
 {
-    parsing_mutex = create_mutex();
+    response_mutex = create_mutex();
     Planet_t planet = { .planet_id = 15, .saved = 0, .position = { .x = 30, .y = 40 } };
     planets[0] = planet;
     nb_planets = 3;

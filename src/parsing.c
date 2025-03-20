@@ -5,8 +5,6 @@
 #include "trajectory.h"
 #include <stdlib.h>
 
-Mutex_t parsing_mutex;
-
 void save_planets_data(Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
 void restore_planets_datas(Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
 void parse_data(char* data);
@@ -27,7 +25,7 @@ void parse_response(const char* response)
         return;
     }
 
-    get_mutex(parsing_mutex);
+    get_mutex(response_mutex);
     uint16_t nb_planets_saved = nb_planets;
     Planet_t planets_saved_datas[NB_MAX_PLANETS];
     save_planets_data(planets_saved_datas, nb_planets_saved);
@@ -50,7 +48,7 @@ void parse_response(const char* response)
     token[pos] = '\0';
     parse_data(token);
 
-    release_mutex(parsing_mutex);
+    release_mutex(response_mutex);
 }
 
 /**

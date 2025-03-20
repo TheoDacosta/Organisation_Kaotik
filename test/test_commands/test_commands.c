@@ -6,7 +6,7 @@
 
 void setUp(void)
 {
-    serial_mutex = create_mutex();
+    response_mutex = create_mutex();
 }
 
 void test_create_move_command(void)

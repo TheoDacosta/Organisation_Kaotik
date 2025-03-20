@@ -18,7 +18,7 @@
 #define COLLECTORS_SIZE 2
 #define FIRE_RANGE 5000
 
-extern Mutex_t serial_mutex;
+extern Mutex_t response_mutex;
 extern char response[MAX_RESPONSE_SIZE];
 
 void create_move_command(int8_t ship_id, uint16_t angle, uint16_t speed, char* buffer);

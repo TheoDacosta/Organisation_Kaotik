@@ -39,8 +39,7 @@ int main(int argc, char* argv[])
 
     hardware_init();
     os_initialisation(argc, argv);
-    serial_mutex = create_mutex();
-    parsing_mutex = create_mutex();
+    response_mutex = create_mutex();
     // Attendre start avant de commencer
     while (gets(response) == NULL || !is_start(response))
         ;
