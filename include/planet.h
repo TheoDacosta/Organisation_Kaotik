@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #define NB_MAX_PLANETS 8
+#define DEFAULT_PLANET (Planet_t) { .planet_id = 0, .position = { 0, 0 }, .ship_id = -1, .saved = 0, .focus = 0 }
 typedef struct {
     uint16_t planet_id;
     Point_t position;
@@ -17,6 +18,7 @@ extern Planet_t planets[NB_MAX_PLANETS];
 extern uint16_t nb_planets;
 
 void parse_planet(char* data);
+void init_planet(Planet_t planets[]);
 
 Planet_t* find_planet(uint16_t planet_id, Planet_t* planets, uint16_t nb_planets);
 

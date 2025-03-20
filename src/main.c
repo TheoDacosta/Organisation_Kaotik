@@ -45,6 +45,7 @@ int main(int argc, char* argv[])
         ;
 
     init_spaceships(spaceships);
+    init_planet(planets);
     create_radar_command(6, command);
     send_command(command, response);
     parse_response(response);
