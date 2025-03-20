@@ -5,32 +5,25 @@
 #include "trajectory.h"
 #include <stdlib.h>
 
-void save_planets_data(Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
-void restore_planets_datas(Planet_t* planets_saved_datas, uint16_t nb_planets_saved);
-void parse_data(char* data);
+void parse_data(char* data, Planet_t* planets_parsed, uint16_t* nb_planets_parsed, Spaceship_t* spaceships_parsed, uint16_t* nb_spaceships_parsed);
+void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_t* spaceships_parsed, uint16_t nb_spaceships_parsed);
 
 /**
  * @brief Récupération des données du jeu (planètes, vaisseaux, base).
  *
  * @param response Chaines de caractères contenant les données du jeu.
- * @param planets Liste des planètes.
- * @param nb_planets Nombre de planètes.
- * @param spaceships Liste des vaisseaux.
- * @param nb_spaceships Nombre de vaisseaux.
- * @param base Coordonnées de la base.
  */
 void parse_response(const char* response)
 {
+    get_mutex(response_mutex);
     if (response == NULL || (response[0] == 'O' && response[1] == 'K' && response[2] == '\0')) {
         return;
     }
+    uint16_t nb_planets_parsed = 0;
+    Planet_t planets_parsed[NB_MAX_PLANETS];
+    uint16_t nb_spaceships_parsed = 0;
+    Spaceship_t spaceships_parsed[NB_MAX_SPACESHIPS];
 
-    get_mutex(response_mutex);
-    uint16_t nb_planets_saved = nb_planets;
-    Planet_t planets_saved_datas[NB_MAX_PLANETS];
-    save_planets_data(planets_saved_datas, nb_planets_saved);
-    nb_planets = 0;
-    nb_spaceships = 0;
     uint16_t pos = 0;
     const char delimiter = ',';
     char token[MAX_DATA_SIZE];
@@ -38,7 +31,7 @@ void parse_response(const char* response)
     for (uint16_t i = 0; response[i] != '\0'; i++) {
         if (response[i] == delimiter) {
             token[pos] = '\0';
-            parse_data(token);
+            parse_data(token, planets_parsed, &nb_planets_parsed, spaceships_parsed, &nb_spaceships_parsed);
             pos = 0;
         } else {
             token[pos] = response[i];
@@ -46,7 +39,8 @@ void parse_response(const char* response)
         }
     }
     token[pos] = '\0';
-    parse_data(token);
+    parse_data(token, planets_parsed, &nb_planets_parsed, spaceships_parsed, &nb_spaceships_parsed);
+    save_datas(planets_parsed, nb_planets_parsed, spaceships_parsed, nb_spaceships_parsed);
 
     release_mutex(response_mutex);
 }
@@ -55,18 +49,22 @@ void parse_response(const char* response)
  * @brief Récupération des données d'une information de jeu.
  *
  * @param data Chaine de caractère contenant une donnée du jeu.
+ * @param planets_parsed Liste des planètes parsées.
+ * @param nb_planets_parsed Nombre de planètes parsées.
+ * @param spaceships_parsed Liste des vaisseaux parsés.
+ * @param nb_spaceships_parsed Nombre de vaisseaux parsés.
  */
-void parse_data(char* data)
+void parse_data(char* data, Planet_t* planets_parsed, uint16_t* nb_planets_parsed, Spaceship_t* spaceships_parsed, uint16_t* nb_spaceships_parsed)
 {
     if (data == NULL) {
         return;
     }
     switch (data[0]) {
     case DATA_TYPE_PLANET:
-        parse_planet(data);
+        parse_planet(data, planets_parsed, nb_planets_parsed);
         break;
     case DATA_TYPE_SPACESHIP:
-        parse_spaceship(data);
+        parse_spaceship(data, spaceships_parsed, nb_spaceships_parsed);
         break;
     case DATA_TYPE_BASE:
         data++;
@@ -82,19 +80,44 @@ void parse_data(char* data)
     }
 }
 
-void save_planets_data(Planet_t* planets_saved_datas, uint16_t nb_planets_saved)
+/**
+ * @brief Sauvegarde des données parsées.
+ *
+ * @param planets_parsed Liste des planètes parsées.
+ * @param nb_planets_parsed Nombre de planètes parsées.
+ * @param spaceships_parsed Liste des vaisseaux parsés.
+ * @param nb_spaceships_parsed Nombre de vaisseaux parsés.
+ */
+void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_t* spaceships_parsed, uint16_t nb_spaceships_parsed)
 {
-    for (uint16_t i = 0; i < nb_planets_saved; i++) {
-        Planet_t planet_saved_data = { .planet_id = planets[i].planet_id, .focus = planets[i].focus };
-        planets_saved_datas[i] = planet_saved_data;
+    for (uint16_t i = 0; i < nb_planets_parsed; i++) {
+        Planet_t* planet = find_planet(planets_parsed[i].planet_id);
+        if (planet == NULL) {
+            planets[nb_planets] = DEFAULT_PLANET;
+            planets[nb_planets] = planets_parsed[i];
+            nb_planets++;
+        } else {
+            (*planet).planet_id = planets_parsed[i].planet_id;
+            (*planet).position.x = planets_parsed[i].position.x;
+            (*planet).position.y = planets_parsed[i].position.y;
+            (*planet).ship_id = planets_parsed[i].ship_id;
+            (*planet).saved = planets_parsed[i].saved;
+            // On garde le focus courant
+        }
     }
-}
-
-void restore_planets_datas(Planet_t* planets_saved_datas, uint16_t nb_planets_saved)
-{
-    for (uint16_t i = 0; i < nb_planets; i++) {
-        Planet_t* planet_saved = find_planet(planets[i].planet_id, planets_saved_datas, nb_planets_saved);
-        if (planet_saved != NULL)
-            planets[i].focus = planet_saved->focus;
+    for (uint16_t i = 0; i < nb_spaceships_parsed; i++) {
+        Spaceship_t* spaceship = find_spaceship(spaceships_parsed[i].team_id, spaceships_parsed[i].ship_id);
+        if (spaceship == NULL) {
+            spaceships[nb_spaceships] = DEFAULT_SPACESHIP;
+            spaceships[nb_spaceships] = spaceships_parsed[i];
+            nb_spaceships++;
+        } else {
+            (*spaceship).team_id = spaceships_parsed[i].team_id;
+            (*spaceship).ship_id = spaceships_parsed[i].ship_id;
+            (*spaceship).position.x = spaceships_parsed[i].position.x;
+            (*spaceship).position.y = spaceships_parsed[i].position.y;
+            (*spaceship).broken = spaceships_parsed[i].broken;
+            // On garde le dernier tir/scan courant
+        }
     }
 }

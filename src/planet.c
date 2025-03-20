@@ -11,14 +11,14 @@ uint16_t nb_planets = 0;
  * @param planets     Liste des planètes existantes.
  * @param nb_planets  Pointeur vers le nombre total de planètes (sera mis à jour si une nouvelle planète est ajoutée).
  **/
-void parse_planet(char* data)
+void parse_planet(char* data, Planet_t* planets, uint16_t* nb_planets)
 {
     if (data == NULL) {
         while (1)
             ;
     }
 
-    Planet_t* planet = &planets[nb_planets];
+    Planet_t* planet = &planets[*nb_planets];
 
     data++; // Ignore le premier caractère (type de données)
     data++; // Ignore l'espace
@@ -40,18 +40,17 @@ void parse_planet(char* data)
     data++;
     planet->saved = atoi(data);
 
-    nb_planets++;
+    (*nb_planets)++;
 }
 
 /**
  * @brief Recherche une planète dans la liste à partir de son identifiant unique.
  *
  * @param planet_id    Identifiant unique de la planète recherchée.
- * @param planets      Tableau contenant toutes les planètes existantes.
  *
  * @return Planet_t*   Pointeur vers la planète trouvée, ou NULL si aucune correspondance.
  **/
-Planet_t* find_planet(uint16_t planet_id, Planet_t* planets, uint16_t nb_planets)
+Planet_t* find_planet(uint16_t planet_id)
 {
     for (uint16_t i = 0; i < nb_planets; i++) {
         if (planets[i].planet_id == planet_id)
@@ -60,7 +59,7 @@ Planet_t* find_planet(uint16_t planet_id, Planet_t* planets, uint16_t nb_planets
     return NULL;
 }
 
-void init_planet(Planet_t planets[])
+void init_planets(Planet_t planets[])
 {
     for (int i = 0; i < NB_MAX_PLANETS; i++) {
         planets[i] = DEFAULT_PLANET;

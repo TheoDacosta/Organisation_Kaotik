@@ -15,14 +15,14 @@ uint16_t nb_spaceships = 0;
  * @param spaceships   Liste des vaisseaux existants.
  * @param nb_spaceships Pointeur sur le nombre total de vaisseaux (mis à jour si un nouveau vaisseau est ajouté).
  **/
-void parse_spaceship(char* data)
+void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceships)
 {
     if (data == NULL) {
         while (1)
             ;
     }
 
-    Spaceship_t* new_spaceship = &spaceships[nb_spaceships];
+    Spaceship_t* new_spaceship = &spaceships[*nb_spaceships];
 
     data++; // Ignore le premier caractère (type de données)
     data++; // Ignore l'espace
@@ -44,7 +44,7 @@ void parse_spaceship(char* data)
     data++;
     new_spaceship->broken = (uint8_t)atoi(data);
 
-    nb_spaceships++;
+    (*nb_spaceships)++;
 }
 
 /**
@@ -52,12 +52,10 @@ void parse_spaceship(char* data)
  *
  * @param team_id    L'ID de l'équipe du vaisseau recherché.
  * @param ship_id    L'ID du vaisseau recherché.
- * @param spaceships Liste des vaisseaux existants.
- * @param nb_spaceships Nombre total de vaisseaux.
  *
  * @return Un pointeur vers le vaisseau trouvé, ou NULL si aucun vaisseau n'est trouvé.
  **/
-Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaceships, uint16_t nb_spaceships)
+Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id)
 {
     for (uint16_t i = 0; i < nb_spaceships; i++) {
         if (spaceships[i].team_id == team_id && spaceships[i].ship_id == ship_id)
