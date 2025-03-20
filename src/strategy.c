@@ -26,17 +26,14 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* com
 
 void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
 {
-    if (my_spaceship->broken) {
-        return_to_base(my_spaceship, MAX_COLLECTORS_SPEED, command);
-        return;
-    }
     uint16_t angle;
     Planet_t* nearest_planet = find_nearest_planet(my_spaceship, planets, nb_planets);
     if (nearest_planet == NULL)
         angle = 0;
     else {
-        if (nearest_planet->ship_id == my_spaceship->ship_id) {
-            angle = get_angle(my_spaceship->position, base);
+        if ((my_spaceship->broken)||(nearest_planet->ship_id == my_spaceship->ship_id)) {
+            return_to_base(my_spaceship, MAX_COLLECTORS_SPEED, command);
+            return;
         } else {
             angle = get_angle(my_spaceship->position, nearest_planet->position);
         }
