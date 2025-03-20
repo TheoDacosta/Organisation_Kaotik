@@ -4,7 +4,7 @@
 #include "point.h"
 #include <stdint.h>
 
-#define NB_MAX_PLANETS 8
+#define NB_MAX_PLANETS 15
 #define DEFAULT_PLANET (Planet_t) { .planet_id = 0, .position = { 0, 0 }, .ship_id = -1, .saved = 0, .focus = 0 }
 typedef struct {
     uint16_t planet_id;
