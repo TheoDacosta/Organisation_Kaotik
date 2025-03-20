@@ -10,6 +10,22 @@
 #include <unistd.h>
 
 #define MAX_ADDRESS_SIZE 16
+static long long start;
+#ifdef _WIN32
+#include <windows.h>
+long long current_millis()
+{
+    return GetTickCount64();
+}
+#else
+#include <time.h>
+long long current_millis()
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return (ts.tv_sec * 1000LL) + (ts.tv_nsec / 1000000LL);
+}
+#endif
 
 Mutex_t create_mutex()
 {
@@ -58,7 +74,7 @@ Thread_t create_thread(ThreadFunc_t func, void* argument)
 
 uint32_t get_current_timeMs()
 {
-    return (clock() * 1000) / CLOCKS_PER_SEC;
+    return (current_millis() - start);
 }
 
 uint8_t is_localhost(char* address)
@@ -108,6 +124,7 @@ void os_initialisation(int argc, char* argv[])
         perror("Connection refused by the server");
         exit(1);
     }
+    start = current_millis();
 }
 void os_start()
 {

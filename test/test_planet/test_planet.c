@@ -53,7 +53,7 @@ void test_find_planet_found(void)
 void test_init_planet(void)
 {
     Planet_t planets[NB_MAX_PLANETS];
-    init_planet(planets);
+    init_planets(planets);
 
     for (int i = 0; i < NB_MAX_PLANETS; i++) {
         TEST_ASSERT_EQUAL(0, planets[i].planet_id);
