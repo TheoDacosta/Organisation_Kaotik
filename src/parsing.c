@@ -96,6 +96,12 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
             planets[nb_planets] = planets_parsed[i];
             nb_planets++;
         } else {
+            if (planets_parsed[i].ship_id != -1) {
+                Spaceship_t* spaceship = find_spaceship(0, planets_parsed[i].ship_id);
+                if (spaceship != NULL) {
+                    (*spaceship).planet_id = planets_parsed[i].planet_id;
+                }
+            }
             (*planet).planet_id = planets_parsed[i].planet_id;
             (*planet).position.x = planets_parsed[i].position.x;
             (*planet).position.y = planets_parsed[i].position.y;
