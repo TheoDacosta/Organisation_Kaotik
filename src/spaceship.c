@@ -66,22 +66,46 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id)
 
 /**
  * @brief Calcule le temps écoulé si 1 seconde s'est passée.
+ *
+ * @param spaceship Le vaisseau qui doit tirer.
+ * @param command   La commande à envoyer.
  **/
-void shoot(Spaceship_t* my_spaceship, char* commande)
+void shoot(Spaceship_t* spaceship, char* command)
 {
-    if (can_shoot(my_spaceship)) {
-        uint16_t angle_to_enemy = get_target_angle(my_spaceship);
-        create_fire_command(my_spaceship->ship_id, angle_to_enemy, commande);
-        my_spaceship->last_shoot_time = get_current_timeMs();
-    }
-    return;
+    uint16_t angle_to_enemy = get_target_angle(spaceship);
+    create_fire_command(spaceship->ship_id, angle_to_enemy, command);
+    spaceship->last_shoot_time = get_current_timeMs();
 }
 
+/**
+ * @brief
+ *
+ * @param spaceship Le vaisseau qui doit tirer.
+ * @return Si le vaisseau peut tirer.
+ */
 uint8_t can_shoot(Spaceship_t* spaceship)
 {
     return ((get_current_timeMs() - spaceship->last_shoot_time) > 1000);
 }
 
+/**
+ * @brief
+ *
+ * @param spaceship Le vaisseau qui doit scanner.
+ * @param command   La commande à envoyer.
+ */
+void scan(Spaceship_t* spaceship, char* command)
+{
+    create_radar_command(spaceship->ship_id, command);
+    spaceship->last_radar_time = get_current_timeMs();
+}
+
+/**
+ * @brief
+ *
+ * @param spaceship Le vaisseau qui doit scanner.
+ * @return Si le vaisseau peut scanner.
+ */
 uint8_t can_scan(Spaceship_t* spaceship)
 {
     return ((get_current_timeMs() - spaceship->last_radar_time) > 1000);

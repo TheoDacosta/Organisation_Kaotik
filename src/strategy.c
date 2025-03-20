@@ -16,8 +16,7 @@ void manage_spaceship_radar(Spaceship_t* my_spaceship, Point_t target, char* com
         return;
     }
     if (can_scan(my_spaceship)) {
-        create_radar_command(my_spaceship->ship_id, command);
-        my_spaceship->last_radar_time = get_current_timeMs();
+        scan(my_spaceship, command);
         return;
     }
     uint16_t angle = get_angle(my_spaceship->position, target);
@@ -31,7 +30,7 @@ void manage_spaceship_collector(Spaceship_t* my_spaceship, char* command)
     if (nearest_planet == NULL)
         angle = 0;
     else {
-        if ((my_spaceship->broken)||(nearest_planet->ship_id == my_spaceship->ship_id)) {
+        if ((my_spaceship->broken) || (nearest_planet->ship_id == my_spaceship->ship_id)) {
             return_to_base(my_spaceship, MAX_COLLECTORS_SPEED, command);
             return;
         } else {
@@ -48,8 +47,7 @@ void manage_spaceship_attacker(Spaceship_t* my_spaceship, Point_t target, char* 
     }
     uint16_t angle_to_enemy = get_target_angle(my_spaceship);
     if (angle_to_enemy != NOT_FOUND) {
-        create_fire_command(my_spaceship->ship_id, angle_to_enemy, command);
-        my_spaceship->last_shoot_time = get_current_timeMs();
+        shoot(my_spaceship, command);
         return;
     }
     uint16_t angle = get_angle(my_spaceship->position, target);

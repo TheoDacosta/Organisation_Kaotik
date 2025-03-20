@@ -25,10 +25,8 @@ void parse_spaceship(char* data, Spaceship_t* spaceships, uint16_t* nb_spaceship
 
 Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id);
 
-// Gère le tir du vaisseau en fonction du temps écoulé.
-void shoot(Spaceship_t* my_spaceship, char* commande);
-
-uint8_t can_shoot(Spaceship_t* my_spaceship);
-
-uint8_t can_scan(Spaceship_t* my_spaceship);
+void shoot(Spaceship_t* spaceship, char* command);
+uint8_t can_shoot(Spaceship_t* spaceship);
+void scan(Spaceship_t* spaceship, char* command);
+uint8_t can_scan(Spaceship_t* spaceship);
 #endif // SPACESHIP_H
