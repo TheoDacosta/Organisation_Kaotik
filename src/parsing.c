@@ -107,7 +107,6 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
             (*planet).position.y = planets_parsed[i].position.y;
             (*planet).ship_id = planets_parsed[i].ship_id;
             (*planet).saved = planets_parsed[i].saved;
-            // On garde le focus courant
         }
     }
     for (uint16_t i = 0; i < nb_spaceships_parsed; i++) {

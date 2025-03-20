@@ -5,13 +5,12 @@
 #include <stdint.h>
 
 #define NB_MAX_PLANETS 15
-#define DEFAULT_PLANET (Planet_t) { .planet_id = 0, .position = { 0, 0 }, .ship_id = -1, .saved = 0, .focus = 0 }
+#define DEFAULT_PLANET (Planet_t) { .planet_id = 0, .position = { 0, 0 }, .ship_id = -1, .saved = 0 }
 typedef struct {
     uint16_t planet_id;
     Point_t position;
     int8_t ship_id;
     uint8_t saved;
-    int8_t focus;
 } Planet_t;
 
 extern Planet_t planets[NB_MAX_PLANETS];

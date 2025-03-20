@@ -5,7 +5,7 @@
 void setUp(void)
 {
     response_mutex = create_mutex();
-    planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 40 }, .ship_id = 9, .focus = 1 };
+    planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 40 }, .ship_id = 9 };
     nb_planets = 1;
     spaceships[0] = (Spaceship_t) { .team_id = 0, .ship_id = 8, .position = { .x = 3217, .y = 4321 }, .broken = 0, .last_shoot_time = 1000, .last_radar_time = 500 };
     nb_spaceships = 1;
@@ -32,16 +32,6 @@ void test_parsing()
 
     TEST_ASSERT_EQUAL(3217, base.x);
     TEST_ASSERT_EQUAL(4321, base.y);
-}
-
-void test_parsing_keep_planets_infos()
-{
-
-    parse_response("P 12 3217 4321 8 0");
-
-    TEST_ASSERT_EQUAL(1, nb_planets);
-    TEST_ASSERT_EQUAL(12, planets[0].planet_id);
-    TEST_ASSERT_EQUAL(1, planets[0].focus);
 }
 
 void test_parsing_affect_planet_id()
@@ -73,7 +63,6 @@ int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_parsing);
-    RUN_TEST(test_parsing_keep_planets_infos);
     RUN_TEST(test_parsing_affect_planet_id);
     RUN_TEST(test_parsing_keep_spaceships_infos);
     return UNITY_END();

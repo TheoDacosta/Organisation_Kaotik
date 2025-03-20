@@ -4,7 +4,7 @@
 
 void setUp(void)
 {
-    Planet_t new_planet = { .planet_id = 1001, .saved = 0, .focus = 0, .position = { .x = 3217, .y = 4321 }, .ship_id = -1 };
+    Planet_t new_planet = { .planet_id = 1001, .saved = 0, .position = { .x = 3217, .y = 4321 }, .ship_id = -1 };
     planets[0] = new_planet;
     nb_planets = 1;
 }
@@ -61,7 +61,6 @@ void test_init_planet(void)
         TEST_ASSERT_EQUAL(0, planets[i].position.x);
         TEST_ASSERT_EQUAL(0, planets[i].position.y);
         TEST_ASSERT_EQUAL(0, planets[i].saved);
-        TEST_ASSERT_EQUAL(0, planets[i].focus);
     }
 }
 
