@@ -87,6 +87,14 @@ uint8_t can_scan(Spaceship_t* spaceship)
     return ((get_current_timeMs() - spaceship->last_radar_time) > 1000);
 }
 
+/**
+ * @brief Initialise un tableau de vaisseaux avec des valeurs par défaut.
+ *
+ * Cette fonction parcourt un tableau de vaisseaux et initialise chaque élément
+ * avec une valeur par défaut définie par la constante DEFAULT_SPACESHIP.
+ *
+ * @param spaceships Tableau de vaisseaux à initialiser.
+ */
 void init_spaceships(Spaceship_t spaceships[])
 {
     for (int i = 0; i < NB_MAX_SPACESHIPS; i++) {
