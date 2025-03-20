@@ -72,7 +72,7 @@ Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_
     uint16_t nearest_distance = AREA_LENGTH;
     uint16_t distance;
     for (int i = 0; i < nb_planets; i++) {
-        if (!planets[i].saved && planets[i].ship_id == -1 && (!planets[i].focus || planets[i].focus == spaceship->ship_id)) {
+        if (!planets[i].saved && planets[i].ship_id == -1 /*&& (!planets[i].focus || planets[i].focus == spaceship->ship_id)*/) {
             distance = get_distance(spaceship->position, planets[i].position);
             if (distance < nearest_distance) {
                 nearest_distance = distance;

@@ -64,13 +64,14 @@ void test_manage_spaceship_attacker_fire(void)
 void test_manage_spaceship_collector_go_to_planet(void)
 {
     manage_spaceship_collector(spaceship, command);
-    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", command);
 }
 
 void test_manage_spaceship_collector_no_planet(void)
 {
+    nb_planets = 0;
     manage_spaceship_collector(spaceship, command);
-    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", command);
 }
 
 void test_manage_strategy_can_scan(void)
@@ -85,7 +86,7 @@ void test_mannage_planet_collect_return_to_base(void)
 {
     nb_planets = 1;
     manage_spaceship_collector(spaceship, command);
-    TEST_ASSERT_EQUAL_STRING("MOVE 1 0 1000\n", command);
+    TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", command);
 }
 
 int main(void)

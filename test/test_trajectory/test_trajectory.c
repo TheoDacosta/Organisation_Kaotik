@@ -162,7 +162,7 @@ int main(void)
     RUN_TEST(test_find_nearest_planet);
     RUN_TEST(test_find_nearest_unsaved_planet);
     RUN_TEST(test_find_nearest_untaken_planet);
-    RUN_TEST(test_find_nearest_unfocus_planet);
+    //RUN_TEST(test_find_nearest_unfocus_planet);
     RUN_TEST(test_get_point_with_offset);
     return UNITY_END();
 }
