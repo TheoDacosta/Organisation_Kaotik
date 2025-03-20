@@ -95,13 +95,13 @@ void test_init_spaceships(void)
 
 void test_can_scan_after_long_pause()
 {
-    os_delayMs(1100);
+    os_delayMs(SCAN_COOLDOWN + 100);
     TEST_ASSERT_TRUE(can_scan(&spaceships[1]));
 }
 
 void test_can_not_scan_after_short_pause()
 {
-    os_delayMs(900);
+    os_delayMs(SCAN_COOLDOWN - 100);
     TEST_ASSERT_FALSE(can_scan(&spaceships[1]));
 }
 
