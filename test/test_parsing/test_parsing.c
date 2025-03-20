@@ -4,7 +4,6 @@
 
 void setUp(void)
 {
-    response_mutex = create_mutex();
     planets[0] = (Planet_t) { .planet_id = 12, .saved = 0, .position = { .x = 30, .y = 40 }, .ship_id = 9 };
     nb_planets = 1;
     spaceships[0] = (Spaceship_t) { .team_id = 0, .ship_id = 8, .position = { .x = 3217, .y = 4321 }, .broken = 0, .last_shoot_time = 1000, .last_radar_time = 500 };

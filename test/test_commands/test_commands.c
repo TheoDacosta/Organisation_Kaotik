@@ -4,11 +4,6 @@
 #include <string.h>
 #include <unity.h>
 
-void setUp(void)
-{
-    response_mutex = create_mutex();
-}
-
 void test_create_move_command(void)
 {
     char buffer[MAX_COMMAND_SIZE];

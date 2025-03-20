@@ -74,9 +74,7 @@ void create_radar_command(int8_t ship_id, char* buffer)
 void send_command(char* command, char* response)
 {
     if (command[0] != '\0') {
-        get_mutex(response_mutex);
         puts(command);
         gets(response);
-        release_mutex(response_mutex);
     }
 }

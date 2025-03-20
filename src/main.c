@@ -84,7 +84,9 @@ void* attacker_thread(void* argument)
     while (1) {
         get_point_with_offset(args->target_spaceship->position, args->offset_x, args->offset_y, &target);
         manage_spaceship_attacker(args->my_spaceship, target, command);
+        get_mutex(response_mutex);
         send_command(command, response);
+        release_mutex(response_mutex);
     }
 }
 
@@ -96,8 +98,10 @@ void* explorer_thread(void* argument)
     while (1) {
         get_point_with_offset(args->target_spaceship->position, args->offset_x, args->offset_y, &target);
         manage_spaceship_radar(args->my_spaceship, target, command);
+        get_mutex(response_mutex);
         send_command(command, response);
         parse_response(response);
+        release_mutex(response_mutex);
     }
 }
 
@@ -107,6 +111,8 @@ void* collector_thread(void* argument)
     char command[MAX_COMMAND_SIZE];
     while (1) {
         manage_spaceship_collector(args->my_spaceship, command);
+        get_mutex(response_mutex);
         send_command(command, response);
+        release_mutex(response_mutex);
     }
 }

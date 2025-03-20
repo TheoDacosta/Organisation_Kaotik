@@ -18,7 +18,7 @@ void parse_response(const char* response)
     if (response[0] == 'O' && response[1] == 'K' && response[2] == '\n' && response[3] == '\0') {
         return;
     }
-    get_mutex(response_mutex);
+
     uint16_t nb_planets_parsed = 0;
     Planet_t planets_parsed[NB_MAX_PLANETS];
     uint16_t nb_spaceships_parsed = 0;
@@ -41,7 +41,6 @@ void parse_response(const char* response)
     token[pos] = '\0';
     parse_data(token, planets_parsed, &nb_planets_parsed, spaceships_parsed, &nb_spaceships_parsed);
     save_datas(planets_parsed, nb_planets_parsed, spaceships_parsed, nb_spaceships_parsed);
-    release_mutex(response_mutex);
 }
 
 /**
