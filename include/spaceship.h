@@ -8,7 +8,7 @@
 #define DEFAULT_SPACESHIP (Spaceship_t) { .team_id = 0, .ship_id = -1, .position = { 0, 0 }, .broken = 0, .planet_id = 0, .last_shoot_time = 0, .last_radar_time = 0 }
 // in ms
 #define SHOOT_COOLDOWN 1000
-#define SCAN_COOLDOWN 250
+#define SCAN_COOLDOWN 500
 
 typedef struct
 {

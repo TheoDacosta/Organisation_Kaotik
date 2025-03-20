@@ -69,7 +69,7 @@ uint16_t get_target_angle(Spaceship_t* attacker)
 Planet_t* find_nearest_planet(Spaceship_t* spaceship, Planet_t* planets, uint16_t nb_planets)
 {
     Planet_t* nearest_planet = NULL;
-    uint16_t nearest_distance = AREA_LENGTH;
+    uint16_t nearest_distance = AREA_LENGTH * 2;
     uint16_t distance;
     for (int i = 0; i < nb_planets; i++) {
         if (!planets[i].saved && planets[i].ship_id == -1) {

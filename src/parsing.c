@@ -15,10 +15,10 @@ void save_datas(Planet_t* planets_parsed, uint16_t nb_planets_parsed, Spaceship_
  */
 void parse_response(const char* response)
 {
-    get_mutex(response_mutex);
-    if (response == NULL || (response[0] == 'O' && response[1] == 'K' && response[2] == '\0')) {
+    if (response[0] == 'O' && response[1] == 'K' && response[2] == '\n' && response[3] == '\0') {
         return;
     }
+    get_mutex(response_mutex);
     uint16_t nb_planets_parsed = 0;
     Planet_t planets_parsed[NB_MAX_PLANETS];
     uint16_t nb_spaceships_parsed = 0;
