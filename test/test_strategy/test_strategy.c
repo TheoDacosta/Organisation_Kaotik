@@ -13,6 +13,7 @@ Point_t target;
 
 void setUp(void)
 {
+    reset_time();
     nb_planets = 0;
     nb_spaceships = 0;
     Spaceship_t spaceship_1 = { .team_id = 0, .ship_id = 1, .broken = 0, .position = { .x = 10000, .y = 10000 }, .last_radar_time = 0 };
@@ -30,7 +31,6 @@ void setUp(void)
     target.x = 20000;
     target.y = 10000;
 }
-
 
 void test_return_base_spaceship_broken(void)
 {
@@ -76,8 +76,9 @@ void test_manage_spaceship_collector_no_planet(void)
 void test_manage_strategy_can_scan(void)
 {
     nb_spaceships = 1;
-    manage_spaceship_radar(&spaceship[1], target, command);
-    TEST_ASSERT_EQUAL_STRING("RADAR 6\n", command);
+    os_delayMs(1100);
+    manage_spaceship_radar(&spaceship[0], target, command);
+    TEST_ASSERT_EQUAL_STRING("RADAR 1\n", command);
 }
 
 void test_mannage_planet_collect_return_to_base(void)

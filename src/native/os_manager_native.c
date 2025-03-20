@@ -124,9 +124,14 @@ void os_initialisation(int argc, char* argv[])
         perror("Connection refused by the server");
         exit(1);
     }
-    start = current_millis();
+    reset_time();
 }
 void os_start()
 {
     pthread_exit(NULL);
+}
+
+void reset_time()
+{
+    start = current_millis();
 }

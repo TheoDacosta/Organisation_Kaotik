@@ -15,7 +15,7 @@ void os_delayMs(uint32_t delay);
 Mutex_t create_mutex();
 void get_mutex(Mutex_t mutex);
 void release_mutex(Mutex_t mutex);
-
+void reset_time();
 Thread_t create_thread(ThreadFunc_t func, void* argument);
 uint32_t get_current_timeMs();
 

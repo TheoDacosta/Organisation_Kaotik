@@ -75,3 +75,7 @@ uint32_t get_current_timeMs()
 {
     return HAL_GetTick();
 }
+
+void reset_time()
+{
+}
