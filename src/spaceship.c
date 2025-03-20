@@ -81,17 +81,10 @@ void shoot(Spaceship_t* my_spaceship, char* commande)
 
 uint8_t can_shoot(Spaceship_t* spaceship)
 {
-    if ((get_current_timeMs() - spaceship->last_shoot_time) > 1000)
-        return 1;
-    else
-        return 0;
+    return ((get_current_timeMs() - spaceship->last_shoot_time) > 1000);
 }
 
 uint8_t can_scan(Spaceship_t* spaceship)
 {
-    if ((get_current_timeMs() - spaceship->last_radar_time) > 1000) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return ((get_current_timeMs() - spaceship->last_radar_time) > 1000);
 }

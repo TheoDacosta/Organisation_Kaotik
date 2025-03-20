@@ -26,7 +26,7 @@ Spaceship_t* find_spaceship(uint8_t team_id, int8_t ship_id, Spaceship_t* spaces
 // Gère le tir du vaisseau en fonction du temps écoulé.
 void shoot(Spaceship_t* my_spaceship, char* commande);
 
-uint8_t can_shoot();
+uint8_t can_shoot(Spaceship_t* my_spaceship);
 
 uint8_t can_scan(Spaceship_t* my_spaceship);
 #endif // SPACESHIP_H
