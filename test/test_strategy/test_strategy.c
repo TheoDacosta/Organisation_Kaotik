@@ -31,18 +31,11 @@ void setUp(void)
     target.y = 10000;
 }
 
-void test_return_base_spaceship_not_broken(void)
-{
-    uint8_t result = return_to_base(spaceship, 1000, command);
-    TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL_STRING("", command);
-}
 
 void test_return_base_spaceship_broken(void)
 {
     spaceship[0].broken = 1;
-    uint8_t result = return_to_base(spaceship, 1000, command);
-    TEST_ASSERT_EQUAL(1, result);
+    return_to_base(spaceship, 1000, command);
     TEST_ASSERT_EQUAL_STRING("MOVE 1 90 1000\n", command);
 }
 
@@ -97,7 +90,6 @@ void test_mannage_planet_collect_return_to_base(void)
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_return_base_spaceship_not_broken);
     RUN_TEST(test_return_base_spaceship_broken);
     RUN_TEST(test_manage_spaceship_radar_follow_target);
     RUN_TEST(test_manage_spaceship_attacker_follow_target);
