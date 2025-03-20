@@ -7,7 +7,7 @@
 void setUp(void)
 {
     Spaceship_t new_spaceship = { .team_id = 0, .ship_id = 4, .position = { .x = 3217, .y = 4321 }, .broken = 0 };
-    Spaceship_t new_spaceship_current = { .last_shoot_time = get_current_timeMs() };
+    Spaceship_t new_spaceship_current = { .last_shoot_time = get_current_timeMs(), .last_radar_time = get_current_timeMs() };
     spaceships[0] = new_spaceship;
     spaceships[1] = new_spaceship_current;
     nb_spaceships = 2;
@@ -93,6 +93,18 @@ void test_init_spaceships(void)
     TEST_ASSERT_EQUAL(0, spaceships[0].last_radar_time);
 }
 
+void test_can_scan_after_long_pause()
+{
+    os_delayMs(1100);
+    TEST_ASSERT_TRUE(can_scan(&spaceships[1]));
+}
+
+void test_can_not_scan_after_short_pause()
+{
+    os_delayMs(900);
+    TEST_ASSERT_FALSE(can_scan(&spaceships[1]));
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -103,5 +115,7 @@ int main(void)
     RUN_TEST(test_can_shoot_after_long_pause);
     RUN_TEST(test_can_not_shoot_after_short_pause);
     RUN_TEST(test_init_spaceships);
+    RUN_TEST(test_can_scan_after_long_pause);
+    RUN_TEST(test_can_not_scan_after_short_pause);
     return UNITY_END();
 }
