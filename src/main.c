@@ -52,11 +52,11 @@ int main(int argc, char* argv[])
 
     Spaceship_t* collector_1_spaceship = find_spaceship(0, 8);
     Spaceship_t* collector_2_spaceship = find_spaceship(0, 9);
-    ThreadArgs_t attacker1_args = { find_spaceship(0, 1), collector_1_spaceship, -100, 100 };
-    ThreadArgs_t attacker2_args = { find_spaceship(0, 2), collector_1_spaceship, 100, 100 };
-    ThreadArgs_t attacker3_args = { find_spaceship(0, 3), collector_1_spaceship, 0, -100 };
-    ThreadArgs_t attacker4_args = { find_spaceship(0, 4), collector_2_spaceship, -100, -100 };
-    ThreadArgs_t attacker5_args = { find_spaceship(0, 5), collector_2_spaceship, 100, 100 };
+    ThreadArgs_t attacker1_args = { find_spaceship(0, 1), collector_1_spaceship, -1000, 1000 };
+    ThreadArgs_t attacker2_args = { find_spaceship(0, 2), collector_1_spaceship, 1000, 1000 };
+    ThreadArgs_t attacker3_args = { find_spaceship(0, 3), collector_1_spaceship, 0, -1000 };
+    ThreadArgs_t attacker4_args = { find_spaceship(0, 4), collector_2_spaceship, -1000, -1000 };
+    ThreadArgs_t attacker5_args = { find_spaceship(0, 5), collector_2_spaceship, 1000, 1000 };
     ThreadArgs_t explorer1_args = { find_spaceship(0, 6), collector_1_spaceship, 0, 0 };
     ThreadArgs_t explorer2_args = { find_spaceship(0, 7), collector_2_spaceship, 0, 0 };
     ThreadArgs_t collector1_args = { collector_1_spaceship, NULL, 0, 0 };
