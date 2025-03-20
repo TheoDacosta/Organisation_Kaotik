@@ -17,13 +17,15 @@ void test_init_spaceships(void)
 {
     Spaceship_t spaceships[NB_MAX_SPACESHIPS];
     init_spaceships(spaceships);
-    TEST_ASSERT_EQUAL(0, spaceships[0].team_id);
-    TEST_ASSERT_EQUAL(-1, spaceships[0].ship_id);
-    TEST_ASSERT_EQUAL(0, spaceships[0].position.x);
-    TEST_ASSERT_EQUAL(0, spaceships[0].position.y);
-    TEST_ASSERT_EQUAL(0, spaceships[0].broken);
-    TEST_ASSERT_EQUAL(0, spaceships[0].last_shoot_time);
-    TEST_ASSERT_EQUAL(0, spaceships[0].last_radar_time);
+    for (int i = 0; i < NB_MAX_SPACESHIPS; i++) {
+        TEST_ASSERT_EQUAL(0, spaceships[i].team_id);
+        TEST_ASSERT_EQUAL(-1, spaceships[i].ship_id);
+        TEST_ASSERT_EQUAL(0, spaceships[i].position.x);
+        TEST_ASSERT_EQUAL(0, spaceships[i].position.y);
+        TEST_ASSERT_EQUAL(0, spaceships[i].broken);
+        TEST_ASSERT_EQUAL(0, spaceships[i].last_shoot_time);
+        TEST_ASSERT_EQUAL(0, spaceships[i].last_radar_time);
+    }
 }
 
 void tearDown(void)
