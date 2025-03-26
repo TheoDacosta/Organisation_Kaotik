@@ -33,7 +33,31 @@ Le `exit 0` est là pour éviter une erreur lors du pre-commit une fois que l'é
 
 ### Debug sur l'environnement native
 
-... @LouisGresta
+Le besoin de debogger sur l'environnement native s'est fait sentir lorsqu'on a décidé d'exécuter notre programme sur cet environnement pour la compétition.
+ça s'est fait assez rapidement, Visual Studio Code propose des configuration de debug pour le C. Il fallait configurer comme il faut pour appeler notre exécutable `/.pio/build/native/program` et lui renseigner les arguments dont on a besoin. Pour être sûr d'avoir la dernière version compilée, on peut choisir de build avec platformio avant l'exécution du programme. \
+Exemple :
+
+```json
+{
+    "name": "(lldb) Debug native",
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/.pio/build/native/program",
+    "args": [
+        "localhost",
+        "2000",
+        "OrganisationKaotik"
+    ],
+    "stopAtEntry": false,
+    "cwd": "${fileDirname}",
+    "environment": [],
+    "externalConsole": false,
+    "MIMode": "lldb",
+    "preLaunchTask": "PlatformIO: Build (native)"
+}
+```
+
+ Nous avons donc adapté le script [start_native.sh](./scripts/start_native.sh) pour pouvoir renseigner ces paramètres par défaut simplement lors de l'appel du script en rajoutant des conditions afin de modifier le comportement lorsqu'on renseigne "debug" en paramètre de la commande.
 
 ## Abstraction de l'OS
 
