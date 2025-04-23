@@ -65,11 +65,27 @@ Nous avions besoin de pouvoir lancer le programme à la fois sur la carte (stm32
 
 Afin de permettre la flexibilité de changer l'environnement sur lequel notre programme est exécuté, nous avons dû séparer les méthodes spécifiques à l'OS de la carte et l'OS de nos ordinateurs.
 
-...@Debugsvg et @TheoDacosta
+... et @TheoDacosta
+
+
+
+
 
 ## Nos Erreurs
 
-...
+Au cours de ce projet, nous avons fait face à plusieurs défis majeurs, particulièrement lors du lancement de l'OS sur la carte. Ces obstacles étaient principalement dus à deux facteurs :
+
+- Notre manque de  connaissance
+- Une mauvaise gestion
+
+Avec du recul, nous aurions dû suivre les conseils de notre enseignant concernant la réalisation de tests réguliers.
+
+Cette négligence nous a coûté cher : à quelques jours de la compétition, notre système ne fonctionnait que partiellement.
+
+Cette situation critique nous a forcés à revoir entièrement certains parites  dans l'urgence.
+
+Une refonte complète était nécessaire pour atteindre les niveaux de stabilité et de performance requis pour la compétition. Cette expérience nous a enseigné l'importance cruciale des tests réguliers dans le développement de systèmes embarqués.
+
 
 ## Notions apprises
 
