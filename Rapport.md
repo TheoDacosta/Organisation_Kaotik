@@ -67,7 +67,43 @@ Afin de permettre la flexibilité de changer l'environnement sur lequel notre pr
 
 ... et @TheoDacosta
 
+Bien sûr ! Voici une reformulation améliorée et enrichie de ton texte, avec une meilleure fluidité et des transitions plus naturelles :
 
+---
+
+Dans un premier temps, nous avons défini un ensemble de méthodes communes aux deux environnements visés. Ces commandes fondamentales permettent notamment :
+
+- d’initialiser le système d’exploitation,
+- de lancer le système (démarrage du noyau),
+- de créer un délai (delay),
+- de créer un mutex,
+- d’acquérir et de libérer ce mutex,
+- de réinitialiser la mesure du temps,
+- de créer un thread,
+- de récupérer l’heure courante.
+
+L’ensemble de ces prototypes a été déclaré dans un fichier commun, servant de base pour l’implémentation multi-environnement. Pour aller plus loin, nous avons ensuite créé un second fichier, nommé "os_manager_cmsisV2.c", spécifiquement dédié à l’implémentation de l’OS sur la carte cible.
+
+Ce fichier s’appuie sur la bibliothèque CMSIS‑RTOS v2, ce qui nous a permis de réutiliser  de nombreux blocs fonctionnels , tels que :
+
+- l’initialisation et le démarrage de l’OS,
+- la création de threads et de mutex,
+- la gestion des attributs spécifiques aux threads et aux mutex.
+
+Cette approche modulaire facilite non seulement la maintenance du code, mais aussi son adaptation à différents environnements matériels. Nous aborderons d’ailleurs plus en détail, dans la suite du rapport, la question cruciale de la taille de la pile (stack). En effet, nous avons observé que celle-ci doit impérativement être comprise entre 1024 et 2048 octets : en dehors de cette plage, le système d’exploitation ne démarre pas correctement, ce qui souligne l’importance d’un paramétrage précis.
+
+Au cours des premières phases du projet, nous avons également été confrontés à un dysfonctionnement lors de la gestion des threads : lorsque nous augmentions leur nombre, seul le dernier thread  était  exécuté. Après consultation de la documentation, nous avons compris qu’il était indispensable d’appeler la fonction osThreadYield() à la fin de la fonction release_mutex(). Cette instruction permet de rendre la main au noyau, assurant ainsi une véritable planification multitâche et une meilleure répartition de l’exécution entre les différents threads.
+
+Par ailleurs, afin de limiter les risques de bugs liés à l’utilisation des bibliothèques standard, nous avons fait le choix de concevoir nos propres fonctions bas niveau. Celles-ci ont été regroupées dans le fichier "hardware.c". Ce dernier centralise l’ensemble des routines essentielles à la gestion matérielle, notamment :
+
+- l’initialisation des horloges,
+- la configuration des entrées/sorties,
+- la gestion des délais et des interruptions,
+- la récupération et l’écriture d’informations sur la liaison série,
+- l’initialisation de la graine du générateur pseudo-aléatoire (PRNG),
+- la conversion d’un entier en chaîne de caractères.
+
+Cette organisation rigoureuse du code assure une meilleure robustesse et une plus grande maîtrise du fonctionnement global du système, tout en facilitant les évolutions futures du projet.
 
 
 
