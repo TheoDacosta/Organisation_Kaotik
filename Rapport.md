@@ -67,9 +67,7 @@ Afin de permettre la flexibilité de changer l'environnement sur lequel notre pr
 
 ... et @TheoDacosta
 
-Bien sûr ! Voici une reformulation améliorée et enrichie de ton texte, avec une meilleure fluidité et des transitions plus naturelles :
 
----
 
 Dans un premier temps, nous avons défini un ensemble de méthodes communes aux deux environnements visés. Ces commandes fondamentales permettent notamment :
 
