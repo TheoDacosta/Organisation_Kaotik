@@ -37,7 +37,7 @@ Ces scripts automatisent :
 * Le démarrage des serveurs et du viewer.
 * Et dans certains cas, la configuration dynamique des ports.
 
-# Fonctionnement
+#### Fonctionnement
 En utilisant le fichier [start.sh](./scripts/start.sh), le lancement du jeu avec la carte STM32 se déroule en plusieurs étapes.
 Tout d'abord, l'environnement virtuel Python est activé. Ensuite, un port TCP est généré dynamiquement grâce à la fonction random de Python. Le script récupère également le port USB de la carte STM32 via le fichier conf.properties pour établir une communication série.
 
