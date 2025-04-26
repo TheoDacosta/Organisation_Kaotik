@@ -65,12 +65,57 @@ Nous avions besoin de pouvoir lancer le programme à la fois sur la carte (stm32
 
 Afin de permettre la flexibilité de changer l'environnement sur lequel notre programme est exécuté, nous avons dû séparer les méthodes spécifiques à l'OS de la carte et l'OS de nos ordinateurs.
 
-...@Debugsvg et @TheoDacosta
+Dans un premier temps, nous avons défini la structure des méthodes qui seront implémentées de manière différentes suivant l'environnement utilisé. Ces commandes fondamentales permettent notamment :
+
+* d’initialiser le système d’exploitation
+* de lancer le système (démarrage du noyau)
+* de créer un délai (delay)
+* de créer un mutex
+* d’acquérir et de libérer ce mutex
+* de réinitialiser la mesure du temps
+* de créer un thread
+* de récupérer l’heure courante
+
+Cette approche modulaire facilite non seulement la maintenance du code, mais aussi son adaptation à différents environnements matériels. Nous avons observé que les différences de paramétrages entre les différents environnements (carte et natif) étaient principalement liées à la gestion des threads et des mutex. En effet, la carte STM32F4 dispose de ressources matérielles limitées, ce qui nécessite une gestion plus rigoureuse des threads et des mutex pour éviter les conflits d'accès aux ressources partagées.
+
+### OS de la carte
+
+Le fichier pour l'OS de la carte est [os_manager_cmsisV2.c](./src/embedded/os_manager_cmsisV2.c)
+
+Ce fichier s’appuie sur la bibliothèque CMSIS‑RTOS v2, ce qui nous a permis de réutiliser de nombreux blocs fonctionnels, tels que :
+
+* l’initialisation et le démarrage de l’OS
+* la création de threads et de mutex
+* la gestion des attributs spécifiques aux threads et aux mutex
+
+En plus de ces blocs fonctionnels, nous avons également dû implémenter certaines méthodes spécifiques de la bibliothèque standard C dont nous n'avions pas accès sur la carte. cf [hardware.c](./src/embedded/hardware.c) pour plus de détails.
+
+### OS natif
+
+Le fichier pour l'OS natif est [os_manager_native.c](./src/native/os_manager_native.c)
+
+Ce fichier utilise la bibliothèque pthread, qui est une bibliothèque POSIX pour la gestion des threads. Cette bibliothèque est largement utilisée dans les systèmes d'exploitation de type Unix et Linux, ce qui en fait un choix idéal pour notre environnement de développement natif puisque nous étions tous sur Mac-OS ou Linux.
+
+### Gestion des threads
+
+Au cours des premières phases du projet, nous avons été confrontés à un problème lors de la gestion des threads : les threads ne se rendaient pas la main successivement pour un mutex commun donné. Après consultation de la documentation, nous avons compris qu’il était indispensable d’appeler la méthode `osThreadYield()` à la fin de la méthode `release_mutex()` pour donner le mutex au prochain thread en attente. Sinon le thread venant de libérer le mutex le reprenait imédiatement. Ce qui gênait le bon fonctionnement de notre programme.
 
 ## Nos Erreurs
 
-...
+Au cours de ce projet, nous avons fait face à plusieurs défis majeurs, particulièrement lors du lancement de l'OS sur la carte. Ces obstacles étaient principalement dus à deux facteurs :
+
+* Notre manque de connaissance
+* Une mauvaise gestion
+
+Avec du recul, nous aurions dû suivre les conseils de notre enseignant concernant la réalisation de tests réguliers sur la carte.
+Cette négligence nous a coûté cher : à quelques jours de la compétition, notre système ne fonctionnait que partiellement.
+Malgré la mise en place de tests unitaires sur l'environnement natif, nous avons constaté que lorsque nous lançions le programme sur la carte tout ne fonctionnait pas comme prévu...
+Nous avons donc dû nous concentrer sur la résolution de problèmes liés à l'OS, tels que la gestion des threads et des mutexes. Ces éléments étaient cruciaux pour le bon fonctionnement de notre système, mais leur complexité a entraîné des retards importants dans notre avancement.
 
 ## Notions apprises
 
-...
+Nous avons appris à gérer les threads et les mutexes de manière efficace.
+
+En mettant en place des méthodes éprouvées de clean architecture et de séparation des préoccupations, nous avons pu créer un système plus modulaire et flexible. Cela nous a permis de nous adapter rapidement aux changements liés à nos erreurs.
+
+Nous avons également pris conscience de l'importance de la gestion des ressources dans un environnement contraint, comme celui de la carte STM32F4. La nécessité de gérer les threads et les mutex de manière rigoureuse nous a permis d'acquérir une compréhension plus approfondie des systèmes embarqués et de leurs défis.
