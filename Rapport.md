@@ -28,8 +28,36 @@ Pour éviter cette étape d'édition de lien fastidieuse à toute l'équipe, on 
 Le `exit 0` est là pour éviter une erreur lors du pre-commit une fois que l'édition de lien a déjà été faite une première fois. Il faut donc être vigilant lors du premier commit réalisé pour ne pas manquer les erreurs possibles de ce script.
 
 ### Lancer le jeu en local
+Le jeu nécessitant une connexion entre un client natif (programmé en C) et un serveur de jeu (en Python).
 
-...@Movic16
+Pour faciliter son lancement dans différents contextes (local, test ou compétition), plusieurs scripts Bash ont été développés.
+
+Ces scripts automatisent :
+* La gestion des connexions réseau ou série,
+* Le démarrage des serveurs et du viewer.
+* Et dans certains cas, la configuration dynamique des ports.
+
+# Fonctionnement
+En utilisant le fichier [start.sh](./scripts/start.sh), le lancement du jeu avec la carte STM32 se déroule en plusieurs étapes.
+Tout d'abord, l'environnement virtuel Python est activé. Ensuite, un port TCP est généré dynamiquement grâce à la fonction random de Python. Le script récupère également le port USB de la carte STM32 via le fichier conf.properties pour établir une communication série.
+
+Lancez le serveur de jeu avec la commande `python -m space_collector.game.server -p $PORT --timeout 10 &`.
+
+Puis, la fenêtre du jeu s'ouvre avec : `python -m space_collector.viewer -p $PORT --small-window &`
+
+Une fois le serveur et l'interface graphique opérationnels, la communication série est établie à l'aide de la commande : `python -m space_collector.serial2tcp -p $PORT --serial $SERIAL --team-name "OK"`
+
+Cette communication est indispensable : elle permet de recevoir les données du jeu (comme l'état ou la position du vaisseau) et d’envoyer nos commandes (tir, déplacement, etc.).
+Sans cette passerelle série vers TCP, aucune interaction avec le jeu n’est possible, ce qui entraînerait une défaite certaine.
+
+Suite à des problèmes rencontrés avec la communication série dans le jeu, l'équipe a décidé de passer à une communication TCP/IP en utilisant des sockets IO, tout en gardant la philosophie de lancement du premier script (start.sh).
+
+Le fichier [start_competition.sh](./scripts/start_competition.sh) :
+
+* Extrait dynamiquement l'ADDRESS, le PORT et le TEAMNAME depuis le fichier conf.properties
+* La commande platformio run --environment native compile le code C/C++ du vaisseau pour l'exécuter sur le serveur.
+* Le script ouvre la fenêtre du jeu (space_collector.viewer) avec l'ADDRESS et le PORT indiqués.
+* Après un court délai (sleep 3), il exécute le programme natif compilé en lui passant l'ADDRESS, le PORT et le TEAMNAME pour établir la communication via socket.
 
 ### Debug sur l'environnement native
 
