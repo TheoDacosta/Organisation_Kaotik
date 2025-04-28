@@ -14,9 +14,7 @@ Pour commencer le projet, nous ne sommes pas partis de rien. Une base de code no
 
 Au vue de nos difficultés l'an dernier pour gérer proprement les threads et les mutexes, nous avons décidés de ne pas reprendre le code écrit pour leur gestion et avons repris seulement les briques qui nous intéressaient.
 
-## Scripts et automatisations
-
-### Script de pre-commit
+## Script de pre-commit
 
 cf [.pre-commit-config.yaml](.pre-commit-config.yaml)
 
@@ -26,66 +24,6 @@ La difficulté est arrivée pour installer platformio sur nos machines et gérer
 
 Pour éviter cette étape d'édition de lien fastidieuse à toute l'équipe, on a écrit un script pour mettre en place ces liens (après que tous les membres aient installé platformio). cf [link_platformio.sh](./scripts/link_platformio.sh).\
 Le `exit 0` est là pour éviter une erreur lors du pre-commit une fois que l'édition de lien a déjà été faite une première fois. Il faut donc être vigilant lors du premier commit réalisé pour ne pas manquer les erreurs possibles de ce script.
-
-### Lancer le jeu en local
-Le jeu nécessitant une connexion entre un client natif (programmé en C) et un serveur de jeu (en Python).
-
-Pour faciliter son lancement dans différents contextes (local, test ou compétition), plusieurs scripts Bash ont été développés.
-
-Ces scripts automatisent :
-* La gestion des connexions réseau ou série,
-* Le démarrage des serveurs et du viewer.
-* Et dans certains cas, la configuration dynamique des ports.
-
-#### Fonctionnement
-En utilisant le fichier [start.sh](./scripts/start.sh), le lancement du jeu avec la carte STM32 se déroule en plusieurs étapes.
-Tout d'abord, l'environnement virtuel Python est activé. Ensuite, un port TCP est généré dynamiquement grâce à la fonction random de Python. Le script récupère également le port USB de la carte STM32 via le fichier conf.properties pour établir une communication série.
-
-Lancez le serveur de jeu avec la commande `python -m space_collector.game.server -p $PORT --timeout 10 &`.
-
-Puis, la fenêtre du jeu s'ouvre avec : `python -m space_collector.viewer -p $PORT --small-window &`
-
-Une fois le serveur et l'interface graphique opérationnels, la communication série est établie à l'aide de la commande : `python -m space_collector.serial2tcp -p $PORT --serial $SERIAL --team-name "OK"`
-
-Cette communication est indispensable : elle permet de recevoir les données du jeu (comme l'état ou la position du vaisseau) et d’envoyer nos commandes (tir, déplacement, etc.).
-Sans cette passerelle série vers TCP, aucune interaction avec le jeu n’est possible, ce qui entraînerait une défaite certaine.
-
-Suite à des problèmes rencontrés avec la communication série dans le jeu, l'équipe a décidé de passer à une communication TCP/IP en utilisant des sockets IO, tout en gardant la philosophie de lancement du premier script (start.sh).
-
-Le fichier [start_competition.sh](./scripts/start_competition.sh) :
-
-* Extrait dynamiquement l'ADDRESS, le PORT et le TEAMNAME depuis le fichier conf.properties
-* La commande platformio run --environment native compile le code C/C++ du vaisseau pour l'exécuter sur le serveur.
-* Le script ouvre la fenêtre du jeu (space_collector.viewer) avec l'ADDRESS et le PORT indiqués.
-* Après un court délai (sleep 3), il exécute le programme natif compilé en lui passant l'ADDRESS, le PORT et le TEAMNAME pour établir la communication via socket.
-
-### Debug sur l'environnement native
-
-Le besoin de debogger sur l'environnement native s'est fait sentir lorsqu'on a décidé d'exécuter notre programme sur cet environnement pour la compétition.
-ça s'est fait assez rapidement, Visual Studio Code propose des configuration de debug pour le C. Il fallait configurer comme il faut pour appeler notre exécutable `/.pio/build/native/program` et lui renseigner les arguments dont on a besoin. Pour être sûr d'avoir la dernière version compilée, on peut choisir de build avec platformio avant l'exécution du programme. \
-Exemple :
-
-```json
-{
-    "name": "(lldb) Debug native",
-    "type": "cppdbg",
-    "request": "launch",
-    "program": "${workspaceFolder}/.pio/build/native/program",
-    "args": [
-        "localhost",
-        "2000",
-        "OrganisationKaotik"
-    ],
-    "stopAtEntry": false,
-    "cwd": "${fileDirname}",
-    "environment": [],
-    "externalConsole": false,
-    "MIMode": "lldb",
-    "preLaunchTask": "PlatformIO: Build (native)"
-}
-```
-
- Nous avons donc adapté le script [start_native.sh](./scripts/start_native.sh) pour pouvoir renseigner ces paramètres par défaut simplement lors de l'appel du script en rajoutant des conditions afin de modifier le comportement lorsqu'on renseigne "debug" en paramètre de la commande.
 
 ## Abstraction de l'OS
 
@@ -134,9 +72,99 @@ Au cours des premières phases du projet, nous avons été confrontés à un pro
 
 Au vue de nos nombreux problèmes lorsque nous lancions le programme sur la carte. Nous avons décidé de lancer le programme sur l'environnement natif pour la compétition au lieu de le lancer sur la carte. Cette décision a demandé un travail supplémentaire pour adapter la communication serveur à l'environnement natif, mais elle nous a permis de nous concentrer sur la logique du jeu plutôt que sur les détails de nos soucis liés à l'exécution sur la carte.
 
-Pour adapter cette communication, nous avons remplacé le fonctionnement du code fourni par notre enseignant servant à faire le lien entre le servuer et les messages envoyés par la caarte sur le port série. Nous avons donc déclaré la connection socket client en C dans le code natif remplaçant ce fonctionnement. cf `os-initialisation()` dans [os_manager_native.c](./src/native/os_manager_native.c) et les méthodes définies dans [socket.h](./src/native/socket.h) pour plus de détails.
+Pour adapter cette communication, nous avons remplacé le fonctionnement du code fourni par notre enseignant servant à faire le lien entre le servuer et les messages envoyés par la caarte sur le port série. Nous avons donc déclaré la connection socket client en C dans le code natif remplaçant ce fonctionnement. cf `os_initialisation()` dans [os_manager_native.c](./src/native/os_manager_native.c) et les méthodes définies dans [socket.h](./src/native/socket.h) pour plus de détails.
 
 La gestion des chaines de caractères est devenue bien plus importante lors de la mise en place de cette communication. Nous avons donc implémenté quelques méthodes pour les gérer de manière efficace. cf [string.c](./src/string.c) pour plus de détails. Ces méthodes ont été implémentées de manière à fonctionner aussi sur la carte, puisque non dépendantes de librairie spécifiques à l'environnement natif.
+
+## Lancer le jeu en local
+
+Plusieurs étapes sont nécessaires pour lancer le jeu en local :
+
+1. Activer l'environnement virtuel Python
+2. Définir un port pour le serveur
+3. Récupérer le port de la carte STM32 pour la liaison série
+4. Lancer le serveur de jeu
+5. Lancer le viewer
+6. Établir la communication série entre le serveur et le port série
+
+Pour faciliter son lancement dans différents contextes (local, debug ou compétition), plusieurs scripts ont été mis en place.
+
+Ces scripts automatisent :
+
+* La gestion des connexions réseau et série
+* Le démarrage des serveurs et du viewer
+* La configuration dynamique des ports
+
+### Fonctionnement en local
+
+#### Environnement de la carte
+
+En utilisant le script [start.sh](./scripts/start.sh), le lancement du jeu sur la carte STM32 se déroule en plusieurs étapes.
+
+Prérequis : l'environnement virtuel Python est activé. (le script sera lancé depuis l'environnement virtuel Python)
+
+Ensuite, un port TCP est généré dynamiquement grâce à la fonction random de Python. Le script récupère également le port physique sur lequel la carte STM32 est connectée.
+Ce port est définit dans un fichier conf.properties ainsi que d'autres constantes spécifiques à l'environnement ou à la partie lancée.
+
+```properties
+serial=/dev/tty.usbserial-AD0K93ZF
+address=192.168.43.152
+port=50724
+teamname=OrganisationKaotik
+```
+
+Lancez le serveur de jeu avec la commande `python -m space_collector.game.server -p $PORT --timeout 10`
+
+Puis, la fenêtre du jeu s'ouvre avec : `python -m space_collector.viewer -p $PORT --small-window`
+
+Une fois le serveur et l'interface graphique opérationnels, la communication série-TCP est établie à l'aide de la commande : `python -m space_collector.serial2tcp -p $PORT --serial $SERIAL --team-name "OrganisationKaotik"`
+
+Cette communication est indispensable : elle permet de recevoir les données du jeu (comme l'état ou la position du vaisseau) et d’envoyer nos commandes (tir, déplacement, etc.).
+Sans cette passerelle série vers TCP, aucune interaction avec le jeu n’est possible, ce qui entraînerait une défaite certaine.
+
+#### Environnement natif
+
+Suite à nos problèmes avec l'exécution du programme sur la carte, on a choisi d'exécuter le programme sur l'environnement natif.
+
+On a donc défini un nouveau script [start_native.sh](./scripts/start_native.sh) qui permet de lancer le jeu en local sur l'environnement natif (sans la carte STM32) très similaire au script [start.sh](./scripts/start.sh).
+
+#### Lancement pour la compétition
+
+Pour la compétition nous n'hébergeons pas le serveur de jeu sur notre machine, mais sur un serveur distant. Le script [start_competition.sh](./scripts/start_competition.sh) permet de lancer le viewer et d'établir la communication série-TCP avec le serveur distant.
+
+Ce script :
+
+* Extrait dynamiquement l'ADDRESS, le PORT et le TEAMNAME depuis le fichier conf.properties
+* Le script ouvre la fenêtre du jeu (space_collector.viewer) avec l'ADDRESS et le PORT indiqués.
+* Après un court délai (sleep 3), il exécute le programme natif compilé en lui passant l'ADDRESS, le PORT et le TEAMNAME pour établir la communication via socket.
+
+## Debug sur l'environnement native
+
+Le besoin de debogger sur l'environnement native s'est fait sentir lorsqu'on a décidé d'exécuter notre programme sur cet environnement pour la compétition.
+Ca s'est fait assez rapidement, Visual Studio Code propose des configuration de debug pour le C. Il fallait configurer comme il faut pour appeler notre exécutable `/.pio/build/native/program` et lui renseigner les arguments dont on a besoin. Pour être sûr d'avoir la dernière version compilée, on peut choisir de build avec platformio avant l'exécution du programme. \
+Exemple :
+
+```json
+{
+    "name": "(lldb) Debug native",
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/.pio/build/native/program",
+    "args": [
+        "localhost",
+        "2000",
+        "OrganisationKaotik"
+    ],
+    "stopAtEntry": false,
+    "cwd": "${fileDirname}",
+    "environment": [],
+    "externalConsole": false,
+    "MIMode": "lldb",
+    "preLaunchTask": "PlatformIO: Build (native)"
+}
+```
+
+ Nous avons donc adapté le script [start_native.sh](./scripts/start_native.sh) pour pouvoir renseigner ces paramètres par défaut simplement lors de l'appel du script en rajoutant des conditions afin de modifier le comportement lorsqu'on renseigne "debug" en paramètre de la commande.
 
 ## Nos Erreurs
 
