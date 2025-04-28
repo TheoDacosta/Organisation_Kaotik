@@ -3,8 +3,18 @@
 ## Sommaire
 
 * [Organisation du projet](#organisation-du-projet)
-* [Scripts et automatisations](#scripts-et-automatisations)
+* [Script de pre-commit](#script-de-pre-commit)
 * [Abstraction de l'OS](#abstraction-de-los)
+  * [OS de la carte](#os-de-la-carte)
+  * [OS natif](#os-natif)
+  * [Gestion des threads](#gestion-des-threads)
+* [Revirement de situation](#revirement-de-situation)
+* [Lancer le jeu en local](#lancer-le-jeu-en-local)
+  * [Fonctionnement en local](#fonctionnement-en-local)
+    * [Environnement de la carte](#environnement-de-la-carte)
+    * [Environnement natif](#environnement-natif)
+  * [Lancement pour la compétition](#lancement-pour-la-compétition)
+* [Debug sur l'environnement native](#debug-sur-lenvironnement-native)
 * [Nos Erreurs](#nos-erreurs)
 * [Notions apprises](#notions-apprises)
 
